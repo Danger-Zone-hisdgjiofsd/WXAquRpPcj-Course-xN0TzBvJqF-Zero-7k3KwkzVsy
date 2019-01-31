@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CourseZero.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,18 @@ namespace CourseZero
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSwaggerGen(x =>
+            {
+                var info = new Swashbuckle.AspNetCore.Swagger.Info();
+                info.Title = "API Reference";
+                info.Version = "1";
+                x.SwaggerDoc("v1", info);
+                x.IncludeXmlComments(AppDomain.CurrentDomain.BaseDirectory + "Doc.xml");
+            });
+            services.AddMvc(x =>
+            {
+                x.Filters.Add(typeof(ValidatorActionFilter));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -26,9 +39,14 @@ namespace CourseZero
             app.UseStaticFiles();
             app.UseMvc();
 
-              if (env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(x =>
+                {
+                    x.SwaggerEndpoint("/swagger/v1/swagger.json", "API Reference");
+                });
             }
             Lifetime.ApplicationStarted.Register(() =>
             {
@@ -39,6 +57,7 @@ namespace CourseZero
             {
                 //Application stopping
             });
+
 
             /*app.Run(async (context) =>
             {
