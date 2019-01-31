@@ -22,7 +22,7 @@ namespace CourseZero
             {
                 var info = new Swashbuckle.AspNetCore.Swagger.Info();
                 info.Title = "API Reference";
-                info.Version = "1";
+                info.Version = DateTime.Now.ToString();
                 x.SwaggerDoc("v1", info);
                 x.IncludeXmlComments(AppDomain.CurrentDomain.BaseDirectory + "Doc.xml");
             });
