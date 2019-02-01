@@ -23,6 +23,7 @@ namespace CourseZero.Models
         public string username { get; set; }
         public string email { get; set; }
         public string password_hash { get; set; }
+        public string password_salt { get; set; }
         public bool email_verified { get; set; }
         public string email_verifying_hash { get; set; }
 

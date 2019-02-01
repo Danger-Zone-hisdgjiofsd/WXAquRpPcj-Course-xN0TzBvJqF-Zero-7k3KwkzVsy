@@ -9,8 +9,8 @@ namespace CourseZero.Email
 {
     public class Email_Sender
     {
-        SmtpClient smtpclient;
-        string email_source = "";
+        static SmtpClient smtpclient;
+        static string email_source = "";
         public Email_Sender()
         {
             try
@@ -31,13 +31,13 @@ namespace CourseZero.Email
                 Environment.Exit(0);
             }
         }
-        public bool Send_Verification_Email(string target_email, string username, string verifying_hash)
+        public async static Task<bool> Send_Verification_Email(string target_email, string username, string verifying_hash)
         {
             string mail_title = "Verify your email for CourseZero";
-            string mail_msg = "Hello "+ username +",\r\n\r\nFollow this link to verify your email address.\r\n\r\nhttps://localhost:1234/verify/"+ verifying_hash + "\r\n\r\nIf you didn't ask to verify this address, you can ignore this email.\r\n\r\nThanks,\r\n\r\nCourseZero Team";
-            return Send_Mail(target_email, mail_title, mail_msg);
+            string mail_msg = "Hello "+ username +",\r\n\r\nFollow this link to verify your email address.\r\n\r\nhttps://localhost:5001/api/Register/Verify_Email/"+username +"/"+ verifying_hash + "\r\n\r\nIf you didn't ask to verify this address, you can ignore this email.\r\n\r\nThanks,\r\n\r\nCourseZero Team";
+            return await Send_Mail(target_email, mail_title, mail_msg);
         }
-        private bool Send_Mail(string target_email, string mail_title, string mail_msg)
+        private async static Task<bool> Send_Mail(string target_email, string mail_title, string mail_msg)
         {
             MailMessage message = new MailMessage(email_source, target_email);
             message.Subject = mail_title;
@@ -45,7 +45,7 @@ namespace CourseZero.Email
             message.Priority = MailPriority.High;
             try
             {
-                smtpclient.Send(message);
+                await smtpclient.SendMailAsync(message);
             }
             catch
             {
