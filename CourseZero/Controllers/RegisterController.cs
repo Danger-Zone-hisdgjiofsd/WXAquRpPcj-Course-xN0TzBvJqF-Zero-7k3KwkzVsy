@@ -156,7 +156,7 @@ namespace CourseZero.Controllers
     public class Register_Response
     {
         /// <summary>
-        /// success = 0, fail = 1
+        /// 0 is success, 1 is fail
         /// </summary>
         public int status_code { get; set; }
         public string display_message { get; set; }
