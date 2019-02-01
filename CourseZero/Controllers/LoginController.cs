@@ -64,7 +64,7 @@ namespace CourseZero.Controllers
     public class Login_Request
     {
         /// <summary>
-        /// Should be TRUE if the user is trying to login with @link email. Otherwise, a username is expected
+        /// Should be TRUE if the user is trying to login with @link email. Otherwise, an username is expected.
         /// </summary>
         [Required]
         public bool using_email { get; set; }

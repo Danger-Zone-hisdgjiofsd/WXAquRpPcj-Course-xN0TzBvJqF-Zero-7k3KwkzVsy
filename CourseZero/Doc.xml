@@ -4,9 +4,19 @@
         <name>CourseZero</name>
     </assembly>
     <members>
+        <member name="P:CourseZero.Controllers.Login_Request.using_email">
+            <summary>
+            Should be TRUE if the user is trying to login with @link email. Otherwise, an username is expected.
+            </summary>
+        </member>
+        <member name="P:CourseZero.Controllers.Login_Response.status_code">
+            <summary>
+            0 is success, 1 is fail
+            </summary>
+        </member>
         <member name="P:CourseZero.Controllers.Register_Response.status_code">
             <summary>
-            success = 0, fail = 1
+            0 is success, 1 is fail
             </summary>
         </member>
     </members>
