@@ -15,6 +15,7 @@ namespace CourseZero
     public class Program
     {
         static Email_Sender email_Sender;
+        public static string db_Connection_Str = "";
         public static void Main(string[] args)
         {
             email_Sender = new Email_Sender();
@@ -26,7 +27,6 @@ namespace CourseZero
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
     }
 }

@@ -34,7 +34,7 @@ namespace CourseZero.Email
         public bool Send_Verification_Email(string target_email, string username, string verifying_hash)
         {
             string mail_title = "Verify your email for CourseZero";
-            string mail_msg = "Hello "+ username +",\r\n\r\nFollow this link to verify your email address.\r\n\r\nhttps://localhost:1234/verify/"+ verifying_hash + "\r\n\r\nIf you didn't ask to verify this address, you can ignore this email.\r\n\r\nThanks,\r\n\r\nCourseZero";
+            string mail_msg = "Hello "+ username +",\r\n\r\nFollow this link to verify your email address.\r\n\r\nhttps://localhost:1234/verify/"+ verifying_hash + "\r\n\r\nIf you didn't ask to verify this address, you can ignore this email.\r\n\r\nThanks,\r\n\r\nCourseZero Team";
             return Send_Mail(target_email, mail_title, mail_msg);
         }
         private bool Send_Mail(string target_email, string mail_title, string mail_msg)
