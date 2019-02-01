@@ -24,7 +24,7 @@ namespace CourseZero.Hashing
                 numBytesRequested: 256 / 8));
             return (Convert.ToBase64String(salt), hashed);
         }
-        public static (string salt, string hashed_pw) Hash_Password(string password, string salt_in_base64)
+        public static string Hash_Password(string password, string salt_in_base64)
         {
             byte[] salt = Convert.FromBase64String(salt_in_base64);
             string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -33,7 +33,7 @@ namespace CourseZero.Hashing
                 prf: KeyDerivationPrf.HMACSHA1,
                 iterationCount: 1000,
                 numBytesRequested: 256 / 8));
-            return (Convert.ToBase64String(salt), hashed);
+            return hashed;
         }
         public static string Random_String(int length)
         {
