@@ -15,6 +15,11 @@ namespace CourseZero.Models
         }
 
         public DbSet<User> Users { get; set; }
+
+        public async Task<User> Get_User_By_User_ID(int id)
+        {
+            return await Users.FirstOrDefaultAsync(x => x.ID == id);
+        }
     }
     public class User
     {

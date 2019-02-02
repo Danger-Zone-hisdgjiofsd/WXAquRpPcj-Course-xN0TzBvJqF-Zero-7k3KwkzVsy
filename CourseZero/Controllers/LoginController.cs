@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using CourseZero.Hashing;
 using CourseZero.Models;
+using CourseZero.Tools;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Z.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,11 +18,14 @@ namespace CourseZero.Controllers
     public class LoginController : Controller
     {
         readonly UserContext userContext;
-        public LoginController(UserContext userContext)
+        readonly AuthTokenContext authTokenContext;
+        public LoginController(UserContext userContext, AuthTokenContext authTokenContext)
         {
             this.userContext = userContext;
+            this.authTokenContext = authTokenContext;
         }
         [HttpPost]
+        [Consumes("application/json")]
         [Produces("application/json")]
         public async Task<ActionResult<Login_Response>> Post([FromBody]Login_Request request)
         {
@@ -56,10 +61,38 @@ namespace CourseZero.Controllers
                 response.display_message = "wrong password";
                 return response;
             }
+            //Create Login Token Here
+            string token = "";
+            while (true)
+            {
+                token = Hashing_Tool.Random_String(128);
+                if (await authTokenContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == token) != null)
+                    continue;
+                break;
+            }
+            AuthToken auth_Token_Obj;
+            var existing_tokens = await authTokenContext.AuthTokens.WhereAsync(x => x.userID == user.ID).OrderByDescending(x => x.Last_access_Time);
+            if (existing_tokens.Count() == 20) // Max token per user is 20
+                authTokenContext.AuthTokens.Remove(existing_tokens.Last());
+
+            auth_Token_Obj = new AuthToken();
+
+            auth_Token_Obj.Token = token;
+            auth_Token_Obj.userID = user.ID;
+            string useragent_str = "";
+            if (Request.Headers.ContainsKey("User-Agent"))
+                useragent_str = Request.Headers["User-Agent"].ToString();
+            await RequestSource_Tool.Update_AuthToken_Browse_Record(auth_Token_Obj, useragent_str, Request.HttpContext.Connection.RemoteIpAddress.ToString());
+            await authTokenContext.AddAsync(auth_Token_Obj);
+            await authTokenContext.SaveChangesAsync();
+
+
+            response.auth_token = token;
             response.status_code = 0;
             response.display_message = "success";
             return response;
         }
+
     }
     public class Login_Request
     {
@@ -146,5 +179,10 @@ namespace CourseZero.Controllers
         /// </summary>
         public int status_code { get; set; }
         public string display_message { get; set; }
+        /// <summary>
+        /// A hash that serve as a credential for later purposes 
+        /// Should be stored in localstorage / sessionstorage (if the user does not check the "remember me" option)
+        /// </summary>
+        public string auth_token { get; set; }
     }
 }

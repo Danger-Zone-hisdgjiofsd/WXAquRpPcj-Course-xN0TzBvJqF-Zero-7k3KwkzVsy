@@ -23,6 +23,7 @@ namespace CourseZero.Controllers
             this.userContext = userContext;
         }
         [HttpPost]
+        [Consumes("application/json")]
         [Produces("application/json")]
         public async Task<ActionResult<Register_Response>> Post([FromBody]Register_Request request)
         {
@@ -72,7 +73,7 @@ namespace CourseZero.Controllers
         [HttpGet]
         [Route("[action]/{username}/{hash}")]
         public async Task<ActionResult<string>> Verify_Email(string username, string hash)
-        {
+        { 
             hash = HttpUtility.UrlDecode(hash).Replace(' ', '+');
             if (username.Length > 20 || hash.Length != 128)
                 return "This verification link is not valid!";

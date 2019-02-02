@@ -16,13 +16,15 @@ namespace CourseZero.Tools
         static WebClient wc = new WebClient();
         public static (string operation_system, string browser) Decode_UA(string ua)
         {
+            if (ua == "")
+                return ("", "");
             deviceDetector.SetUserAgent(ua);
             deviceDetector.Parse();
             string operation_system = "unknown";
             string browser = "unknown";
             var os_info = deviceDetector.GetOs();
             if (os_info.Success)
-                operation_system = os_info.Match.Name + " " + os_info.Match.Platform + " " + os_info.Match.Version;
+                operation_system = os_info.Match.Name + " " + os_info.Match.Version + " " + os_info.Match.Platform;
             var browser_info = deviceDetector.GetBrowserClient();
             if (browser_info.Success)
                 browser = browser_info.Match.Name + " " + browser_info.Match.Version;
@@ -46,6 +48,20 @@ namespace CourseZero.Tools
             {
                 return "";
             }
+        }
+        public static async Task Update_AuthToken_Browse_Record(AuthToken auth_Token_Obj, string ua, string ip)
+        {
+            Console.WriteLine("Update: " + ip + " | " + ua);
+            if (auth_Token_Obj.Last_access_IP != ip)
+            {
+                var ua_decoded = RequestSource_Tool.Decode_UA(ua);
+                string loc = await RequestSource_Tool.IP_to_Location(ip);
+                auth_Token_Obj.Last_access_Browser = ua_decoded.browser;
+                auth_Token_Obj.Last_access_Device = ua_decoded.operation_system;
+                auth_Token_Obj.Last_access_Location = loc;
+                auth_Token_Obj.Last_access_IP = ip;
+            }
+            auth_Token_Obj.Last_access_Time = DateTime.Now;
         }
     }
 }

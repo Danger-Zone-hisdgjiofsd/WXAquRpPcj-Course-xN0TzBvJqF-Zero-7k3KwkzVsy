@@ -4,14 +4,16 @@ using CourseZero.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CourseZero.Migrations.AuthToken
 {
     [DbContext(typeof(AuthTokenContext))]
-    partial class AuthTokenContextModelSnapshot : ModelSnapshot
+    [Migration("20190202094217_Update4")]
+    partial class Update4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
