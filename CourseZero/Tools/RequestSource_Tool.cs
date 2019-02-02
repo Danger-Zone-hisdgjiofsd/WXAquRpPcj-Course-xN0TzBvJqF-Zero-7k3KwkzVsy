@@ -3,6 +3,7 @@ using DeviceDetectorNET;
 using DeviceDetectorNET.Cache;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -31,7 +32,15 @@ namespace CourseZero.Tools
         {
             try
             {
-                return await wc.DownloadStringTaskAsync(new Uri("https://ipapi.co/"+ip+"/country_name"));
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://ipapi.co/" + ip + "/country_name");
+                request.Timeout = 2000;
+                request.ReadWriteTimeout = 2000;
+                var response = await request.GetResponseAsync();
+                using (Stream stream = response.GetResponseStream())
+                {
+                    StreamReader reader = new StreamReader(stream);
+                    return reader.ReadToEnd();
+                }
             }
             catch
             {
