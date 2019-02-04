@@ -14,6 +14,8 @@ namespace CourseZero.Tools
     {
         public static DeviceDetector deviceDetector = new DeviceDetector();
         static WebClient wc = new WebClient();
+        static Dictionary<string, string> ip_to_location_cache = new Dictionary<string, string>();
+        const int cache_limit = 10000;
         public static (string operation_system, string browser) Decode_UA(string ua)
         {
             if (ua == "")
@@ -28,10 +30,15 @@ namespace CourseZero.Tools
             var browser_info = deviceDetector.GetBrowserClient();
             if (browser_info.Success)
                 browser = browser_info.Match.Name + " " + browser_info.Match.Version;
+
+            if (deviceDetector.GetCache().Count() > cache_limit)
+                deviceDetector.GetCache().FlushAll();
             return (operation_system, browser);
         }
         public async static Task<string> IP_to_Location(string ip)
         {
+            if (ip_to_location_cache.ContainsKey(ip))
+                return ip_to_location_cache[ip];
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://ipapi.co/" + ip + "/country_name");
@@ -41,7 +48,11 @@ namespace CourseZero.Tools
                 using (Stream stream = response.GetResponseStream())
                 {
                     StreamReader reader = new StreamReader(stream);
-                    return reader.ReadToEnd();
+                    string loc = reader.ReadToEnd();
+                    if (ip_to_location_cache.Count > cache_limit)
+                        ip_to_location_cache.Clear();
+                    ip_to_location_cache.Add(ip, loc);
+                    return loc;
                 }
             }
             catch
@@ -51,11 +62,10 @@ namespace CourseZero.Tools
         }
         public static async Task Update_AuthToken_Browse_Record(AuthToken auth_Token_Obj, string ua, string ip)
         {
-            Console.WriteLine("Update: " + ip + " | " + ua);
             if (auth_Token_Obj.Last_access_IP != ip)
             {
-                var ua_decoded = RequestSource_Tool.Decode_UA(ua);
-                string loc = await RequestSource_Tool.IP_to_Location(ip);
+                var ua_decoded = Decode_UA(ua);
+                string loc = await IP_to_Location(ip);
                 auth_Token_Obj.Last_access_Browser = ua_decoded.browser;
                 auth_Token_Obj.Last_access_Device = ua_decoded.operation_system;
                 auth_Token_Obj.Last_access_Location = loc;

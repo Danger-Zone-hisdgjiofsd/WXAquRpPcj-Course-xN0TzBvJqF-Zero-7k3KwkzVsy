@@ -4,14 +4,16 @@ using CourseZero.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CourseZero.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20190204081905_Update5")]
+    partial class Update5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,10 +48,6 @@ namespace CourseZero.Migrations
                     b.Property<string>("username");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("username", "email")
-                        .IsUnique()
-                        .HasFilter("[username] IS NOT NULL AND [email] IS NOT NULL");
 
                     b.ToTable("Users");
                 });

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using CourseZero.Filters;
 
 namespace CourseZero
 {
@@ -38,6 +39,7 @@ namespace CourseZero
             {
                 x.Filters.Add(typeof(ValidatorActionFilter));
             });
+            services.AddScoped<AuthRequired>();
             services.AddDbContext<UserContext>(options =>
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));

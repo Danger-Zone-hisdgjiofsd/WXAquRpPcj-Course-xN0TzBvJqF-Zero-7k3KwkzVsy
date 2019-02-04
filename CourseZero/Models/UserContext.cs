@@ -20,6 +20,15 @@ namespace CourseZero.Models
         {
             return await Users.FirstOrDefaultAsync(x => x.ID == id);
         }
+        public async Task<User> Get_User_By_Email(string email)
+        {
+            return await Users.FirstOrDefaultAsync(x => x.email == email);
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasIndex(c => new { c.username, c.email }).IsUnique(true);
+        }
     }
     public class User
     {
@@ -31,6 +40,10 @@ namespace CourseZero.Models
         public string password_salt { get; set; }
         public bool email_verified { get; set; }
         public string email_verifying_hash { get; set; }
+        public DateTime email_verification_issue_datetime { get; set; }
+        public string password_change_new_password { get; set; }
+        public string password_change_hash { get; set; }
+        public DateTime password_change_request_datatime { get; set; }
 
     }
 }

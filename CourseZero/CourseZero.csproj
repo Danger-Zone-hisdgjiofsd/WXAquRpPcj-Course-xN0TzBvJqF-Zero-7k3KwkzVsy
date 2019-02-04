@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DeviceDetector.NET.NetCore" Version="3.9.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
@@ -20,6 +19,15 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DeviceDetector.NET">
+      <HintPath>..\..\DeviceDetector.NET-4e32590e7d7272542fb284604de6189fe6304eb0\src\DeviceDetector.NET\bin\Debug\DeviceDetector.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="YamlDotNet">
+      <HintPath>..\..\DeviceDetector.NET-4e32590e7d7272542fb284604de6189fe6304eb0\src\DeviceDetector.NET\bin\Debug\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

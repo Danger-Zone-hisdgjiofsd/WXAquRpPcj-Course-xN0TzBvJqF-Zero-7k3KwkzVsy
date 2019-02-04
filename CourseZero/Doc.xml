@@ -4,53 +4,85 @@
         <name>CourseZero</name>
     </assembly>
     <members>
-        <member name="P:CourseZero.Controllers.Login_Request.using_email">
+        <member name="P:CourseZero.Controllers.ChangePasswordController.Password_Change_Response.status_code">
+            <summary>
+            <para>0 is success, 1, 2, 3 is fail</para>
+            <para>1 fail is due to invalid auth token</para>
+            <para>2 fail is due to invalid old password</para>
+            <para>3 fail is due to invalid new password</para>
+            <para>all current sessions will be logged out if success</para>
+            </summary>
+        </member>
+        <member name="P:CourseZero.Controllers.ForgotPasswordController.ForgotPassword_Change_Request.email">
+            <summary>
+            A new password and an activation link will be sent to the user email
+            </summary>
+        </member>
+        <member name="P:CourseZero.Controllers.ForgotPasswordController.ForgotPassword_Change_Response.status_code">
+            <summary>
+             <para>0 is success, 1 is fail</para>
+             <para>all current sessions will be logged out if success</para>
+            </summary>
+        </member>
+        <member name="P:CourseZero.Controllers.LoginController.Login_Response.status_code">
+            <summary>
+            0 is success, 1 is fail
+            </summary>
+        </member>
+        <member name="P:CourseZero.Controllers.LoginController.Login_Response.auth_token">
+            <summary>
+            <para>A hash that serve as a credential for later purposes </para>
+            <para>Should be stored in localstorage / sessionstorage (if the user does not check the "remember me" option)</para>
+            </summary>
+        </member>
+        <member name="P:CourseZero.Controllers.LoginController.Login_Request.using_email">
             <summary>
             Should be TRUE if the user is trying to login with @link email. Otherwise, an username is expected.
             </summary>
         </member>
-        <member name="P:CourseZero.Controllers.Login_Response.status_code">
+        <member name="M:CourseZero.Controllers.RegisterController.Reissue_Email(CourseZero.Controllers.RegisterController.Reissue_Email_Request)">
+            <summary>
+            Reissue an verification email
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="P:CourseZero.Controllers.RegisterController.Reissue_Email_Response.status_code">
+            <summary>
+             0 is success, 1 is fail
+            </summary>
+        </member>
+        <member name="P:CourseZero.Controllers.RegisterController.Register_Response.status_code">
             <summary>
             0 is success, 1 is fail
             </summary>
         </member>
-        <member name="P:CourseZero.Controllers.Login_Response.auth_token">
-            <summary>
-            A hash that serve as a credential for later purposes 
-            Should be stored in localstorage / sessionstorage (if the user does not check the "remember me" option)
-            </summary>
-        </member>
-        <member name="P:CourseZero.Controllers.Register_Response.status_code">
-            <summary>
-            0 is success, 1 is fail
-            </summary>
-        </member>
-        <member name="P:CourseZero.Controllers.Logout_Specific_Session_Request.token_to_be_removed">
+        <member name="P:CourseZero.Controllers.SessionController.Logout_Specific_Session_Request.token_to_be_removed">
             <summary>
             <para>the token that the user want to log it out</para>
             <para>should prevent the user logout its own session
             this part is not checked on server side</para>
             </summary>
         </member>
-        <member name="P:CourseZero.Controllers.Logout_Specific_Session_Response.status_code">
+        <member name="P:CourseZero.Controllers.SessionController.Logout_Specific_Session_Response.status_code">
             <summary>
             <para>0 is success, 1, 2 is fail</para>
             <para>1 fail is due to invalid auth token (user has already logged out)</para>
             <para>2 fail is due to given session does not exist or not valid</para>
             </summary>
         </member>
-        <member name="P:CourseZero.Controllers.Get_All_Sessions_Response.status_code">
+        <member name="P:CourseZero.Controllers.SessionController.Get_All_Sessions_Response.status_code">
             <summary>
             <para>0 is success, 1 is fail</para>
             <para>fail is due to invalid auth token (user has already logged out)</para>
             </summary>
         </member>
-        <member name="P:CourseZero.Controllers.Get_All_Sessions_Response.sessions">
+        <member name="P:CourseZero.Controllers.SessionController.Get_All_Sessions_Response.sessions">
             <summary>
             Return a list of session information. 
             </summary>
         </member>
-        <member name="P:CourseZero.Controllers.Logout_Response.status_code">
+        <member name="P:CourseZero.Controllers.SessionController.Logout_Response.status_code">
             <summary>
             <para>0 is success, 1 is fail</para>
             <para>fail may due to invalid auth token (user has already logged out)</para>

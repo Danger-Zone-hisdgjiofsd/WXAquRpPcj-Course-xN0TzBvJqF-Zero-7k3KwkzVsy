@@ -31,10 +31,16 @@ namespace CourseZero.Email
                 Environment.Exit(0);
             }
         }
-        public async static Task<bool> Send_Verification_Email(string target_email, string username, string verifying_hash)
+        public async static Task<bool> Send_Verification_Email(string target_email, string username, string verifying_hash_encoded)
         {
             string mail_title = "Verify your email for CourseZero";
-            string mail_msg = "Hello "+ username +",\r\n\r\nFollow this link to verify your email address.\r\n\r\nhttps://localhost:5001/api/Register/Verify_Email/"+username +"/"+ verifying_hash + "\r\n\r\nIf you didn't ask to verify this address, you can ignore this email.\r\n\r\nThanks,\r\n\r\nCourseZero Team";
+            string mail_msg = "Hello "+ username +",\r\n\r\nFollow this link to verify your email address.\r\n\r\nhttps://localhost:5001/api/Register/Verify_Email/"+username +"/"+ verifying_hash_encoded + "\r\n\r\nIf you didn't ask to verify this address, you can ignore this email.\r\n\r\nThanks,\r\n\r\nCourseZero Team";
+            return await Send_Mail(target_email, mail_title, mail_msg);
+        }
+        public async static Task<bool> Send_Password_Change_Email(string target_email, int userid, string username, string password, string verifying_hash_encoded)
+        {
+            string mail_title = "Your new password at CourseZero";
+            string mail_msg = "Hello " + username + ",\r\n\r\nYou have requested to reset the password of your account.\r\n\r\nYour new password: "+password+"\r\n\r\nFollow this link to activate your new password.\r\n\r\nhttps://localhost:5001/api/ForgotPassword/Activate/" + userid + "/" + verifying_hash_encoded + "\r\n\r\nIf you didn't ask to reset your password, you can ignore this email.\r\n\r\nThanks,\r\n\r\nCourseZero Team";
             return await Send_Mail(target_email, mail_title, mail_msg);
         }
         private async static Task<bool> Send_Mail(string target_email, string mail_title, string mail_msg)
