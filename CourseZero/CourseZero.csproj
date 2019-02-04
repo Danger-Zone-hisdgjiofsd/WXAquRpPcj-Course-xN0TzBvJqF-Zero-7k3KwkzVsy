@@ -18,15 +18,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="References\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="DeviceDetector.NET">
-      <HintPath>..\..\DeviceDetector.NET-4e32590e7d7272542fb284604de6189fe6304eb0\src\DeviceDetector.NET\bin\Debug\DeviceDetector.NET.dll</HintPath>
+      <HintPath>References\DeviceDetector.NET.dll</HintPath>
     </Reference>
     <Reference Include="YamlDotNet">
-      <HintPath>..\..\DeviceDetector.NET-4e32590e7d7272542fb284604de6189fe6304eb0\src\DeviceDetector.NET\bin\Debug\YamlDotNet.dll</HintPath>
+      <HintPath>References\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
 
