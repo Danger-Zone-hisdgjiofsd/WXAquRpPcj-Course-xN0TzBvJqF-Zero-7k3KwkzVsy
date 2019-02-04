@@ -92,97 +92,96 @@ namespace CourseZero.Controllers
             response.display_message = "success";
             return response;
         }
-
-    }
-    public class Login_Request
-    {
-        /// <summary>
-        /// Should be TRUE if the user is trying to login with @link email. Otherwise, an username is expected.
-        /// </summary>
-        [Required]
-        public bool using_email { get; set; }
-        [StringLength(20, MinimumLength = 5)]
-        public string username { get; set; }
-        [StringLength(27, MinimumLength = 27)]
-        public string email { get; set; }
-        [Required]
-        [StringLength(20, MinimumLength = 5)]
-        public string password { get; set; }
-        [Required]
-        public string recaptcha_hash { get; set; }
-
-        public (bool valid, string error_str) all_fields_are_valid()
+        public class Login_Response
         {
+            /// <summary>
+            /// 0 is success, 1 is fail
+            /// </summary>
+            public int status_code { get; set; }
+            public string display_message { get; set; }
+            /// <summary>
+            /// <para>A hash that serve as a credential for later purposes </para>
+            /// <para>Should be stored in localstorage / sessionstorage (if the user does not check the "remember me" option)</para>
+            /// </summary>
+            public string auth_token { get; set; }
+        }
+        public class Login_Request
+        {
+            /// <summary>
+            /// Should be TRUE if the user is trying to login with @link email. Otherwise, an username is expected.
+            /// </summary>
+            [Required]
+            public bool using_email { get; set; }
+            [StringLength(20, MinimumLength = 5)]
+            public string username { get; set; }
+            [StringLength(27, MinimumLength = 27)]
+            public string email { get; set; }
+            [Required]
+            [StringLength(20, MinimumLength = 5)]
+            public string password { get; set; }
+            [Required]
+            public string recaptcha_hash { get; set; }
 
-            var result = password_is_valid();
-            if (!result.valid)
-                return result;
-            if (using_email)
+            public (bool valid, string error_str) all_fields_are_valid()
             {
-                result = email_is_valid();
+
+                var result = password_is_valid();
                 if (!result.valid)
                     return result;
-            }
-            else
-            {
-                result = username_is_valid();
+                if (using_email)
+                {
+                    result = email_is_valid();
+                    if (!result.valid)
+                        return result;
+                }
+                else
+                {
+                    result = username_is_valid();
+                    if (!result.valid)
+                        return result;
+                }
+                result = recaptcha_hash_is_valid();
                 if (!result.valid)
                     return result;
+                return (true, null);
             }
-            result = recaptcha_hash_is_valid();
-            if (!result.valid)
-                return result;
-            return (true, null);
-        }
-        private (bool valid, string error_str) username_is_valid()
-        {
-            if (!username.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
-                return (false, "username should contain only letter, digit, underscore (_) and hyphen (-)");
-            return (true, null);
-        }
-        private (bool valid, string error_str) password_is_valid()
-        {
-            if (!username.All(c => char.IsLetterOrDigit(c) || is_char_special(c)))
-                return (false, "password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
-            return (true, null);
-        }
-        private (bool valid, string error_str) email_is_valid()
-        {
-            string domain = email.Substring(10);
-            string sid = email.Substring(0, 10);
-            if (domain != "@link.cuhk.edu.hk")
-                return (false, "only email with domain link.cuhk.edu.hk is allowed");
-            if (!sid.All(c => char.IsDigit(c)))
-                return (false, "invalid email");
-            return (true, null);
-        }
-        private (bool valid, string error_str) recaptcha_hash_is_valid()
-        {
-            //To be done
-            return (true, null);
-        }
-        private static bool is_char_special(char c)
-        {
-            string specials = "~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/";
-            foreach (var s in specials)
+            private (bool valid, string error_str) username_is_valid()
             {
-                if (c == s)
-                    return true;
+                if (!username.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
+                    return (false, "username should contain only letter, digit, underscore (_) and hyphen (-)");
+                return (true, null);
             }
-            return false;
+            private (bool valid, string error_str) password_is_valid()
+            {
+                if (!password.All(c => char.IsLetterOrDigit(c) || is_char_special(c)))
+                    return (false, "password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
+                return (true, null);
+            }
+            private (bool valid, string error_str) email_is_valid()
+            {
+                string domain = email.Substring(10);
+                string sid = email.Substring(0, 10);
+                if (domain != "@link.cuhk.edu.hk")
+                    return (false, "only email with domain link.cuhk.edu.hk is allowed");
+                if (!sid.All(c => char.IsDigit(c)))
+                    return (false, "invalid email");
+                return (true, null);
+            }
+            private (bool valid, string error_str) recaptcha_hash_is_valid()
+            {
+                //To be done
+                return (true, null);
+            }
+            private static bool is_char_special(char c)
+            {
+                string specials = "~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/";
+                foreach (var s in specials)
+                {
+                    if (c == s)
+                        return true;
+                }
+                return false;
+            }
         }
-    }
-    public class Login_Response
-    {
-        /// <summary>
-        /// 0 is success, 1 is fail
-        /// </summary>
-        public int status_code { get; set; }
-        public string display_message { get; set; }
-        /// <summary>
-        /// A hash that serve as a credential for later purposes 
-        /// Should be stored in localstorage / sessionstorage (if the user does not check the "remember me" option)
-        /// </summary>
-        public string auth_token { get; set; }
     }
 }

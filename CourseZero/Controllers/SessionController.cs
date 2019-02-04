@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CourseZero.Filters;
 using CourseZero.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -83,61 +84,62 @@ namespace CourseZero.Controllers
             Response.status_code = 0;
             return Response;
         }
-    }
-    public class Logout_Specific_Session_Request
-    {
-        [Required]
-        [StringLength(128, MinimumLength = 128)]
-        public string auth_token { get; set; }
-        /// <summary>
-        /// <para>the token that the user want to log it out</para>
-        /// <para>should prevent the user logout its own session
-        /// this part is not checked on server side</para>
-        /// </summary>
-        [Required]
-        [StringLength(128, MinimumLength = 128)]
-        public string token_to_be_removed { get; set; }
-    }
-    public class Logout_Specific_Session_Response
-    {
-        /// <summary>
-        /// <para>0 is success, 1, 2 is fail</para>
-        /// <para>1 fail is due to invalid auth token (user has already logged out)</para>
-        /// <para>2 fail is due to given session does not exist or not valid</para>
-        /// </summary>
-        public int status_code { get; set; }
-    }
 
-    public class Get_All_Sessions_Request
-    {
-        [Required]
-        [StringLength(128, MinimumLength = 128)]
-        public string auth_token { get; set; }
-    }
-    public class Get_All_Sessions_Response
-    {
-        /// <summary>
-        /// <para>0 is success, 1 is fail</para>
-        /// <para>fail is due to invalid auth token (user has already logged out)</para>
-        /// </summary>
-        public int status_code { get; set; }
-        /// <summary>
-        /// Return a list of session information. 
-        /// </summary>
-        public List<AuthToken> sessions { get; set; }
-    }
-    public class Logout_Request
-    {
-        [Required]
-        [StringLength(128, MinimumLength = 128)]
-        public string auth_token { get; set; }
-    }
-    public class Logout_Response
-    {
-        /// <summary>
-        /// <para>0 is success, 1 is fail</para>
-        /// <para>fail may due to invalid auth token (user has already logged out)</para>
-        /// </summary>
-        public int status_code { get; set; }
+        public class Logout_Specific_Session_Request
+        {
+            [Required]
+            [StringLength(128, MinimumLength = 128)]
+            public string auth_token { get; set; }
+            /// <summary>
+            /// <para>the token that the user want to log it out</para>
+            /// <para>should prevent the user logout its own session
+            /// this part is not checked on server side</para>
+            /// </summary>
+            [Required]
+            [StringLength(128, MinimumLength = 128)]
+            public string token_to_be_removed { get; set; }
+        }
+        public class Logout_Specific_Session_Response
+        {
+            /// <summary>
+            /// <para>0 is success, 1, 2 is fail</para>
+            /// <para>1 fail is due to invalid auth token (user has already logged out)</para>
+            /// <para>2 fail is due to given session does not exist or not valid</para>
+            /// </summary>
+            public int status_code { get; set; }
+        }
+
+        public class Get_All_Sessions_Request
+        {
+            [Required]
+            [StringLength(128, MinimumLength = 128)]
+            public string auth_token { get; set; }
+        }
+        public class Get_All_Sessions_Response
+        {
+            /// <summary>
+            /// <para>0 is success, 1 is fail</para>
+            /// <para>fail is due to invalid auth token (user has already logged out)</para>
+            /// </summary>
+            public int status_code { get; set; }
+            /// <summary>
+            /// Return a list of session information. 
+            /// </summary>
+            public List<AuthToken> sessions { get; set; }
+        }
+        public class Logout_Request
+        {
+            [Required]
+            [StringLength(128, MinimumLength = 128)]
+            public string auth_token { get; set; }
+        }
+        public class Logout_Response
+        {
+            /// <summary>
+            /// <para>0 is success, 1 is fail</para>
+            /// <para>fail may due to invalid auth token (user has already logged out)</para>
+            /// </summary>
+            public int status_code { get; set; }
+        }
     }
 }
