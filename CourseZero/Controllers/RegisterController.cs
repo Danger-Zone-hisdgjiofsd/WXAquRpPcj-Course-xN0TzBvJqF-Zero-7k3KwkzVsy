@@ -18,7 +18,7 @@ namespace CourseZero.Controllers
     public class RegisterController : Controller
     {
         readonly UserContext userContext;
-        public RegisterController (UserContext userContext)
+        public RegisterController(UserContext userContext)
         {
             this.userContext = userContext;
         }
@@ -54,112 +54,174 @@ namespace CourseZero.Controllers
             user.password_hash = hashing_pw_result.hashed_pw;
             user.password_salt = hashing_pw_result.salt;
             user.email_verified = false;
-            user.email_verifying_hash = Hashing_Tool.Random_String(128);
-            bool verification_mail_sent =  await Email_Sender.Send_Verification_Email(user.email, user.username, HttpUtility.UrlEncode(user.email_verifying_hash));
+            string hash = Hashing_Tool.Random_String(128);
+            bool verification_mail_sent = await Email_Sender.Send_Verification_Email(user.email, user.username, HttpUtility.UrlEncode(hash));
             if (!verification_mail_sent)
             {
                 response.status_code = 1;
                 response.display_message = "an error happpened when sending email, please try again later";
                 return response;
             }
+            user.email_verifying_hash = hash;
+            user.email_verification_issue_datetime = DateTime.Now;
             await userContext.AddAsync(user);
             await userContext.SaveChangesAsync();
-            response.display_message = "an verification email is sent to " + request.email;
+            response.display_message = "an verification email is sent to " + request.email + ", please verify your account within 2 hours";
+            response.status_code = 0;
+            return response;
+        }
+        /// <summary>
+        /// Reissue an verification email
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult<Reissue_Email_Response>> Reissue_Email([FromBody]Reissue_Email_Request request)
+        {
+            var response = new Reissue_Email_Response();
+            User user = await userContext.Get_User_By_Email(request.email);
+            if (user == null)
+            {
+                response.status_code = 1;
+                response.display_message = "account does not exist";
+                return response;
+            }
+            if (user.email_verified)
+            {
+                response.status_code = 1;
+                response.display_message = "this account has already been verified";
+                return response;
+            }
+            if (DateTime.Compare(user.email_verification_issue_datetime.AddHours(12), DateTime.Now) > 0)
+            {
+                response.status_code = 1;
+                response.display_message = "you can only request a verification email every 12 hours";
+                return response;
+            }
+            string hash = Hashing_Tool.Random_String(128);
+            bool verification_mail_sent = await Email_Sender.Send_Verification_Email(user.email, user.username, HttpUtility.UrlEncode(hash));
+            if (!verification_mail_sent)
+            {
+                response.status_code = 1;
+                response.display_message = "an error happpened when sending email, please try again later";
+                return response;
+            }
+            user.email_verifying_hash = hash;
+            user.email_verification_issue_datetime = DateTime.Now;
+            await userContext.SaveChangesAsync();
+            response.display_message = "an verification email is sent to " + request.email + ", please verify your account within 2 hours";
             response.status_code = 0;
             return response;
         }
 
-
         [HttpGet]
         [Route("[action]/{username}/{hash}")]
         public async Task<ActionResult<string>> Verify_Email(string username, string hash)
-        { 
+        {
             hash = HttpUtility.UrlDecode(hash).Replace(' ', '+');
             if (username.Length > 20 || hash.Length != 128)
                 return "This verification link is not valid!";
-            User user = await userContext.Users.FirstOrDefaultAsync(x => x.username == username && !x.email_verified && x.email_verifying_hash == hash);
-            if (user == null)
+            User user = await userContext.Users.FirstOrDefaultAsync(x => x.username == username);
+            if (user == null || user.email_verified || user.email_verifying_hash != hash || DateTime.Compare(user.email_verification_issue_datetime.AddHours(2), DateTime.Now) < 0)
                 return "This verification link is not valid or no longer valid!";
             user.email_verified = true;
             await userContext.SaveChangesAsync();
             return "Email verified!";
         }
-    }
-    public class Register_Request
-    {
-        [Required]
-        [StringLength(20, MinimumLength = 5)]
-        public string username { get; set; }
-        [Required]
-        [StringLength(20, MinimumLength = 5)]
-        public string password { get; set; }
-        [Required]
-        [StringLength(27, MinimumLength = 27)]
-        public string email { get; set; }
-        [Required]
-        public string recaptcha_hash { get; set; }
 
-        public (bool valid, string error_str) all_fields_are_valid()
+        public class Reissue_Email_Request
         {
-            var result = username_is_valid();
-            if (!result.valid)
-                return result;
-            result = password_is_valid();
-            if (!result.valid)
-                return result;
-            result = email_is_valid();
-            if (!result.valid)
-                return result;
-            result = recaptcha_hash_is_valid();
-            if (!result.valid)
-                return result;
-            return (true, null);
+            [Required]
+            [StringLength(27, MinimumLength = 27)]
+            public string email { get; set; }
         }
-        private (bool valid, string error_str) username_is_valid()
+        public class Reissue_Email_Response
         {
-            if (!username.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
-                return (false, "username should contain only letter, digit, underscore (_) and hyphen (-)");
-            return (true, null);
+            /// <summary>
+            ///  0 is success, 1 is fail
+            /// </summary>
+            public int status_code { get; set; }
+            public string display_message { get; set; }
         }
-        private (bool valid, string error_str) password_is_valid()
+        public class Register_Request
         {
-            if (!username.All(c => char.IsLetterOrDigit(c) || is_char_special(c)))
-                return (false, "password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
-            return (true, null);
-        }
-        private (bool valid, string error_str) email_is_valid()
-        {
-            string domain = email.Substring(10);
-            string sid = email.Substring(0, 10);
-            if (domain != "@link.cuhk.edu.hk")
-                return (false, "only email with domain link.cuhk.edu.hk is allowed");
-            if (!sid.All(c => char.IsDigit(c)))
-                return (false, "invalid email");
-            return (true, null);
-        }
-        private (bool valid, string error_str) recaptcha_hash_is_valid()
-        {
-            //To be done
-            return (true, null);
-        }
-        private static bool is_char_special(char c)
-        {
-            string specials = "~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/";
-            foreach (var s in specials)
+            [Required]
+            [StringLength(20, MinimumLength = 5)]
+            public string username { get; set; }
+            [Required]
+            [StringLength(20, MinimumLength = 5)]
+            public string password { get; set; }
+            [Required]
+            [StringLength(27, MinimumLength = 27)]
+            public string email { get; set; }
+            [Required]
+            public string recaptcha_hash { get; set; }
+
+            public (bool valid, string error_str) all_fields_are_valid()
             {
-                if (c == s)
-                    return true;
+                var result = username_is_valid();
+                if (!result.valid)
+                    return result;
+                result = password_is_valid();
+                if (!result.valid)
+                    return result;
+                result = email_is_valid();
+                if (!result.valid)
+                    return result;
+                result = recaptcha_hash_is_valid();
+                if (!result.valid)
+                    return result;
+                return (true, null);
             }
-            return false;
-        }
+            private (bool valid, string error_str) username_is_valid()
+            {
+                if (!username.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
+                    return (false, "username should contain only letter, digit, underscore (_) and hyphen (-)");
+                return (true, null);
+            }
+            private (bool valid, string error_str) password_is_valid()
+            {
+                if (!password.All(c => char.IsLetterOrDigit(c) || is_char_special(c)))
+                    return (false, "password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
+                return (true, null);
+            }
+            private (bool valid, string error_str) email_is_valid()
+            {
+                string domain = email.Substring(10);
+                string sid = email.Substring(0, 10);
+                if (domain != "@link.cuhk.edu.hk")
+                    return (false, "only email with domain link.cuhk.edu.hk is allowed");
+                if (!sid.All(c => char.IsDigit(c)))
+                    return (false, "invalid email");
+                return (true, null);
+            }
+            private (bool valid, string error_str) recaptcha_hash_is_valid()
+            {
+                //To be done
+                return (true, null);
+            }
+            private static bool is_char_special(char c)
+            {
+                string specials = "~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/";
+                foreach (var s in specials)
+                {
+                    if (c == s)
+                        return true;
+                }
+                return false;
+            }
 
-    }
-    public class Register_Response
-    {
-        /// <summary>
-        /// 0 is success, 1 is fail
-        /// </summary>
-        public int status_code { get; set; }
-        public string display_message { get; set; }
+        }
+        public class Register_Response
+        {
+            /// <summary>
+            /// 0 is success, 1 is fail
+            /// </summary>
+            public int status_code { get; set; }
+            public string display_message { get; set; }
+        }
     }
 }
