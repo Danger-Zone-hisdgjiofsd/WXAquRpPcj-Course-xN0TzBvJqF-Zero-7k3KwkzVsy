@@ -33,7 +33,7 @@ namespace CourseZero
                 info.Title = "API Reference";
                 info.Version = DateTime.Now.ToString();
                 x.SwaggerDoc("v1", info);
-                x.IncludeXmlComments(AppDomain.CurrentDomain.BaseDirectory + "Doc.xml");
+                x.IncludeXmlComments(AppDomain.CurrentDomain.BaseDirectory + "CourseZero.xml");
             });
             services.AddMvc(x =>
             {
