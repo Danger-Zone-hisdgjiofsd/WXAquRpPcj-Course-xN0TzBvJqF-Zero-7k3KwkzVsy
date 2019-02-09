@@ -1,0 +1,130 @@
+.topnav {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    background-color: #393434;
+    padding: 20px 10px;
+}
+
+.topnav a{
+    color: #fff9f9;
+    font-size: 20px;
+    font-family: Roboto, sans-serif;
+}
+
+.topnav input[type=text]{
+    padding: 6px;
+    width: 400px;
+    border: none;
+    margin-left: 300px;
+    font-size: 17px;
+    background-color: #a79f9f;
+}
+
+.topnav select{
+    position: relative;
+    padding: 5px;
+    width: 100px;
+    color: #fff9f9; 
+    font-size: 17px;
+    background-color: #a79f9f;
+}
+
+.topnav button{
+    position: relative;
+    padding: 8px;
+    width: 5%;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+}
+
+
+.sidebar{
+    height: 100%;
+    position: fixed;
+    z-index: -1;
+    top: 70px;
+    width: 250px;
+    left: 0;
+    background-color: #201C1C;
+}
+
+.sidebar li{
+    list-style-type: none;
+    margin-left: -20px;
+}
+
+.sidebar a {
+  padding: 6px 0px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  font-family: Roboto, sans-serif;
+  color: #fff9f9;
+  display: block;
+}
+
+#sidemenuhome a::before{
+    content: "";
+    display: block;
+    background: url("/icons/sharp_home_white_18dp.png") no-repeat;
+    width: 36px;
+    height: 36px;
+    float: left;
+    margin: -6px 6px 0 0;
+}
+
+#sidemenutrending a::before{
+    content: "";
+    display: block;
+    background: url("/icons/sharp_whatshot_white_18dp.png") no-repeat;
+    width: 36px;
+    height: 36px;
+    float: left;
+    margin: -6px 6px 0 0;
+}
+
+#sidemenusub a::before{
+    content: "";
+    display: block;
+    background: url("/icons/baseline_subscriptions_white_18dp.png") no-repeat;
+    width: 36px;
+    height: 36px;
+    float: left;
+    margin: -6px 6px 0 0;
+}
+
+#sidemenuhistory a::before{
+    content: "";
+    display: block;
+    background: url("/icons/baseline_history_white_18dp.png") no-repeat;
+    width: 36px;
+    height: 36px;
+    float: left;
+    margin: -6px 6px 0 0;
+}
+
+#sidemenuwatchlater a::before{
+    content: "";
+    display: block;
+    background: url("/icons/baseline_watch_later_white_18dp.png") no-repeat;
+    width: 36px;
+    height: 36px;
+    float: left;
+    margin: -6px 6px 0 0;
+}
+
+#sidemenufav a::before{
+    content: "";
+    display: block;
+    background: url("/icons/baseline_favorite_white_18dp.png") no-repeat;
+    width: 36px;
+    height: 36px;
+    float: left;
+    margin: -6px 6px 0 0;
+}
