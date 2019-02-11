@@ -32,27 +32,35 @@
 <body>
 
 
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <a class="navbar-brand" href="#home">CourseZero</a>
-    <form class="form-inline mx-auto w-50" >
-        <input class="form-control mr-sm-1 col-6" type="search" placeholder="Search.." aria-label="Search"></input>
-        <select class="form-control mr-sm-1 custom-select" style="color:gray">
-            <option value="0" selected="selected">Default</option>
-            <option value="1">Video</option>
-            <option value="2">PDF File</option>
-            <option value="3">...</option>
-        </select>
-        <button class="btn btn-info my-2 my-sm-0" type="submit">
-            <i class="fas fa-search"></i>
-        </button>
-    </form>
-    <a href="#login">Login</a>
-</nav>
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <a class="navbar-brand" href="#home"><img style='height: 75%; width: 75%; object-fit: contain' src="logo.png" /></a>
+        <form class="form-inline mx-auto w-50">
+            <input class="form-control mr-sm-1 col-6" type="search" placeholder="Search.." aria-label="Search"></input>
+            <select class="form-control mr-sm-1 custom-select" style="color:gray">
+                <option value="0" selected="selected">Default</option>
+                <option value="1">Video</option>
+                <option value="2">PDF File</option>
+                <option value="3">...</option>
+            </select>
+            <button class="btn btn-info my-2 my-sm-0" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+        <div class="btn-toolbar">
+
+            <button class="btn btn-info my-2 my-sm-0 mr-2">
+                <i class="fas fa-upload"></i>
+            </button>
+
+            <button id="login" type="button" class="btn btn-info mr-2" >Login</button>
+           
+        </div>
+    </nav>
 
 <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <div class="container-fluid row mx-auto">
-        <button class="btn col" href="#home"><i class="fas fa-home"></i>Home</button>
-        <button class="btn col" href="#trending"><i class="fab fa-hotjar"></i>Trendnig</button>
+    <div id="navbtn" class="container-fluid row mx-auto">
+        <button class="btn col" href="#home"  ><i class="fas fa-home"></i>Home</button>
+        <button class="btn col" href="#trending"><i class="fab fa-hotjar"></i>Trending</button>
         <button class="btn col" href="#subscription"><i class="fas fa-bookmark"></i>Subscription</button>
         <button class="btn col" href="#history"><i class="fas fa-history"></i>History</button>
         <button class="btn col" href="#watch_later"><i class="fas fa-clock"></i>Watch Later</button>
@@ -64,6 +72,11 @@
 container
 </div>
 
+<script>
+    $("#login").click(function () {
+        alert("Handler for .click() called.");
+    });
+</script>
 
 </body>
 </html>
