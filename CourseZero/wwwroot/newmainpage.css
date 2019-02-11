@@ -1,0 +1,10 @@
+.fill {
+    background: lightgray;
+    top: 16%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    width: auto;
+    height: auto;
+}
