@@ -9,6 +9,11 @@
     height: auto;
 }
 
-
+.logo {
+    width: 165px;
+    height: auto;
+    float: left;
+    padding-left: 10px;
+}
 
 
