@@ -1,0 +1,110 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="testlogin.css">
+
+</head>
+<body>
+    <div id="id01" class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Sign In</h5>
+                        <a href="" onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal"> &times;</a>
+                        <form class="form-signin">
+                            <div class="form-label-group">
+                                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                                <label for="inputEmail">Email address</label>
+                            </div>
+
+                            <div class="form-label-group">
+                                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                                <label for="inputPassword">Password</label>
+                            </div>
+
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                <label class="custom-control-label" for="customCheck1">Remember password</label>
+                                <div class="text-right">
+                                    <a href="#signup">Forgot Password?</a>
+                                </div>
+
+                            </div>
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                            <hr class="my-4">
+                            <div class="text-center">
+                                <span>New to Course Zero? </span>
+                                <a href="#test" onclick="document.getElementById('id01').style.display='none'" id="signup">Sign Up</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="id02" class="modal">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                    <div class="card card-signin my-5">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Sign Up</h5>
+                            <a href="" onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal"> &times;</a>
+                            <form class="form-signup">
+                                <div class="form-label-group">
+                                    <input type="email" id="inputEmail" class="form-control" placeholder="Email Address" required autofocus>
+                                    <label for="inputEmail">Email Address *</label>
+                                </div>
+
+                                <div class="form-label-group">
+                                    <input type="text" id="inputUserName" class="form-control" placeholder="User Name" required>
+                                    <label for="inputPassword">User Name *</label>
+                                </div>
+                                <div class="form-label-group ">
+                                    <select required id="major" class="form-control form-control-lg " style="font-size:17px">
+                                        <option value="">Your Major * </option>
+                                        <option value="1">CSCI</option>
+                                        <option value="2">CENG</option>
+                                        <option value="3">IERG</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-label-group">
+                                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                                    <label for="inputPassword">Password *</label>
+                                </div>
+
+                                <div class="form-label-group">
+                                    <input type="password" id="inputConPassword" class="form-control" placeholder="Confirm Password" required>
+                                    <label for="inputPassword">Confirm Password *</label>
+                                </div>
+
+                                <hr class="my-4">
+
+                                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign Up</button>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        By creating an account you agree to our <a href="PP">Privacy Policy</a>, <a href="TOU">Terms of Use</a> and <a href="=HC">Honor Code</a>.
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var test = document.getElementById('id02');
+        $("#signup").click(function () {
+            test.style.display = "block";
+        });
+    </script>
+</body>
+</html>
