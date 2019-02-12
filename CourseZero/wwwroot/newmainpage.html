@@ -4,27 +4,27 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
     <link rel="stylesheet" href="newmainpage.css">
 
     <script>
-    $(document).ready(function() {
-        $("#frame").load("./test_pagetoload.html");
-    });
-    $(document).on("click", "#testing_btn", function(){ 
-        var str = "Message From: test_layout.html\r\nWe can detect the loaded button is being clicked, although it is from external page.\r\n\r\n";
-        str += "However, you may notice that the detecting method is different. This is because from the view of layout.html, the button is a dynamic-created element, that is ";
-        str += "it is not hard-coded on the html file. To detect an event on it, we have to use a different approach.\r\n\r\n";
-        str += "$(document).on('click', ... is binded to the document body of this page, which always exist when the script is loaded.\r\n";
-        str += "$(\"#testing_btn\").click ... is binded to element with id testing_btn, but it does not exist when the script is loaded. That's why it failed.\r\n";
-        alert(str);
-        $("#status_txt").text($("#testing_textbox").val());
-        $("#status_txt").append("<br>This is how we access the element from other page.");
-        $("#status_txt").append("<br>It works because when we use the selector $(\"#status_txt\"), the selected element exists in the body.");
-    });
+        $(document).ready(function () {
+            $("#frame").load("./test_pagetoload.html");
+        });
+        $(document).on("click", "#testing_btn", function () {
+            var str = "Message From: test_layout.html\r\nWe can detect the loaded button is being clicked, although it is from external page.\r\n\r\n";
+            str += "However, you may notice that the detecting method is different. This is because from the view of layout.html, the button is a dynamic-created element, that is ";
+            str += "it is not hard-coded on the html file. To detect an event on it, we have to use a different approach.\r\n\r\n";
+            str += "$(document).on('click', ... is binded to the document body of this page, which always exist when the script is loaded.\r\n";
+            str += "$(\"#testing_btn\").click ... is binded to element with id testing_btn, but it does not exist when the script is loaded. That's why it failed.\r\n";
+            alert(str);
+            $("#status_txt").text($("#testing_textbox").val());
+            $("#status_txt").append("<br>This is how we access the element from other page.");
+            $("#status_txt").append("<br>It works because when we use the selector $(\"#status_txt\"), the selected element exists in the body.");
+        });
     </script>
 
 </head>
@@ -33,7 +33,10 @@
 
 
     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-        <a class="navbar-brand" href="#home"><img style='height: 75%; width: 75%; object-fit: contain' src="logo.png" /></a>
+        <a class="navbar-brand" href="#home"></a>
+        <div class="logo">
+            <img style='height: 100%; width: 100%; ' src="logo.png" />
+        </div>
         <form class="form-inline mx-auto w-50">
             <input class="form-control mr-sm-1 col-6" type="search" placeholder="Search.." aria-label="Search"></input>
             <select class="form-control mr-sm-1 custom-select" style="color:gray">
@@ -48,35 +51,40 @@
         </form>
         <div class="btn-toolbar">
 
-            <button class="btn btn-info my-2 my-sm-0 mr-2">
+            <button id="uploadbtn" class="btn btn-info my-2 my-sm-0 mr-2">
                 <i class="fas fa-upload"></i>
             </button>
 
-            <button id="login" type="button" class="btn btn-info mr-2" >Login</button>
-           
+            <button id="login" type="button" class="btn btn-info mr-2">Login</button>
         </div>
     </nav>
 
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <div id="navbtn" class="container-fluid row mx-auto">
-        <button class="btn col" href="#home"  ><i class="fas fa-home"></i>Home</button>
-        <button class="btn col" href="#trending"><i class="fab fa-hotjar"></i>Trending</button>
-        <button class="btn col" href="#subscription"><i class="fas fa-bookmark"></i>Subscription</button>
-        <button class="btn col" href="#history"><i class="fas fa-history"></i>History</button>
-        <button class="btn col" href="#watch_later"><i class="fas fa-clock"></i>Watch Later</button>
-        <button class="btn col" href="#favorite"><i class="fas fa-heart"></i>Favorite</button>
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <div id="navbtn" class="container-fluid row mx-auto">
+            <button class="btn col w3-btn " href="#home"><i class="fas fa-home"></i>Home</button>
+            <button class="btn col w3-btn" href="#trending"><i class="fab fa-hotjar"></i>Trending</button>
+            <button class="btn col w3-btn" href="#subscription"><i class="fas fa-bookmark"></i>Subscription</button>
+            <button class="btn col w3-btn" href="#history"><i class="fas fa-history"></i>History</button>
+            <button class="btn col w3-btn" href="#watch_later"><i class="fas fa-clock"></i>Watch Later</button>
+            <button class="btn col w3-btn" href="#favorite"><i class="fas fa-heart"></i>Favorite</button>
+        </div>
+
+
+    </nav>
+
+    <div id="frame" class="container-fluid ">
+        container
     </div>
-</nav>
 
-<div id="frame" class="container-fluid fill">
-container
-</div>
+    <script>
+ 
+        $("#login").click(function () {
+            $("#frame").load("./testlogin.html");
+        });
 
-<script>
-    $("#login").click(function () {
-        alert("Handler for .click() called.");
-    });
-</script>
+
+
+    </script>
 
 </body>
 </html>
