@@ -1,12 +1,12 @@
+#phone-search-btn{
+    display: none;
+}
+
 .fill {
     background: lightgray;
-    top: 20%;
-    left: 0;
-    right: 0;
-    bottom: 0;
     position: absolute;
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%; 
 }
 
 .logo {
@@ -14,6 +14,31 @@
     height: auto;
     float: left;
     padding-left: 10px;
+}
+
+.btn{
+    color: dark;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #4e5e69;
+    color: white;
+}
+
+@media only screen and (max-width: 600px) {
+    .btn-group span{
+        display:none;
+    }
+    
+    .form-inline{
+        display:none;
+    }
+    
+    #phone-search-btn{
+        display: inline;
+    }
 }
 
 
