@@ -15,6 +15,7 @@ body {
 .modal {
     display:none;
 }
+
 .close {
     position: absolute;
     right: 25px;

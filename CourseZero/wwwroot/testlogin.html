@@ -7,16 +7,16 @@
 
 </head>
 <body>
-    <div id="id01" class="container">
+    <div id="Login Form" class="container">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign In</h5>
-                        <a href="" onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal"> &times;</a>
+                        <a onclick="document.getElementById('Login Form').style.display='none'" class="close" title="Close Modal"> &times;</a>
                         <form class="form-signin">
                             <div class="form-label-group">
-                                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
                                 <label for="inputEmail">Email address</label>
                             </div>
 
@@ -37,7 +37,7 @@
                             <hr class="my-4">
                             <div class="text-center">
                                 <span>New to Course Zero? </span>
-                                <a href="#test" onclick="document.getElementById('id01').style.display='none'" id="signup">Sign Up</a>
+                                <a href="#test" onclick="document.getElementById('Login Form').style.display='none'" id="signup">Sign Up</a>
                             </div>
                         </form>
                     </div>
@@ -46,46 +46,39 @@
         </div>
     </div>
 
-    <div id="id02" class="modal">
-        <div class="container">
+        <div class="container" id="Signup Form">
             <div class="row">
                 <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div class="card card-signin my-5">
                         <div class="card-body">
                             <h5 class="card-title text-center">Sign Up</h5>
-                            <a href="" onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal"> &times;</a>
+                            <a onclick="document.getElementById('Signup Form').style.display='none'" class="close" title="Close Modal"> &times;</a>
                             <form class="form-signup">
                                 <div class="form-label-group">
-                                    <input type="email" id="inputEmail" class="form-control" placeholder="Email Address" required autofocus>
-                                    <label for="inputEmail">Email Address *</label>
+                                    <input type="email" id="inputEmail2" class="form-control" placeholder="Email Address" required>
+                                    <label for="inputEmail2">Email Address *</label>
                                 </div>
 
                                 <div class="form-label-group">
-                                    <input type="text" id="inputUserName" class="form-control" placeholder="User Name" required>
-                                    <label for="inputPassword">User Name *</label>
+                                    <input type="text" id="inputUserName2" class="form-control" placeholder="User Name" required>
+                                    <label for="inputUserName2">User Name *</label>
                                 </div>
-                                <div class="form-label-group ">
-                                    <select required id="major" class="form-control form-control-lg " style="font-size:17px">
-                                        <option value="">Your Major * </option>
-                                        <option value="1">CSCI</option>
-                                        <option value="2">CENG</option>
-                                        <option value="3">IERG</option>
-                                    </select>
-                                </div>
+                                
 
                                 <div class="form-label-group">
-                                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                                    <label for="inputPassword">Password *</label>
+                                    <input type="password" id="inputPassword2" class="form-control" placeholder="Password" required>
+                                    <label for="inputPassword2">Password *</label>
                                 </div>
 
+
                                 <div class="form-label-group">
-                                    <input type="password" id="inputConPassword" class="form-control" placeholder="Confirm Password" required>
-                                    <label for="inputPassword">Confirm Password *</label>
+                                    <input type="password" id="ConfirmPassword" class="form-control" placeholder="Confirm Password" required>
+                                    <label for="ConfirmPassworf">Confirm Password *</label>
                                 </div>
 
                                 <hr class="my-4">
 
-                                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign Up</button>
+                                <button id="signupbtn" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign Up</button>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                                     <label class="form-check-label" for="defaultCheck1">
@@ -98,13 +91,35 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <script>
+        $.postJSON = function (url, data, callback) {
+            return jQuery.ajax({
+                'type': 'POST',
+                'url': url,
+                'contentType': 'application/json',
+                'data': (data),
+                'dataType': 'json',
+                'success': callback
+            });
+        };
+        $("#signupbtn").click(function () {
+            var obj = {
+                "username": "string",
+                "password": "string",
+                "email": "string",
+                "recaptcha_hash": "string"
+            };
+            $.postJSON("/api/Register", JSON.stringify(obj),
+                function () {
+                    alert("Data Loaded: ");
+                });
+        });
         var test = document.getElementById('id02');
         $("#signup").click(function () {
             test.style.display = "block";
         });
+       
     </script>
 </body>
 </html>
