@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <Folder Include="References\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
   <ItemGroup>
