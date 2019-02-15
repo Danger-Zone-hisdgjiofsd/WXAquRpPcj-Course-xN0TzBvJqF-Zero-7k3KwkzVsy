@@ -7,17 +7,18 @@
 
 </head>
 <body>
-    <div id="Login Form" class="container">
+
+    <div id="Login_Form" class="container">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign In</h5>
-                        <a onclick="document.getElementById('Login Form').style.display='none'" class="close" title="Close Modal"> &times;</a>
+                        <a href="/newmainpage.html" class="close" title="Close"> &times;</a>
                         <form class="form-signin">
                             <div class="form-label-group">
-                                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
-                                <label for="inputEmail">Email address</label>
+                                <input type="text" id="account" class="form-control" placeholder="Email address" required>
+                                <label for="account">Username or Email address</label>
                             </div>
 
                             <div class="form-label-group">
@@ -29,15 +30,15 @@
                                 <input type="checkbox" class="custom-control-input" id="customCheck1">
                                 <label class="custom-control-label" for="customCheck1">Remember password</label>
                                 <div class="text-right">
-                                    <a href="#signup">Forgot Password?</a>
+                                    <a href="javascript: " onclick="javascript: show_ForgotPW()" id="forgotPW">Forgot Password?</a>
                                 </div>
 
                             </div>
-                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                            <button class="btn btn-lg btn-primary btn-block " type="button" id="Signin_btn">Sign in</button>
                             <hr class="my-4">
                             <div class="text-center">
                                 <span>New to Course Zero? </span>
-                                <a href="#test" onclick="document.getElementById('Login Form').style.display='none'" id="signup">Sign Up</a>
+                                <a href="javascript: " onclick="javascript: show_SignUp()" id="signup">Sign Up</a>
                             </div>
                         </form>
                     </div>
@@ -46,80 +47,246 @@
         </div>
     </div>
 
-        <div class="container" id="Signup Form">
-            <div class="row">
-                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                    <div class="card card-signin my-5">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Sign Up</h5>
-                            <a onclick="document.getElementById('Signup Form').style.display='none'" class="close" title="Close Modal"> &times;</a>
-                            <form class="form-signup">
-                                <div class="form-label-group">
-                                    <input type="email" id="inputEmail2" class="form-control" placeholder="Email Address" required>
-                                    <label for="inputEmail2">Email Address *</label>
-                                </div>
+    <div class="container" id="Signup_Form">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Sign Up</h5>
+                        <a href="/newmainpage.html" class="close" title="Close"> &times;</a>
+                        <form class="form-signin">
+                            <div class="form-label-group">
+                                <input type="email" id="Register_Mail" class="form-control" placeholder="Email Address" required>
+                                <label for="Register_Mail">Email Address *</label>
+                                <small id="emailHelpBlock" class="form-text text-muted">
+                                    You must use @link.cuhk.edu.hk email to register.
+                                </small>
+                            </div>
 
-                                <div class="form-label-group">
-                                    <input type="text" id="inputUserName2" class="form-control" placeholder="User Name" required>
-                                    <label for="inputUserName2">User Name *</label>
-                                </div>
-                                
-
-                                <div class="form-label-group">
-                                    <input type="password" id="inputPassword2" class="form-control" placeholder="Password" required>
-                                    <label for="inputPassword2">Password *</label>
-                                </div>
+                            <div class="form-label-group">
+                                <input type="text" id="Register_UserName" class="form-control" placeholder="User Name" required>
+                                <label for="Register_UserName">User Name *</label>
+                                <small id="nameHelpBlock" class="form-text text-muted">
+                                    Username must be between 5 and 20 characters.
+                                </small>
+                            </div>
 
 
-                                <div class="form-label-group">
-                                    <input type="password" id="ConfirmPassword" class="form-control" placeholder="Confirm Password" required>
-                                    <label for="ConfirmPassworf">Confirm Password *</label>
-                                </div>
+                            <div class="form-label-group">
+                                <input type="password" id="Register_PW" class="form-control" placeholder="Password" required>
+                                <label for="Register_PW">Password *</label>
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    Password must be between 5 and 20 characters.
+                                </small>
 
-                                <hr class="my-4">
+                            </div>
 
-                                <button id="signupbtn" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign Up</button>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        By creating an account you agree to our <a href="PP">Privacy Policy</a>, <a href="TOU">Terms of Use</a> and <a href="=HC">Honor Code</a>.
-                                    </label>
-                                </div>
-                            </form>
-                        </div>
+
+                            <div class="form-label-group">
+                                <input type="password" id="Register_ConfirmPW" class="form-control" placeholder="Confirm Password" required>
+                                <label for="Register_ConfirmPW">Confirm Password *</label>
+                            </div>
+                            <small id="confirmHelpBlock" class="form-text text-muted">
+                            </small>
+
+                            <hr class="my-4">
+
+                            <button id="signupbtn" class="btn btn-lg btn-primary btn-block " type="button">Sign Up</button>
+
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" class="custom-control-input" id="checkTick" required>
+                                <label class="custom-control-label" for="checkTick">
+                                    By creating an account you agree to our <a href="/policy.html"
+                                                                               onclick="window.open(this.href,'targetWindow',
+                                     'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=600');return false;">Privacy Policy</a> and <a href="/term_of_use.html"
+                                                                                                                                                                               onclick="window.open(this.href,'targetWindow',
+                                     'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=600');return false;">Terms of Use</a>.
+                                </label>
+
+                            </div>
+
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="ForgotPW_Form" class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Forgot your Password?</h5>
+                        <a href="/newmainpage.html" class="close" title="Close"> &times;</a>
+                        <form class="form-signin">
+                            <div class="form-label-group">
+                                <input type="email" id="ForgotPW_email" class="form-control" placeholder="Email address" required>
+                                <label for="ForgotPW_email">Type you Email address</label>
+                            </div>
+
+                            <button class="btn btn-lg btn-primary btn-block " type="button" id="ForgotPW_btn">Reset Password</button>
+                            <hr class="my-4">
+                                
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function changeValid_color(input,check) {
+            if (check == 1) {
+                input.classList.add('text-success');
+                input.classList.remove('text-muted');
+            }
+            else input.classList.remove('text-success');
+        }
+
+        function show_SignUp() {
+            document.getElementById('Login_Form').style.display = 'none';
+            document.getElementById('Signup_Form').style.display = 'block';
+        }
+        function show_ForgotPW() {
+            document.getElementById('Login_Form').style.display = 'none';
+            document.getElementById('ForgotPW_Form').style.display = 'block';
+        }
+       
+
+    </script>
 
     <script>
-        $.postJSON = function (url, data, callback) {
+        $.postJSON = function (url, data) {
             return jQuery.ajax({
                 'type': 'POST',
                 'url': url,
                 'contentType': 'application/json',
                 'data': (data),
                 'dataType': 'json',
-                'success': callback
-            });
+                'success': function () {
+                    var obj = arguments[0];
+                    console.log(obj['display_message']);
+                    alert(obj['display_message']);
+                },
+                'error': function () {
+                    var obj = arguments[0].responseText;
+                    console.log(arguments[0]);
+                    alert(obj);
+
+                }}
+
+                );
         };
+       //signin part
+        $("#Signin_btn").click(function () {
+            var msg_to_send = {
+                "using_email": false,
+                "username": "",
+                "email": "",
+                "password": null,
+                "recaptcha_hash": "a"
+
+            }
+            temp = $("#account").val();
+            if (temp.indexOf("@") !== -1) {
+                msg_to_send.using_email = true;
+                msg_to_send.email = $("#account").val();
+                msg_to_send.username = "11550932"
+            }
+            else {
+                msg_to_send.username = $("#account").val();
+                msg_to_send.email = "1155090000@link.cuhk.edu.hk"
+            }
+            msg_to_send.password = $("#inputPassword").val();
+
+
+            $.postJSON("/api/Login", JSON.stringify(msg_to_send));
+
+        });
+
+        //register part
+        var msg_to_send = {
+            "username": null,
+            "password": null,
+            "email": null,
+            "recaptcha_hash": "string"
+        };
+
+        var email_block = document.getElementById("emailHelpBlock");
+        var username_block = document.getElementById("nameHelpBlock");
+        var password_block = document.getElementById("passwordHelpBlock");
+        var confirm_block = document.getElementById("confirmHelpBlock");
+
+        $("#Register_Mail").on('keyup', function () {
+            var temp = $("#Register_Mail").val();
+            msg_to_send.email = temp;
+            if (temp.length == 27 && temp.indexOf("@link.cuhk.edu.hk") !== -1 && temp.indexOf(" ") == -1) {
+                email_block.innerHTML = "You email is valid.";
+                
+                changeValid_color(email_block, 1);
+            }
+            else {
+                email_block.innerHTML = "You must use @link.cuhk.edu.hk email to register.";
+                changeValid_color(email_block, 0);
+            }
+        }
+        )
+
+        $("#Register_UserName").on('keyup', function () {
+            var temp = $("#Register_UserName").val();
+            msg_to_send.username = temp;
+            if (temp.length >= 5 && temp.length <= 20 && temp.indexOf(" ") == -1) {
+                username_block.innerHTML = "You username is valid.";
+               
+                changeValid_color(username_block, 1);
+            }
+            else {
+                username_block.innerHTML = "Username must be between 5 and 20 characters.";
+                changeValid_color(username_block, 0);
+            }
+
+        })
+
+        $("#Register_PW").on('keyup', function () {
+            var temp = $("#Register_PW").val();
+            if (temp.length >= 5 && temp.length <= 20 && temp.indexOf(" ") == -1) {
+                password_block.innerHTML = "You password is valid.";
+                changeValid_color(password_block, 1);
+            }
+            else {
+                password_block.innerHTML = "Password must be between 5 and 20 characters.";
+                changeValid_color(password_block, 0);
+            }
+        })
+
+        $("#Register_ConfirmPW").on('keyup', function () {
+            var temp = $("#Register_PW").val(), temp2 = $("#Register_ConfirmPW").val();
+            if (temp.localeCompare(temp2) == 0) {
+                msg_to_send.password = temp;
+                confirm_block.innerHTML = "Two passwords are  matched.";
+                changeValid_color(confirm_block, 1);
+            }
+            else {
+                msg_to_send.password = temp;
+                confirm_block.innerHTML = "Two passwords are not matched.";
+                changeValid_color(confirm_block, 0);
+            }
+        })
+
         $("#signupbtn").click(function () {
-            var obj = {
-                "username": "string",
-                "password": "string",
-                "email": "string",
-                "recaptcha_hash": "string"
-            };
-            $.postJSON("/api/Register", JSON.stringify(obj),
-                function () {
-                    alert("Data Loaded: ");
-                });
+
+            $.postJSON("/api/Register", JSON.stringify(msg_to_send));
         });
-        var test = document.getElementById('id02');
-        $("#signup").click(function () {
-            test.style.display = "block";
+
+        $("#ForgotPW_btn").click(function () {
+            var msg_to_send = {
+                "email": $("#ForgotPW_email").val(),
+            }
+            $.postJSON("/api/ForgotPassword/Request_Change", JSON.stringify(msg_to_send));
         });
-       
+        
     </script>
+
 </body>
 </html>
