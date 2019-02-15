@@ -23,6 +23,9 @@ namespace CourseZero
             email_Sender = new Email_Sender();
             //Setting up device detector cache
             RequestSource_Tool.deviceDetector.SetCache(new DictionaryCache());
+            //Creating Upload Queue Folder
+            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/UploadsQueue/"))
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "/UploadsQueue/");
             Console.WriteLine("Start");
             var host = CreateWebHostBuilder(args).Build();
             Console.WriteLine("Run webhost");
