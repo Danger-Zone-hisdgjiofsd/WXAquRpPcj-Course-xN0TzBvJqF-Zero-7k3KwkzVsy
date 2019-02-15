@@ -20,6 +20,7 @@ namespace CourseZero.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+        public string File_Name { get; set; }
         public string File_typename { get; set; }
         public int Uploader_UserID { get; set; }
         public DateTime Upload_Time { get; set; }

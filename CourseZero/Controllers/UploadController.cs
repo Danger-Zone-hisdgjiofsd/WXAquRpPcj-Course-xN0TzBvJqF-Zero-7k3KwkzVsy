@@ -68,6 +68,7 @@ namespace CourseZero.Controllers
                     uploadHist.Uploader_UserID = userID;
                     uploadHist.Upload_Time = DateTime.Now;
                     uploadHist.Processed = false;
+                    uploadHist.File_Name = file_name;
                     uploadHist.File_typename = type.Substring(1);
                     await uploadHistContext.AddAsync(uploadHist);
                     await uploadHistContext.SaveChangesAsync();
