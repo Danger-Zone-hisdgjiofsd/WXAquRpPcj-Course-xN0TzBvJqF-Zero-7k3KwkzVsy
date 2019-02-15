@@ -6,15 +6,22 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile></DocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
+    <NoWarn>1701;1702;1591;</NoWarn>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\AuthToken\20190215154638_Update8.cs" />
+    <Compile Remove="Migrations\AuthToken\20190215154638_Update8.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
     <PackageReference Include="Z.Linq.Async" Version="1.0.3" />
