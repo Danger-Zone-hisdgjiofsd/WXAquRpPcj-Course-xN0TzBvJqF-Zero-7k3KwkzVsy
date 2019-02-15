@@ -62,16 +62,22 @@
                 <button id="phone-search-btn" data-toggle="dropdown" class="btn btn-info my-2 my-sm-0 mr-2 dropdown-toggle" type="button"aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-search"></i>
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
                     <form class="form">
-                        <input class="form-control mr-sm-1 col-6" type="search" placeholder="Search.." aria-label="Search"></input>
-                        <select class="form-control mr-sm-1 custom-select" style="color:gray">
-                            <option value="0" selected="selected">Default</option>
-                            <option value="1">Video</option>
-                            <option value="2">PDF File</option>
-                            <option value="3">...</option>
-                        </select>
-                        <button class="btn btn-info my-2 my-sm-0" type="submit">
+                        <div class="form-group">
+                            <label for="mobliedropdownformSearch">Search</label>
+                            <input class="form-control" type="search" placeholder="Search.." aria-label="Search"></input>
+                        </div>
+                        <div class="form-group">
+                            <label for="mobliedropdownformCategory">Category</label>
+                            <select class="form-control custom-select" style="color:gray">
+                                <option value="0" selected="selected">Default</option>
+                                <option value="1">Video</option>
+                                <option value="2">PDF File</option>
+                                <option value="3">...</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-info my-2 my-sm-0 col" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
                     </form>
