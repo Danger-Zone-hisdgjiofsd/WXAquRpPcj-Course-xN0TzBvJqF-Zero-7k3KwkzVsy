@@ -1,4 +1,4 @@
-function changeValidTxt(input, valid, showtxt = "") 
+function Form_Login_changeValidTxt(input, valid, showtxt = "") 
 {
 	if (input == null)
 		return;
@@ -10,70 +10,70 @@ function changeValidTxt(input, valid, showtxt = "")
 	}
 	else input.classList.remove('text-success');
 }
-function show_Login() {
+function Form_Login_show_Login() {
 	document.getElementById('Form_Login_Login_Form').style.display = 'block';
 	document.getElementById('Form_Login_Signup_Form').style.display = 'none';
 	document.getElementById('Form_Login_ForgotPW_Form').style.display = 'none';
 }
-function show_SignUp() {
+function Form_Login_show_SignUp() {
 	document.getElementById('Form_Login_Login_Form').style.display = 'none';
 	document.getElementById('Form_Login_Signup_Form').style.display = 'block';
 	document.getElementById('Form_Login_ForgotPW_Form').style.display = 'none';
 }
-function show_ForgotPW() {
+function Form_Login_show_ForgotPW() {
 	document.getElementById('Form_Login_Login_Form').style.display = 'none';
 	document.getElementById('Form_Login_Signup_Form').style.display = 'none';
 	document.getElementById('Form_Login_ForgotPW_Form').style.display = 'block';
 }
-function Valid_Username(username, block)
+function Form_Login_Valid_Username(username, block)
 {
 	if (username.length < 5 || username.length > 20)
 	{
-		changeValidTxt(block, 0, "Username must has length between 5 and 20");
+		Form_Login_changeValidTxt(block, 0, "Username must has length between 5 and 20");
 		return false;
 	}
 	for (var i = 0; i < username.length; i++)
 	{
 		if (!((username[i] >= '0' && username[i] <= '9') || (username[i] >= 'a' && username[i] <= 'z') || (username[i] >= '0' && username[i] <= '9')))
 		{
-			changeValidTxt(block, 0, "Username should contain only letter, digit, underscore (_) and hyphen (-).");
+			Form_Login_changeValidTxt(block, 0, "Username should contain only letter, digit, underscore (_) and hyphen (-).");
 			return false
 		}
 	}
-	changeValidTxt(block, 1);
+	Form_Login_changeValidTxt(block, 1);
 	return true;
 }
-function Valid_Email(email, block)
+function Form_Login_Valid_Email(email, block)
 {
 	var error_msg = "You must use @link.cuhk.edu.hk email to register.";
 	if (email.length != 27)
 	{
-		changeValidTxt(block, 0, error_msg);
+		Form_Login_changeValidTxt(block, 0, error_msg);
 		return false;
 	}
 	var domain = email.substring(10);
 	var sid = email.substring(0, 10);
 	if (domain != "@link.cuhk.edu.hk")
 	{
-		changeValidTxt(block, 0, error_msg);
+		Form_Login_changeValidTxt(block, 0, error_msg);
 		return false;
 	}
 	for (var i = 0; i < sid.length; i ++)
 	{
 		if (sid[i] < '0' || sid[i] > '9')
 		{
-			changeValidTxt(block, 0, error_msg);
+			Form_Login_changeValidTxt(block, 0, error_msg);
 			return false;
 		}
 	}
-	changeValidTxt(block, 1);
+	Form_Login_changeValidTxt(block, 1);
 	return true;
 }
-function Valid_Password(pword, block)
+function Form_Login_Valid_Password(pword, block)
 {
 	if (pword.length < 5 || pword.length > 20)
 	{
-		changeValidTxt(block, 0, "Password must has length between 5 and 20");
+		Form_Login_changeValidTxt(block, 0, "Password must has length between 5 and 20");
 		return false;
 	}
 	var specials = "~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/";
@@ -81,11 +81,11 @@ function Valid_Password(pword, block)
 	{
 		if (!((pword[i] >= '0' && pword[i] <= '9') || (pword[i] >= 'a' && pword[i] <= 'z') || (pword[i] >= '0' && pword[i] <= '9') || specials.includes(pword[i])))
 		{
-			changeValidTxt(block, 0 , "Password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
+			Form_Login_changeValidTxt(block, 0 , "Password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
 			return false;
 		}
 	}
-	changeValidTxt(block, 1);
+	Form_Login_changeValidTxt(block, 1);
 	return true;
 }
 $(document).ready(function () {
@@ -98,7 +98,7 @@ $(document).ready(function () {
             }
             temp = $("#Form_Login_account").val();
             if (temp.indexOf("@") !== -1) {
-				if (!Valid_Email($("#Form_Login_account").val(), null))
+				if (!Form_Login_Valid_Email($("#Form_Login_account").val(), null))
 				{
 					$("#Form_Login_Login_DisplayMsg").css("color", "red");
 					$("#Form_Login_Login_DisplayMsg").html("Invalid Email!");
@@ -108,7 +108,7 @@ $(document).ready(function () {
                 msg_to_send["email"] = $("#Form_Login_account").val();
             }
             else {
-				if (!Valid_Username($("#Form_Login_account").val(), null))
+				if (!Form_Login_Valid_Username($("#Form_Login_account").val(), null))
 				{
 					$("#Form_Login_Login_DisplayMsg").css("color", "red");
 					$("#Form_Login_Login_DisplayMsg").html("Invalid username!");
@@ -116,7 +116,7 @@ $(document).ready(function () {
 				}
                 msg_to_send["username"] = $("#Form_Login_account").val();
             }
-			if (!Valid_Password($("#Form_Login_inputPassword").val(), null))
+			if (!Form_Login_Valid_Password($("#Form_Login_inputPassword").val(), null))
 			{
 				$("#Form_Login_Login_DisplayMsg").css("color", "red");
 				$("#Form_Login_Login_DisplayMsg").html("Invalid password!");
@@ -155,27 +155,27 @@ $(document).ready(function () {
         var confirm_block = document.getElementById("Form_Login_confirmHelpBlock");
 
         $("#Form_Login_Register_Mail").on('keyup', function () {
-				Valid_Email($("#Form_Login_Register_Mail").val(), email_block);
+				Form_Login_Valid_Email($("#Form_Login_Register_Mail").val(), email_block);
 			}
         )
         $("#Form_Login_Register_UserName").on('keyup', function () {
-			Valid_Username($("#Form_Login_Register_UserName").val(), username_block)
+			Form_Login_Valid_Username($("#Form_Login_Register_UserName").val(), username_block)
         })
 
         $("#Form_Login_Register_PW").on('keyup', function () {
-			Valid_Password($("#Form_Login_Register_PW").val(), password_block)
+			Form_Login_Valid_Password($("#Form_Login_Register_PW").val(), password_block)
         })
 
         $("#Register_ConfirmPW").on('keyup', function () {
             var temp = $("#Form_Login_Register_PW").val(), temp2 = $("#Register_ConfirmPW").val();
             if (temp.localeCompare(temp2) == 0)
-                changeValidTxt(confirm_block, 1);
+                Form_Login_changeValidTxt(confirm_block, 1);
             else
-				changeValidTxt(confirm_block, 0, "Password does not match");
+				Form_Login_changeValidTxt(confirm_block, 0, "Password does not match");
         })
 		$("#Form_Login_signupbtn").click(function () {
 			var temp = $("#Form_Login_Register_PW").val(), temp2 = $("#Register_ConfirmPW").val();
-			if (!Valid_Email($("#Form_Login_Register_Mail").val(), email_block) || !Valid_Username($("#Form_Login_Register_UserName").val(), username_block) || !Valid_Password($("#Form_Login_Register_PW").val(), password_block) || temp.localeCompare(temp2) != 0)
+			if (!Form_Login_Valid_Email($("#Form_Login_Register_Mail").val(), email_block) || !Form_Login_Valid_Username($("#Form_Login_Register_UserName").val(), username_block) || !Form_Login_Valid_Password($("#Form_Login_Register_PW").val(), password_block) || temp.localeCompare(temp2) != 0)
 				return;
 			var msg_to_send =
 			{
@@ -208,7 +208,7 @@ $(document).ready(function () {
         });
 
         $("#Form_Login_ForgotPW_btn").click(function () {
-			if (!Valid_Email($("#Form_Login_ForgotPW_email").val()))
+			if (!Form_Login_Valid_Email($("#Form_Login_ForgotPW_email").val()))
 			{
 				$("#Form_Login_ForgotPW_DisplayMsg").css("color", "red");
 				$("#Form_Login_ForgotPW_DisplayMsg").html("Invalid Email");
