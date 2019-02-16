@@ -5,7 +5,8 @@ function Paging_loadMain()
 }
 function Paging_loadLogin()
 {
-	Paging_load("./testlogin.html");
+	if (!g_login)
+		Paging_load("./testlogin.html");
 }
 function Paging_load(path)
 {
