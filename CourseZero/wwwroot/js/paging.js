@@ -1,7 +1,7 @@
 function Paging_loadMain()
 {
 	//To be done
-	Paging_load("./test_pagetoload.html");
+	Paging_load("./profilepagelayout.html");
 }
 function Paging_loadLogin()
 {
