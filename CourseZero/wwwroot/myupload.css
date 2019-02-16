@@ -3,10 +3,10 @@
     max-height: 100%;
 }
 
-.pt-4 {
+.pastupload {
     cursor: pointer;
 }
 
-.pt-4:hover {
+.pastupload:hover {
     background-color: lightskyblue;
 }
