@@ -43,8 +43,13 @@
     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
         <a class="navbar-brand" href="#home"></a>
         <div class="logo">
-            <img style='height: 100%; width: 100%; ' src="logo.png" />
+            <img style='height: 100%; width: 100%; ' src="logo.png" id="refresh" />
         </div>
+        <script>
+            $(document).ready(function() {
+                $("#refresh").wrap('<a href="./newmainpage.html"></a>');
+            });
+        </script>
         <form class="form-inline mx-auto w-50">
             <input class="form-control mr-sm-1 col-6" type="search" placeholder="Search.." aria-label="Search"></input>
             <select class="form-control mr-sm-1 custom-select" style="color:gray">
