@@ -1,7 +1,7 @@
 var g_auth_token = "";
 var g_login = false;
 
-function postJSON (url, data, onsuccss, onfail) 
+function postJSON (url, data, onsuccess, onfail) 
 {
     return jQuery.ajax({
     'type': 'POST',
@@ -9,6 +9,7 @@ function postJSON (url, data, onsuccss, onfail)
     'contentType': 'application/json',
     'data': (data),
     'dataType': 'json',
-    'success': onsuccss,
+    'success': onsuccess,
     'error':  onfail
+	})
 };
