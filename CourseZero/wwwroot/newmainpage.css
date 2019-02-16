@@ -36,7 +36,6 @@ html, body {
 }
 
 .btn{
-    color: dark;
     transition: 0.3s;
     cursor: pointer;
 }
