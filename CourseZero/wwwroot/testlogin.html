@@ -1,10 +1,9 @@
 <html>
 <head>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="testlogin.css">
-
+    <script src="./js/login_page/login_show.js"></script>
+    <script src="./js/post_JSON.js"></script>
+    
 </head>
 <body>
 
@@ -14,13 +13,13 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign In</h5>
-                        <a href="/newmainpage.html" class="close" title="Close"> &times;</a>
+                        <a href="javascript: " onclick="javascript: Paging_loadMain()" class="close" title="Close"> &times;</a>
                         <form class="form-signin">
-                            <div class="form-label-group">
+                            <div class="form-label-group ">
                                 <input type="text" id="account" class="form-control" placeholder="Email address" required>
                                 <label for="account">Username or Email address</label>
                             </div>
-
+                            
                             <div class="form-label-group">
                                 <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                                 <label for="inputPassword">Password</label>
@@ -34,7 +33,7 @@
                                 </div>
 
                             </div>
-                            <button class="btn btn-lg btn-primary btn-block " type="button" id="Signin_btn">Sign in</button>
+                            <button class="btn btn-lg btn-primary btn-block " type="button" id="Signin_btn" disabled="disabled">Sign in</button>
                             <hr class="my-4">
                             <div class="text-center">
                                 <span>New to Course Zero? </span>
@@ -53,10 +52,10 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign Up</h5>
-                        <a href="/newmainpage.html" class="close" title="Close"> &times;</a>
+                        <a href="javascript: " onclick="javascript: Paging_loadMain()" class="close" title="Close"> &times;</a>
                         <form class="form-signin">
                             <div class="form-label-group">
-                                <input type="email" id="Register_Mail" class="form-control" placeholder="Email Address" required>
+                                <input type="email" id="Register_Mail" class="form-control" placeholder="Email Address">
                                 <label for="Register_Mail">Email Address *</label>
                                 <small id="emailHelpBlock" class="form-text text-muted">
                                     You must use @link.cuhk.edu.hk email to register.
@@ -64,7 +63,7 @@
                             </div>
 
                             <div class="form-label-group">
-                                <input type="text" id="Register_UserName" class="form-control" placeholder="User Name" required>
+                                <input type="text" id="Register_UserName" class="form-control" placeholder="User Name">
                                 <label for="Register_UserName">User Name *</label>
                                 <small id="nameHelpBlock" class="form-text text-muted">
                                     Username must be between 5 and 20 characters.
@@ -73,7 +72,7 @@
 
 
                             <div class="form-label-group">
-                                <input type="password" id="Register_PW" class="form-control" placeholder="Password" required>
+                                <input type="password" id="Register_PW" class="form-control" placeholder="Password">
                                 <label for="Register_PW">Password *</label>
                                 <small id="passwordHelpBlock" class="form-text text-muted">
                                     Password must be between 5 and 20 characters.
@@ -83,7 +82,7 @@
 
 
                             <div class="form-label-group">
-                                <input type="password" id="Register_ConfirmPW" class="form-control" placeholder="Confirm Password" required>
+                                <input type="password" id="Register_ConfirmPW" class="form-control" placeholder="Confirm Password">
                                 <label for="Register_ConfirmPW">Confirm Password *</label>
                             </div>
                             <small id="confirmHelpBlock" class="form-text text-muted">
@@ -91,10 +90,10 @@
 
                             <hr class="my-4">
 
-                            <button id="signupbtn" class="btn btn-lg btn-primary btn-block " type="button">Sign Up</button>
+                            <button id="signupbtn" class="btn btn-lg btn-primary btn-block " type="button" disabled="disabled">Sign Up</button>
 
                             <div class="custom-control custom-checkbox mb-3">
-                                <input type="checkbox" class="custom-control-input" id="checkTick" required>
+                                <input type="checkbox" class="custom-control-input" id="checkTick" onclick="checkBoxTicked()">
                                 <label class="custom-control-label" for="checkTick">
                                     By creating an account you agree to our <a href="/policy.html"
                                                                                onclick="window.open(this.href,'targetWindow',
@@ -118,16 +117,16 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Forgot your Password?</h5>
-                        <a href="/newmainpage.html" class="close" title="Close"> &times;</a>
+                        <a href="javascript: " onclick="javascript: Paging_loadMain()" class="close" title="Close"> &times;</a>
                         <form class="form-signin">
                             <div class="form-label-group">
-                                <input type="email" id="ForgotPW_email" class="form-control" placeholder="Email address" required>
+                                <input type="email" id="ForgotPW_email" class="form-control" placeholder="Email address">
                                 <label for="ForgotPW_email">Type you Email address</label>
                             </div>
 
-                            <button class="btn btn-lg btn-primary btn-block " type="button" id="ForgotPW_btn">Reset Password</button>
+                            <button class="btn btn-lg btn-primary btn-block " type="button" id="ForgotPW_btn" disabled="disabled">Reset Password</button>
                             <hr class="my-4">
-                                
+
 
                         </form>
                     </div>
@@ -135,158 +134,10 @@
             </div>
         </div>
     </div>
-    <script>
-        function changeValid_color(input,check) {
-            if (check == 1) {
-                input.classList.add('text-success');
-                input.classList.remove('text-muted');
-            }
-            else input.classList.remove('text-success');
-        }
-
-        function show_SignUp() {
-            document.getElementById('Login_Form').style.display = 'none';
-            document.getElementById('Signup_Form').style.display = 'block';
-        }
-        function show_ForgotPW() {
-            document.getElementById('Login_Form').style.display = 'none';
-            document.getElementById('ForgotPW_Form').style.display = 'block';
-        }
-       
-
-    </script>
-
-    <script>
-        $.postJSON = function (url, data) {
-            return jQuery.ajax({
-                'type': 'POST',
-                'url': url,
-                'contentType': 'application/json',
-                'data': (data),
-                'dataType': 'json',
-                'success': function () {
-                    var obj = arguments[0];
-                    console.log(obj['display_message']);
-                    alert(obj['display_message']);
-                },
-                'error': function () {
-                    var obj = arguments[0].responseText;
-                    console.log(arguments[0]);
-                    alert(obj);
-
-                }}
-
-                );
-        };
-       //signin part
-        $("#Signin_btn").click(function () {
-            var msg_to_send = {
-                "using_email": false,
-                "username": "",
-                "email": "",
-                "password": null,
-                "recaptcha_hash": "a"
-
-            }
-            temp = $("#account").val();
-            if (temp.indexOf("@") !== -1) {
-                msg_to_send.using_email = true;
-                msg_to_send.email = $("#account").val();
-                msg_to_send.username = "11550932"
-            }
-            else {
-                msg_to_send.username = $("#account").val();
-                msg_to_send.email = "1155090000@link.cuhk.edu.hk"
-            }
-            msg_to_send.password = $("#inputPassword").val();
+    <script src="./js//login_page/login_prehandle.js"></script>
 
 
-            $.postJSON("/api/Login", JSON.stringify(msg_to_send));
 
-        });
-
-        //register part
-        var msg_to_send = {
-            "username": null,
-            "password": null,
-            "email": null,
-            "recaptcha_hash": "string"
-        };
-
-        var email_block = document.getElementById("emailHelpBlock");
-        var username_block = document.getElementById("nameHelpBlock");
-        var password_block = document.getElementById("passwordHelpBlock");
-        var confirm_block = document.getElementById("confirmHelpBlock");
-
-        $("#Register_Mail").on('keyup', function () {
-            var temp = $("#Register_Mail").val();
-            msg_to_send.email = temp;
-            if (temp.length == 27 && temp.indexOf("@link.cuhk.edu.hk") !== -1 && temp.indexOf(" ") == -1) {
-                email_block.innerHTML = "You email is valid.";
-                
-                changeValid_color(email_block, 1);
-            }
-            else {
-                email_block.innerHTML = "You must use @link.cuhk.edu.hk email to register.";
-                changeValid_color(email_block, 0);
-            }
-        }
-        )
-
-        $("#Register_UserName").on('keyup', function () {
-            var temp = $("#Register_UserName").val();
-            msg_to_send.username = temp;
-            if (temp.length >= 5 && temp.length <= 20 && temp.indexOf(" ") == -1) {
-                username_block.innerHTML = "You username is valid.";
-               
-                changeValid_color(username_block, 1);
-            }
-            else {
-                username_block.innerHTML = "Username must be between 5 and 20 characters.";
-                changeValid_color(username_block, 0);
-            }
-
-        })
-
-        $("#Register_PW").on('keyup', function () {
-            var temp = $("#Register_PW").val();
-            if (temp.length >= 5 && temp.length <= 20 && temp.indexOf(" ") == -1) {
-                password_block.innerHTML = "You password is valid.";
-                changeValid_color(password_block, 1);
-            }
-            else {
-                password_block.innerHTML = "Password must be between 5 and 20 characters.";
-                changeValid_color(password_block, 0);
-            }
-        })
-
-        $("#Register_ConfirmPW").on('keyup', function () {
-            var temp = $("#Register_PW").val(), temp2 = $("#Register_ConfirmPW").val();
-            if (temp.localeCompare(temp2) == 0) {
-                msg_to_send.password = temp;
-                confirm_block.innerHTML = "Two passwords are  matched.";
-                changeValid_color(confirm_block, 1);
-            }
-            else {
-                msg_to_send.password = temp;
-                confirm_block.innerHTML = "Two passwords are not matched.";
-                changeValid_color(confirm_block, 0);
-            }
-        })
-
-        $("#signupbtn").click(function () {
-
-            $.postJSON("/api/Register", JSON.stringify(msg_to_send));
-        });
-
-        $("#ForgotPW_btn").click(function () {
-            var msg_to_send = {
-                "email": $("#ForgotPW_email").val(),
-            }
-            $.postJSON("/api/ForgotPassword/Request_Change", JSON.stringify(msg_to_send));
-        });
-        
-    </script>
 
 </body>
 </html>
