@@ -1,10 +1,7 @@
 <html>
 <head>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="testlogin.css">
-    <script src="./js/login_show.js"></script>
+    <script src="./js/login_page/login_show.js"></script>
     <script src="./js/post_JSON.js"></script>
     
 </head>
@@ -16,13 +13,13 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign In</h5>
-                        <a href="/newmainpage.html" class="close" title="Close"> &times;</a>
+                        <a href="javascript: " onclick="javascript: Paging_loadMain()" class="close" title="Close"> &times;</a>
                         <form class="form-signin">
                             <div class="form-label-group ">
                                 <input type="text" id="account" class="form-control" placeholder="Email address" required>
                                 <label for="account">Username or Email address</label>
                             </div>
-
+                            
                             <div class="form-label-group">
                                 <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                                 <label for="inputPassword">Password</label>
@@ -55,7 +52,7 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign Up</h5>
-                        <a href="/newmainpage.html" class="close" title="Close"> &times;</a>
+                        <a href="javascript: " onclick="javascript: Paging_loadMain()" class="close" title="Close"> &times;</a>
                         <form class="form-signin">
                             <div class="form-label-group">
                                 <input type="email" id="Register_Mail" class="form-control" placeholder="Email Address">
@@ -120,7 +117,7 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Forgot your Password?</h5>
-                        <a href="/newmainpage.html" class="close" title="Close"> &times;</a>
+                        <a href="javascript: " onclick="javascript: Paging_loadMain()" class="close" title="Close"> &times;</a>
                         <form class="form-signin">
                             <div class="form-label-group">
                                 <input type="email" id="ForgotPW_email" class="form-control" placeholder="Email address">
@@ -137,7 +134,7 @@
             </div>
         </div>
     </div>
-    <script src="./js/login_prehandle.js"></script>
+    <script src="./js//login_page/login_prehandle.js"></script>
 
 
 
