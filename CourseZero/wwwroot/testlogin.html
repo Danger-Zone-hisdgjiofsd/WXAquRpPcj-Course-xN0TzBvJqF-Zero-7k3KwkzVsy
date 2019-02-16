@@ -1,43 +1,45 @@
 <html>
 <head>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="testlogin.css">
-    <script src="./js/login_page/login_show.js"></script>
-    <script src="./js/post_JSON.js"></script>
-    
+	<script src="./js/login.js"></script>
 </head>
+<!--ID Prefix: Form_Login_-->
 <body>
-
-    <div id="Login_Form" class="container">
+    <div id="Form_Login_Login_Form" class="container">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign In</h5>
-                        <a href="javascript: " onclick="javascript: Paging_loadMain()" class="close" title="Close"> &times;</a>
+                        <a href="javascript:Paging_loadMain();" class="close" title="Close"> &times;</a>
+						<div id="Form_Login_Login_DisplayMsg"></div>
                         <form class="form-signin">
-                            <div class="form-label-group ">
-                                <input type="text" id="account" class="form-control" placeholder="Email address" required>
-                                <label for="account">Username or Email address</label>
-                            </div>
-                            
                             <div class="form-label-group">
-                                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                                <label for="inputPassword">Password</label>
+                                <input type="text" id="Form_Login_account" class="form-control" placeholder="Email address" required>
+                                <label for="Form_Login_account">Username or Email address</label>
+                            </div>
+
+                            <div class="form-label-group">
+                                <input type="password" id="Form_Login_inputPassword" class="form-control" placeholder="Password" required>
+                                <label for="Form_Login_inputPassword">Password</label>
                             </div>
 
                             <div class="custom-control custom-checkbox mb-3">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                <label class="custom-control-label" for="customCheck1">Remember password</label>
+                                <input type="checkbox" class="custom-control-input" id="Form_Login_Remember_PW">
+                                <label class="custom-control-label" for="Form_Login_Remember_PW">Remember password</label>
                                 <div class="text-right">
-                                    <a href="javascript: " onclick="javascript: show_ForgotPW()" id="forgotPW">Forgot Password?</a>
+                                    <a href="javascript: " onclick="javascript: show_ForgotPW()" id="Form_Login_forgotPW">Forgot Password?</a>
                                 </div>
 
                             </div>
-                            <button class="btn btn-lg btn-primary btn-block " type="button" id="Signin_btn" disabled="disabled">Sign in</button>
+                            <button class="btn btn-lg btn-primary btn-block " type="button" id="Form_Login_Signin_btn">Sign in</button>
                             <hr class="my-4">
                             <div class="text-center">
                                 <span>New to Course Zero? </span>
-                                <a href="javascript: " onclick="javascript: show_SignUp()" id="signup">Sign Up</a>
+                                <a href="javascript: " onclick="javascript: show_SignUp()" id="Form_Login_signup">Sign Up</a>
                             </div>
                         </form>
                     </div>
@@ -46,35 +48,36 @@
         </div>
     </div>
 
-    <div class="container" id="Signup_Form">
+    <div class="container" id="Form_Login_Signup_Form" style="display:none">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign Up</h5>
-                        <a href="javascript: " onclick="javascript: Paging_loadMain()" class="close" title="Close"> &times;</a>
+                        <a href="javascript:show_Login();" class="close" title="Close"> &times;</a>
+						<div id="Form_Login_Signup_DisplayMsg"></div>
                         <form class="form-signin">
                             <div class="form-label-group">
-                                <input type="email" id="Register_Mail" class="form-control" placeholder="Email Address">
-                                <label for="Register_Mail">Email Address *</label>
-                                <small id="emailHelpBlock" class="form-text text-muted">
+                                <input type="email" id="Form_Login_Register_Mail" class="form-control" placeholder="Email Address" required>
+                                <label for="Form_Login_Register_Mail">Email Address *</label>
+                                <small id="Form_Login_emailHelpBlock" class="form-text text-muted">
                                     You must use @link.cuhk.edu.hk email to register.
                                 </small>
                             </div>
 
                             <div class="form-label-group">
-                                <input type="text" id="Register_UserName" class="form-control" placeholder="User Name">
-                                <label for="Register_UserName">User Name *</label>
-                                <small id="nameHelpBlock" class="form-text text-muted">
+                                <input type="text" id="Form_Login_Register_UserName" class="form-control" placeholder="User Name" required>
+                                <label for="Form_Login_Register_UserName">User Name *</label>
+                                <small id="Form_Login_nameHelpBlock" class="form-text text-muted">
                                     Username must be between 5 and 20 characters.
                                 </small>
                             </div>
 
 
                             <div class="form-label-group">
-                                <input type="password" id="Register_PW" class="form-control" placeholder="Password">
-                                <label for="Register_PW">Password *</label>
-                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                <input type="password" id="Form_Login_Register_PW" class="form-control" placeholder="Password" required>
+                                <label for="Form_Login_Register_PW">Password *</label>
+                                <small id="Form_Login_passwordHelpBlock" class="form-text text-muted">
                                     Password must be between 5 and 20 characters.
                                 </small>
 
@@ -82,27 +85,24 @@
 
 
                             <div class="form-label-group">
-                                <input type="password" id="Register_ConfirmPW" class="form-control" placeholder="Confirm Password">
+                                <input type="password" id="Register_ConfirmPW" class="form-control" placeholder="Confirm Password" required>
                                 <label for="Register_ConfirmPW">Confirm Password *</label>
                             </div>
-                            <small id="confirmHelpBlock" class="form-text text-muted">
+                            <small id="Form_Login_confirmHelpBlock" class="form-text text-muted">
                             </small>
 
                             <hr class="my-4">
 
-                            <button id="signupbtn" class="btn btn-lg btn-primary btn-block " type="button" disabled="disabled">Sign Up</button>
+                            <button id="Form_Login_signupbtn" class="btn btn-lg btn-primary btn-block " type="button">Sign Up</button>
 
-                            <div class="custom-control custom-checkbox mb-3">
-                                <input type="checkbox" class="custom-control-input" id="checkTick" onclick="checkBoxTicked()">
-                                <label class="custom-control-label" for="checkTick">
-                                    By creating an account you agree to our <a href="/policy.html"
+							<label class="custom-control-label">
+                                     By creating an account you agree to our <a href="/policy.html"
                                                                                onclick="window.open(this.href,'targetWindow',
                                      'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=600');return false;">Privacy Policy</a> and <a href="/term_of_use.html"
                                                                                                                                                                                onclick="window.open(this.href,'targetWindow',
                                      'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=600');return false;">Terms of Use</a>.
-                                </label>
+							</label>
 
-                            </div>
 
                         </form>
                     </div>
@@ -111,22 +111,23 @@
         </div>
     </div>
 
-    <div id="ForgotPW_Form" class="container">
+    <div id="Form_Login_ForgotPW_Form" class="container" style="display:none">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Forgot your Password?</h5>
-                        <a href="javascript: " onclick="javascript: Paging_loadMain()" class="close" title="Close"> &times;</a>
+                        <a href="javascript:show_Login();" class="close" title="Close"> &times;</a>
                         <form class="form-signin">
+							<div id="Form_Login_ForgotPW_DisplayMsg"></div>
                             <div class="form-label-group">
-                                <input type="email" id="ForgotPW_email" class="form-control" placeholder="Email address">
-                                <label for="ForgotPW_email">Type you Email address</label>
+                                <input type="email" id="Form_Login_ForgotPW_email" class="form-control" placeholder="Email address" required>
+                                <label for="Form_Login_ForgotPW_email">Type you Email address</label>
                             </div>
 
-                            <button class="btn btn-lg btn-primary btn-block " type="button" id="ForgotPW_btn" disabled="disabled">Reset Password</button>
+                            <button class="btn btn-lg btn-primary btn-block " type="button" id="Form_Login_ForgotPW_btn">Reset Password</button>
                             <hr class="my-4">
-
+                                
 
                         </form>
                     </div>
@@ -134,10 +135,5 @@
             </div>
         </div>
     </div>
-    <script src="./js//login_page/login_prehandle.js"></script>
-
-
-
-
 </body>
 </html>
