@@ -8,14 +8,6 @@
     border-radius: 50px;
 }
 
-#ForgotPW_Form {
-    display: none;
-}
-#Signup_Form {
-    display: none;
-}
-
-
 
 .close {
     position: absolute;
