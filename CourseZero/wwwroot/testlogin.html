@@ -31,7 +31,7 @@
                                 <input type="checkbox" class="custom-control-input" id="Form_Login_Remember_PW">
                                 <label class="custom-control-label" for="Form_Login_Remember_PW">Remember password</label>
                                 <div class="text-right">
-                                    <a href="javascript: " onclick="javascript: show_ForgotPW()" id="Form_Login_forgotPW">Forgot Password?</a>
+                                    <a href="javascript: " onclick="javascript: Form_Login_show_ForgotPW()" id="Form_Login_forgotPW">Forgot Password?</a>
                                 </div>
 
                             </div>
@@ -39,7 +39,7 @@
                             <hr class="my-4">
                             <div class="text-center">
                                 <span>New to Course Zero? </span>
-                                <a href="javascript: " onclick="javascript: show_SignUp()" id="Form_Login_signup">Sign Up</a>
+                                <a href="javascript: " onclick="javascript: Form_Login_show_SignUp()" id="Form_Login_signup">Sign Up</a>
                             </div>
                         </form>
                     </div>
@@ -54,7 +54,7 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign Up</h5>
-                        <a href="javascript:show_Login();" class="close" title="Close"> &times;</a>
+                        <a href="javascript:Form_Login_show_Login();" class="close" title="Close"> &times;</a>
 						<div id="Form_Login_Signup_DisplayMsg"></div>
                         <form class="form-signin">
                             <div class="form-label-group">
@@ -117,7 +117,7 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">Forgot your Password?</h5>
-                        <a href="javascript:show_Login();" class="close" title="Close"> &times;</a>
+                        <a href="javascript:Form_Login_show_Login();" class="close" title="Close"> &times;</a>
                         <form class="form-signin">
 							<div id="Form_Login_ForgotPW_DisplayMsg"></div>
                             <div class="form-label-group">
