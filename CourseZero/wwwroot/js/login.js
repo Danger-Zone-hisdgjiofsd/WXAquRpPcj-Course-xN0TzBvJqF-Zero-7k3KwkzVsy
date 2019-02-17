@@ -163,7 +163,8 @@ $(document).ready(function () {
         })
 
         $("#Form_Login_Register_PW").on('keyup', function () {
-			Form_Login_Valid_Password($("#Form_Login_Register_PW").val(), password_block)
+            Form_Login_Valid_Password($("#Form_Login_Register_PW").val(), password_block)
+            Form_Login_changeValidTxt(confirm_block, 1);
         })
 
         $("#Register_ConfirmPW").on('keyup', function () {
@@ -172,11 +173,15 @@ $(document).ready(function () {
                 Form_Login_changeValidTxt(confirm_block, 1);
             else
 				Form_Login_changeValidTxt(confirm_block, 0, "Password does not match");
-        })
+    })
+
 		$("#Form_Login_signupbtn").click(function () {
 			var temp = $("#Form_Login_Register_PW").val(), temp2 = $("#Register_ConfirmPW").val();
-			if (!Form_Login_Valid_Email($("#Form_Login_Register_Mail").val(), email_block) || !Form_Login_Valid_Username($("#Form_Login_Register_UserName").val(), username_block) || !Form_Login_Valid_Password($("#Form_Login_Register_PW").val(), password_block) || temp.localeCompare(temp2) != 0)
-				return;
+            if (!Form_Login_Valid_Email($("#Form_Login_Register_Mail").val(), email_block) || !Form_Login_Valid_Username($("#Form_Login_Register_UserName").val(), username_block) || !Form_Login_Valid_Password($("#Form_Login_Register_PW").val(), password_block) || temp.localeCompare(temp2) != 0) {
+                Form_Login_changeValidTxt(confirm_block, 0, "Password does not match");
+                return;
+            }
+                
 			var msg_to_send =
 			{
 				"username": $("#Form_Login_Register_UserName").val(),
