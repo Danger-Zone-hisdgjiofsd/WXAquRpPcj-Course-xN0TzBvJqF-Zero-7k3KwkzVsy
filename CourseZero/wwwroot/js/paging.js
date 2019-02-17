@@ -32,4 +32,5 @@ $(document).ready(function () {
 	Paging_loadMain();
 	$("#Layout_loginbtn").click(Paging_loadLogin);
 	$("#Layout_homebtn").click(Paging_loadMain);
+	$("#navbar_logo").wrap('<a href="./newmainpage.html"></a>');
 });
