@@ -64,10 +64,9 @@ namespace CourseZero.Services
             {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
-                if (Initial && Courses.Count() > 0)
-                    Initial = false;
-                else
+                if (!(Initial && Courses.Count() == 0))
                     await Task.Delay(86400000); //24 hours
+                Initial = false;
                 HttpClientHandler clientHandler = new HttpClientHandler();
                 clientHandler.AllowAutoRedirect = false;
                 HttpClient client = new HttpClient(clientHandler);
