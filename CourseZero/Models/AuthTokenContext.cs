@@ -36,5 +36,12 @@ namespace CourseZero.Models
         public string Last_access_Device { get; set; }
         public string Last_access_Browser { get; set; }
     }
+    public class AuthToken_Request
+    {
+        [Required]
+        [StringLength(128, MinimumLength = 128)]
+        public string auth_token { get; set; }
+    }
+
 
 }
