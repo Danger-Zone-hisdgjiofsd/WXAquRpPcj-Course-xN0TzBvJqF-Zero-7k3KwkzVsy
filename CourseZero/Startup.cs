@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using CourseZero.Filters;
+using Microsoft.Extensions.Hosting;
+using CourseZero.Services;
 
 namespace CourseZero
 {
@@ -26,6 +28,7 @@ namespace CourseZero
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHostedService, CUSIS_Fetch_Service>();
             services.AddMvc();
             services.AddSwaggerGen(x =>
             {
@@ -52,10 +55,14 @@ namespace CourseZero
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
+            services.AddDbContext<CourseContext>(options =>
+            {
+                options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime Lifetime)
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env, Microsoft.AspNetCore.Hosting.IApplicationLifetime Lifetime)
         {
             app.UseStaticFiles();
             app.UseMvc();
