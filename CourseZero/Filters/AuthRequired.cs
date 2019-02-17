@@ -23,11 +23,7 @@ namespace CourseZero.Filters
         }
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            foreach (var s in context.ActionArguments)
-                Console.WriteLine(s);
-            var jObject = JObject.FromObject(context.ActionArguments["request"] );
-            foreach (var s in jObject.Properties().Select(p => p.Name).ToList())
-                Console.WriteLine(s);
+            var jObject = JObject.FromObject(context.ActionArguments.First().Value );
             string auth_token = jObject["auth_token"].ToObject<string>();
             AuthToken current_token = await authTokenContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == auth_token);
             if (current_token == null)
