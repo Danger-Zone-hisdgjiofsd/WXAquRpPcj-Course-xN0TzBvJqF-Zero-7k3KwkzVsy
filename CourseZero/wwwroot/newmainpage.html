@@ -45,9 +45,9 @@
         <div class="logo">
             <img style='height: 100%; width: 100%; ' src="./material/logo.png" id="refresh" />
         </div>
-        <script>
+        <script>Paging_loadMain()
             $(document).ready(function() {
-                $("#refresh").wrap('<a href="./newmainpage.html"></a>');
+                $("#refresh").wrap('<a href="javascript: " onclick="javascript: Paging_loadMain()"></a>');
             });
         </script>
         <form class="form-inline mx-auto w-50">
