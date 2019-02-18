@@ -45,27 +45,27 @@ namespace CourseZero.Controllers
             if (user == null)
             {
                 response.status_code = 1;
-                response.display_message = "user not found";
+                response.display_message = "User not found";
                 return response;
             }
             if (!user.email_verified)
             {
                 response.status_code = 1;
-                response.display_message = "please verify your email first";
+                response.display_message = "Please verify your email first";
                 return response;
             }
             string hashed_password = Hashing_Tool.Hash_Password(request.password, user.password_salt);
             if (hashed_password != user.password_hash)
             {
                 response.status_code = 1;
-                response.display_message = "wrong password";
+                response.display_message = "Wrong password";
                 return response;
             }
             //Create Login Token Here
             string token = "";
             while (true)
             {
-                token = Hashing_Tool.Random_String(128);
+                token = Hashing_Tool.Random_String(128).ToLower();
                 if (await authTokenContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == token) != null)
                     continue;
                 break;
@@ -86,7 +86,7 @@ namespace CourseZero.Controllers
             await authTokenContext.AddAsync(auth_Token_Obj);
             await authTokenContext.SaveChangesAsync();
 
-
+            response.username = user.username;
             response.auth_token = token;
             response.status_code = 0;
             response.display_message = "success";
@@ -104,6 +104,7 @@ namespace CourseZero.Controllers
             /// <para>Should be stored in localstorage / sessionstorage (if the user does not check the "remember me" option)</para>
             /// </summary>
             public string auth_token { get; set; }
+            public string username { get; set; }
         }
         public class Login_Request
         {
@@ -147,14 +148,22 @@ namespace CourseZero.Controllers
             }
             private (bool valid, string error_str) username_is_valid()
             {
-                if (!username.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
-                    return (false, "username should contain only letter, digit, underscore (_) and hyphen (-)");
+                int letterdigit_count = 0;
+                foreach (var c in username)
+                {
+                    if (char.IsLetterOrDigit(c))
+                        letterdigit_count++;
+                    else if (c != '-' && c != '_')
+                        return (false, "Username should contain only letter, digit, underscore (_) and hyphen (-)");
+                }
+                if (letterdigit_count < 3)
+                    return (false, "Username should contain at least 3 letters or digits");
                 return (true, null);
             }
             private (bool valid, string error_str) password_is_valid()
             {
                 if (!password.All(c => char.IsLetterOrDigit(c) || is_char_special(c)))
-                    return (false, "password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
+                    return (false, "Password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
                 return (true, null);
             }
             private (bool valid, string error_str) email_is_valid()
@@ -162,9 +171,9 @@ namespace CourseZero.Controllers
                 string domain = email.Substring(10);
                 string sid = email.Substring(0, 10);
                 if (domain != "@link.cuhk.edu.hk")
-                    return (false, "only email with domain link.cuhk.edu.hk is allowed");
+                    return (false, "Only email with domain link.cuhk.edu.hk is allowed");
                 if (!sid.All(c => char.IsDigit(c)))
-                    return (false, "invalid email");
+                    return (false, "Invalid email");
                 return (true, null);
             }
             private (bool valid, string error_str) recaptcha_hash_is_valid()

@@ -13,7 +13,17 @@ namespace CourseZero.Tools
 {
     public class CUSIS_Tool
     {
-        public static async Task<(bool, string)> Login_To_CUSIS(HttpClient client, string username, string password)
+        HttpClientHandler clientHandler;
+        HttpClient client;
+        public CUSIS_Tool()
+        {
+            clientHandler = new HttpClientHandler();
+            clientHandler.AllowAutoRedirect = false;
+            client = new HttpClient(clientHandler);
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36");
+
+        }
+        public async Task<(bool, string)> Login_To_CUSIS(string username, string password)
         {
             try
             {
@@ -42,7 +52,7 @@ namespace CourseZero.Tools
             return (true, "");
 
         }
-        public static async Task<List<Course>> Scan_CoursePage(HttpClient client)
+        public async Task<List<Course>> Scan_CoursePage()
         {
             List<Course> courses = new List<Course>();
             var response = await client.GetAsync("https://cusis.cuhk.edu.hk/psc/csprd/EMPLOYEE/HRMS/c/COMMUNITY_ACCESS.SSS_BROWSE_CATLG.GBL");
@@ -51,13 +61,13 @@ namespace CourseZero.Tools
             char prefix = 'A';
             while (prefix <= 'Z')
             {
-                await Scan_Courses_By_Prefix(client, courses, prefix);
+                await Scan_Courses_By_Prefix(courses, prefix);
                 prefix++;
             }
             return courses;
 
         }
-        public static async Task Scan_Courses_By_Prefix(HttpClient client, List<Course> courses, char prefix)
+        public async Task Scan_Courses_By_Prefix( List<Course> courses, char prefix)
         {
             var values = new Dictionary<string, string>
             {
@@ -90,7 +100,7 @@ namespace CourseZero.Tools
                         for (int i = 0; i < course_node.Count / 2; i++)
                         {
                             string course_code = course_node[2 * i].InnerText;
-                            string course_name = course_node[2 * i + 1].InnerText;
+                            string course_name = HttpUtility.HtmlDecode(course_node[2 * i + 1].InnerText);
                             Course course = new Course();
                             course.Course_Code = course_code;
                             course.Course_Title = course_name;

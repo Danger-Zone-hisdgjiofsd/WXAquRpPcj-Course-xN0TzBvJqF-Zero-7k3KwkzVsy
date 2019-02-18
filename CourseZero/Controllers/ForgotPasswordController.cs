@@ -34,19 +34,19 @@ namespace CourseZero.Controllers
             if (user == null)
             {
                 response.status_code = 1;
-                response.display_message = "account does not exist";
+                response.display_message = "Account does not exist";
                 return response;
             }
             if (!user.email_verified)
             {
                 response.status_code = 1;
-                response.display_message = "account has not been verified";
+                response.display_message = "Account has not been verified";
                 return response;
             }
             if (DateTime.Compare(user.password_change_request_datatime.AddHours(24), DateTime.Now) > 0)
             {
                 response.status_code = 1;
-                response.display_message = "you can only issue a password change request every 24 hours";
+                response.display_message = "You can only issue a password change request every 24 hours";
                 return response;
             }
             string new_password = Random_Password();
@@ -54,7 +54,7 @@ namespace CourseZero.Controllers
             if (!await Email_Sender.Send_Password_Change_Email(user.email, user.ID, user.username, new_password, HttpUtility.UrlEncode(hash)))
             {
                 response.status_code = 1;
-                response.display_message = "an error happpened when sending email, please try again later";
+                response.display_message = "An error happpened when sending email, please try again later";
                 return response;
             }
             user.password_change_new_password = new_password;
@@ -90,7 +90,7 @@ namespace CourseZero.Controllers
         static string Random_Password(int length = 8)
         {
             Random random = new Random();
-            string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/";
+            string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*_-+=`|\\(){}[]:;\"'<>,.?/";
             string password = "";
             while (length > 0)
             {
