@@ -67,15 +67,11 @@ namespace CourseZero.Services
                 if (!(Initial && Courses.Count() == 0))
                     await Task.Delay(86400000); //24 hours
                 Initial = false;
-                HttpClientHandler clientHandler = new HttpClientHandler();
-                clientHandler.AllowAutoRedirect = false;
-                HttpClient client = new HttpClient(clientHandler);
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36");
-                var login_success = await CUSIS_Tool.Login_To_CUSIS(client, CUSIS_ACCOUNT, CUSIS_PASSWORD);
+                CUSIS_Tool cusis_Tool = new CUSIS_Tool();
+                var login_success = await cusis_Tool.Login_To_CUSIS(CUSIS_ACCOUNT, CUSIS_PASSWORD);
                 if (!login_success.Item1)
                 {
                     Console.WriteLine("ERROR WHEN TRYING TO FETCH CUSIS: " + login_success.Item2);
-                    await Task.Delay(86400000); //24 hours
                     continue;
                 }
                 Console.WriteLine("FETCHING CUSIS ...");
@@ -83,7 +79,7 @@ namespace CourseZero.Services
 
                 using (var scope = serviceScopeFactory.CreateScope())
                 {
-                    var course_list = await CUSIS_Tool.Scan_CoursePage(client);
+                    var course_list = await cusis_Tool.Scan_CoursePage();
                     List<Course> courses_to_add = new List<Course>();
                     var courseContext = scope.ServiceProvider.GetService<CourseContext>();
                     foreach (var scanned_course in course_list)
@@ -102,8 +98,6 @@ namespace CourseZero.Services
                     courses_to_add.Clear();
                     courseContext.Dispose();
                 }
-                client = null;
-                clientHandler = null;
                 Courses.Clear();
                 Courses_Json_Str_Lazy_added = false;
                 using (var scope = serviceScopeFactory.CreateScope())
