@@ -62,15 +62,13 @@ namespace CourseZero.Tools
         }
         public static async Task Update_AuthToken_Browse_Record(AuthToken auth_Token_Obj, string ua, string ip)
         {
-            if (auth_Token_Obj.Last_access_IP != ip)
-            {
-                var ua_decoded = Decode_UA(ua);
-                string loc = await IP_to_Location(ip);
-                auth_Token_Obj.Last_access_Browser = ua_decoded.browser;
-                auth_Token_Obj.Last_access_Device = ua_decoded.operation_system;
-                auth_Token_Obj.Last_access_Location = loc;
-                auth_Token_Obj.Last_access_IP = ip;
-            }
+
+            var ua_decoded = Decode_UA(ua);
+            string loc = await IP_to_Location(ip);
+            auth_Token_Obj.Last_access_Browser = ua_decoded.browser;
+            auth_Token_Obj.Last_access_Device = ua_decoded.operation_system;
+            auth_Token_Obj.Last_access_Location = loc;
+            auth_Token_Obj.Last_access_IP = ip;
             auth_Token_Obj.Last_access_Time = DateTime.Now;
         }
     }
