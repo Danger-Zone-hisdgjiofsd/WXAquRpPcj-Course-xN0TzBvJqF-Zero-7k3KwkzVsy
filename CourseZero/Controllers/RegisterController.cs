@@ -38,13 +38,13 @@ namespace CourseZero.Controllers
             if (await userContext.Users.FirstOrDefaultAsync(x => x.username == request.username) != null)
             {
                 response.status_code = 1;
-                response.display_message = "this username is already in use";
+                response.display_message = "This username is already in use";
                 return response;
             }
             if (await userContext.Users.FirstOrDefaultAsync(x => x.email == request.email) != null)
             {
                 response.status_code = 1;
-                response.display_message = "this email is already in use";
+                response.display_message = "This email is already in use";
                 return response;
             }
             User user = new User();
@@ -59,14 +59,14 @@ namespace CourseZero.Controllers
             if (!verification_mail_sent)
             {
                 response.status_code = 1;
-                response.display_message = "an error happpened when sending email, please try again later";
+                response.display_message = "An error happpened when sending email, please try again later";
                 return response;
             }
             user.email_verifying_hash = hash;
             user.email_verification_issue_datetime = DateTime.Now;
             await userContext.AddAsync(user);
             await userContext.SaveChangesAsync();
-            response.display_message = "an verification email is sent to " + request.email + ", please verify your account within 2 hours";
+            response.display_message = "An verification email is sent to " + request.email + ", please verify your account within 2 hours";
             response.status_code = 0;
             return response;
         }
@@ -86,19 +86,19 @@ namespace CourseZero.Controllers
             if (user == null)
             {
                 response.status_code = 1;
-                response.display_message = "account does not exist";
+                response.display_message = "Account does not exist";
                 return response;
             }
             if (user.email_verified)
             {
                 response.status_code = 1;
-                response.display_message = "this account has already been verified";
+                response.display_message = "This account has already been verified";
                 return response;
             }
             if (DateTime.Compare(user.email_verification_issue_datetime.AddHours(12), DateTime.Now) > 0)
             {
                 response.status_code = 1;
-                response.display_message = "you can only request a verification email every 12 hours";
+                response.display_message = "You can only request a verification email every 12 hours";
                 return response;
             }
             string hash = Hashing_Tool.Random_String(128);
@@ -106,13 +106,13 @@ namespace CourseZero.Controllers
             if (!verification_mail_sent)
             {
                 response.status_code = 1;
-                response.display_message = "an error happpened when sending email, please try again later";
+                response.display_message = "An error happpened when sending email, please try again later";
                 return response;
             }
             user.email_verifying_hash = hash;
             user.email_verification_issue_datetime = DateTime.Now;
             await userContext.SaveChangesAsync();
-            response.display_message = "an verification email is sent to " + request.email + ", please verify your account within 2 hours";
+            response.display_message = "An verification email is sent to " + request.email + ", please verify your account within 2 hours";
             response.status_code = 0;
             return response;
         }
@@ -178,14 +178,22 @@ namespace CourseZero.Controllers
             }
             private (bool valid, string error_str) username_is_valid()
             {
-                if (!username.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
-                    return (false, "username should contain only letter, digit, underscore (_) and hyphen (-)");
+                int letterdigit_count = 0;
+                foreach (var c in username)
+                {
+                    if (char.IsLetterOrDigit(c))
+                        letterdigit_count++;
+                    else if (c != '-' && c != '_')
+                        return (false, "Username should contain only letter, digit, underscore (_) and hyphen (-)");
+                }
+                if (letterdigit_count < 3)
+                    return (false, "Username should contain at least 3 letters or digits");
                 return (true, null);
             }
             private (bool valid, string error_str) password_is_valid()
             {
                 if (!password.All(c => char.IsLetterOrDigit(c) || is_char_special(c)))
-                    return (false, "password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
+                    return (false, "Password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
                 return (true, null);
             }
             private (bool valid, string error_str) email_is_valid()
@@ -193,9 +201,9 @@ namespace CourseZero.Controllers
                 string domain = email.Substring(10);
                 string sid = email.Substring(0, 10);
                 if (domain != "@link.cuhk.edu.hk")
-                    return (false, "only email with domain link.cuhk.edu.hk is allowed");
+                    return (false, "Only email with domain link.cuhk.edu.hk is allowed");
                 if (!sid.All(c => char.IsDigit(c)))
-                    return (false, "invalid email");
+                    return (false, "Invalid email");
                 return (true, null);
             }
             private (bool valid, string error_str) recaptcha_hash_is_valid()
