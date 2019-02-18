@@ -34,7 +34,7 @@ function Form_Login_Valid_Username(username, block)
 	}
 	for (var i = 0; i < username.length; i++)
 	{
-		if (!((username[i] >= '0' && username[i] <= '9') || (username[i] >= 'a' && username[i] <= 'z') || (username[i] >= '0' && username[i] <= '9')))
+		if (!((username[i] >= '0' && username[i] <= '9') || (username[i] >= 'a' && username[i] <= 'z') || (username[i] == '-') || username[i] == '_'))
 		{
 			Form_Login_changeValidTxt(block, 0, "Username should contain only letter, digit, underscore (_) and hyphen (-).");
 			return false
@@ -177,8 +177,15 @@ $(document).ready(function () {
 
 		$("#Form_Login_signupbtn").click(function () {
 			var temp = $("#Form_Login_Register_PW").val(), temp2 = $("#Register_ConfirmPW").val();
-            if (!Form_Login_Valid_Email($("#Form_Login_Register_Mail").val(), email_block) || !Form_Login_Valid_Username($("#Form_Login_Register_UserName").val(), username_block) || !Form_Login_Valid_Password($("#Form_Login_Register_PW").val(), password_block) || temp.localeCompare(temp2) != 0) {
-                Form_Login_changeValidTxt(confirm_block, 0, "Password does not match");
+            if (temp.localeCompare(temp2) == 0)
+                Form_Login_changeValidTxt(confirm_block, 1);
+            else
+			{
+				Form_Login_changeValidTxt(confirm_block, 0, "Password does not match");
+				return;
+			}
+            if (!Form_Login_Valid_Email($("#Form_Login_Register_Mail").val(), email_block) || !Form_Login_Valid_Username($("#Form_Login_Register_UserName").val(), username_block) || !Form_Login_Valid_Password($("#Form_Login_Register_PW").val(), password_block) ) {
+                //Form_Login_changeValidTxt(confirm_block, 0, "APassword does not match");
                 return;
             }
                 
