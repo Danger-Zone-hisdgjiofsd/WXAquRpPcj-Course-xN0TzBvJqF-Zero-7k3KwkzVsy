@@ -93,7 +93,24 @@
                 </button>
 
                 <button id="Layout_loginbtn" type="button" class="btn btn-info my-2 my-sm-0 mr-2">Login</button>
-                <img id="layout_avatar" class="avatar" src="./material/blank-profile-picture.png">
+                <div class="dropdown dropleft" style="cursor: pointer;">
+                    <img id="layout_avatar" data-toggle="dropdown" src="./material/blank-profile-picture.png">
+                    <ul class="dropdown-menu" style="width:250px;">
+                        <li class="container">
+                            <div class="row pl-3"><a href="profile.html">
+                                <img id="dropdown_avatar" data-toggle="dropdown" src="./material/blank-profile-picture.png">
+                                <a class="pl-2 pt-3" style="font-weight: bold;">User Name</a>
+                                </a>
+                            </div>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item"><a href="profile.html">Profile</a></li>
+                        <li class="dropdown-item"><a href="myupload.html">My upload</a></li>
+                        <li class="dropdown-item"><a href="#">My favorite</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item"><a href="#">Sign Out</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -101,16 +118,16 @@
     <nav class="navbar-btn navbar-light" style="background-color: #e3f2fd;">
         <div id="navbtn" class="container-fluid">
             <div class="row w-100">
-            <div class="btn col" href="#home" id="Layout_homebtn"><i class="fas fa-home pr-2"></i><span>Home</span></div>
-            <div class="btn col" href="#history"><i class="fas fa-history pr-2"></i><span>History</span></div>
-            <div class="btn col" href="#watch_later"><i class="fas fa-clock pr-2"></i><span>Watch Later</span></div>
-            <div class="btn dropdown col" data-toggle="dropdown">
-                <i class="fas fa-question pr-2"></i>Other<span class="caret"></span>
-                <ul class="dropdown-menu w-100" style="background-color: #4e5e69;">
-                    <li><a href="help.html">Help</a></li>
-                    <li><a href="contact.html">Contact us</a></li>
-                </ul>
-            </div>
+                <div class="btn col" href="#home" id="Layout_homebtn"><i class="fas fa-home pr-2"></i><span>Home</span></div>
+                <div class="btn col" href="#history"><i class="fas fa-history pr-2"></i><span>History</span></div>
+                <div class="btn col" href="#watch_later"><i class="fas fa-clock pr-2"></i><span>Watch Later</span></div>
+                <div class="btn dropdown col" data-toggle="dropdown">
+                    <i class="fas fa-question pr-2"></i><span class="caret">Other</span>
+                    <ul id="Layout_otherbtn" class="dropdown-menu w-100" style="background-color: #4e5e69;">
+                        <li><a href="help.html">Help</a></li>
+                        <li><a href="contact.html">Contact us</a></li>
+                    </ul>
+                </div>
             
             </div>
         </div>

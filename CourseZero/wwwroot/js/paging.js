@@ -1,7 +1,7 @@
 function Paging_loadMain()
 {
 	//To be done
-	Paging_load("./profilepagelayout.html");
+	Paging_load("./profile.html");
 }
 function Paging_loadLogin()
 {
@@ -28,8 +28,18 @@ function Paging_ShowSpinner(show)
 		$("#Layout_frame_content").prop('disabled', false);
 	}
 }
+
+function Paging_Listitemload() { 
+    $("li a").click(function (e) {
+        e.preventDefault(); //To prevent the default anchor tag behaviour
+        var url = this.href;
+        Paging_load(url);
+    });
+}
+
 $(document).ready(function () {
-	Paging_loadMain();
+    Paging_loadMain();
+    Paging_Listitemload();
 	$("#Layout_loginbtn").click(Paging_loadLogin);
 	$("#Layout_homebtn").click(Paging_loadMain);
 	$("#navbar_logo").wrap('<a href="./newmainpage.html"></a>');
