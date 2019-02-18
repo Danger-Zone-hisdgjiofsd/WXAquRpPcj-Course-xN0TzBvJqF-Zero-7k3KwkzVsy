@@ -100,7 +100,7 @@ namespace CourseZero.Tools
                         for (int i = 0; i < course_node.Count / 2; i++)
                         {
                             string course_code = course_node[2 * i].InnerText;
-                            string course_name = course_node[2 * i + 1].InnerText;
+                            string course_name = HttpUtility.HtmlDecode(course_node[2 * i + 1].InnerText);
                             Course course = new Course();
                             course.Course_Code = course_code;
                             course.Course_Title = course_name;
