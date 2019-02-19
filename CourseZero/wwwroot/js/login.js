@@ -27,11 +27,11 @@ function Form_Login_show_ForgotPW() {
 }
 function Form_Login_Valid_Username(username, block)
 {
-	if (username.length < 5 || username.length > 20)
-	{
-		Form_Login_changeValidTxt(block, 0, "Username must has length between 5 and 20");
+    if (username.lenght < 3) {
+        Form_Login_changeValidTxt(block, 0, "Username should contain at least 3 letters or digits");
         return false;
     }
+
     for (var i = 0; i < username.length; i++)
     {
 
@@ -81,7 +81,7 @@ function Form_Login_Valid_Password(pword, block)
 	{
 		Form_Login_changeValidTxt(block, 0, "Password must has length between 5 and 20");
 		return false;
-	}
+    }
 	var specials = "~!@#$%^&*_-+=`|\\(){}[]:;\"'<>,.?/";
 	for (var i = 0; i < pword.length; i++)
 	{
