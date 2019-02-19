@@ -59,7 +59,7 @@ namespace CourseZero.Controllers
                     file_found = true;
                     var fileSection = section.AsFileSection();
                     var fileName = fileSection.FileName;
-                    string type = fileName.Substring(fileName.IndexOf('.'));
+                    string type = fileName.Substring(fileName.LastIndexOf('.'));
                     if (!File_Allowed(type))
                         return BadRequest();
                     if (file_name == "")
