@@ -1,0 +1,44 @@
+﻿<html lang="en">
+<script  src="https://code.jquery.com/jquery-3.3.1.js"  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="  crossorigin="anonymous"></script>
+<script>
+	function SetResource_URL (url, resourcekey, resourceid, elementid, attribute) 
+	{	
+		var data = {
+			"auth_token": "AGPfqSe+ehRv3mzk59ISHbMxwxX80RXIx9hn0xzaNqTYRXxLhENOghwTbcYzD1kpx3Xjntc9ioFnatAl3kbNBGtsWGHptt56bS/WE20rIqNiF2eTb0onAhvbKl12Fno5",
+		}
+		data[resourcekey] = resourceid;
+		return jQuery.ajax({
+			'type': 'POST',
+			'cache': true,
+			'url': url,
+			'contentType': 'application/json',
+			'xhr' :	function(){
+				var xhr = new XMLHttpRequest();
+				xhr.responseType= 'blob'
+				return xhr;
+			},
+			'data': JSON.stringify(data),
+			'success':  function(object){
+					$("#"+elementid).attr(attribute, window.URL.createObjectURL(object));
+			}
+		})
+	};
+	$(document).ready(function () {
+		$("#Hello").click( function(){
+				// "../" is needed, otherwise the path will be "tutorial/api/Avatar/GetAvatarByUserid"
+				SetResource_URL("../api/Avatar/GetAvatarByUserid", "user_id", 2, "img", "src");
+				
+		});
+	});
+</script>
+
+
+
+
+<button id="Hello">HELLO</button>
+<div id="test">
+<img id="img" width=100%>
+</div>
+
+
+</html>
