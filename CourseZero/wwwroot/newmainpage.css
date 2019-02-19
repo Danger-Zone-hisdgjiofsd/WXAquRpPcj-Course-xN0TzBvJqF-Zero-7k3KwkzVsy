@@ -1,10 +1,37 @@
+.logo:hover {
+    cursor: pointer;
+}
+
+
+#layout_avatar {
+    max-width: 100%;
+    max-height: 100%;
+    height: 30px;
+    width: 30px;
+    border-radius:50%;
+}
+
+#dropdown_avatar {
+    max-width: 100%;
+    max-height: 100%;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+#Layout_otherbtn a {
+    color: white;
+}
+
 #phone-search-btn{
     display: none;
 }
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
 html, body {
     height: 100%;
     width: 100%;
@@ -42,7 +69,14 @@ html, body {
 
 .btn:hover {
     background-color: #4e5e69;
-    color: white;
+}
+
+.btn:hover i{
+    color:white;
+}
+
+.btn:hover span{
+    color:white;
 }
 
 @media only screen and (max-width: 600px) {

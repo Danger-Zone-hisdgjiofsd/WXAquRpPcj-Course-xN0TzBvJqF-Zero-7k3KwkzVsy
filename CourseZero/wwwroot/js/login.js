@@ -30,10 +30,15 @@ function Form_Login_Valid_Username(username, block)
 	if (username.length < 5 || username.length > 20)
 	{
 		Form_Login_changeValidTxt(block, 0, "Username must has length between 5 and 20");
-		return false;
-	}
-	for (var i = 0; i < username.length; i++)
-	{
+        return false;
+    }
+    for (var i = 0; i < username.length; i++)
+
+        if (username[0] == '-' || username[0] == '_') {
+
+            Form_Login_changeValidTxt(block, 0, "Username should not start with underscore (_) or hyphen (-).");
+            return false
+        }
 		if (!((username[i] >= '0' && username[i] <= '9') || (username[i] >= 'a' && username[i] <= 'z') || (username[i] == '-') || username[i] == '_'))
 		{
 			Form_Login_changeValidTxt(block, 0, "Username should contain only letter, digit, underscore (_) and hyphen (-).");

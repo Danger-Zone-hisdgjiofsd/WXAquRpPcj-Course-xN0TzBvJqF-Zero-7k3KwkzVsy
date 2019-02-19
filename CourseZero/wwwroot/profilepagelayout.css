@@ -2,6 +2,10 @@
     font-family: Roboto, sans-serif;
 }
 
+.sidebar {
+    background: black;
+}
+
 .sidemenu a{
     color: white;
 }

@@ -6,15 +6,6 @@
             $("#profilepagelayoutcontainer").load("./profile.html");
         });
     </script>
-    <script>
-        $(function () {
-            $("li a").click(function (e) {
-                e.preventDefault(); //To prevent the default anchor tag behaviour
-                var url = this.href;
-                $("#profilepagelayoutcontainer").load(url);
-            });
-        });
-    </script>
 
     <title>Profile</title>
     <link rel="stylesheet" href="profilepagelayout.css">
