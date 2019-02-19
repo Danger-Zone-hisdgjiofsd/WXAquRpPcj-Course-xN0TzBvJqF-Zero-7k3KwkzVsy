@@ -146,7 +146,8 @@ $(document).ready(function () {
                     g_login = true;
                     if ($("#Form_Login_Remember_PW").is(":checked"))
 					    localStorage.saved_auth_token = obj["auth_token"];
-					$("#Layout_loginbtn").hide();
+                    $("#Layout_loginbtn").hide();
+                    $("#Layout_avatarbtn").show();
 					Paging_loadMain();
 				}
 				else if (obj["status_code"] == 1) //fail

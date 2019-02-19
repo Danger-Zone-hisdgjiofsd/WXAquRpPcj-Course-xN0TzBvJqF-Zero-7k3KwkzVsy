@@ -32,17 +32,51 @@ function Paging_ShowSpinner(show)
 }
 
 function Paging_Listitemload() { 
-    $("li a").click(function (e) {
-        e.preventDefault(); //To prevent the default anchor tag behaviour
-        var url = this.href;
-        Paging_load(url);
+    $("li a").click(function (event) {
+        event.preventDefault();
+        Paging_load(this.href);
     });
+}
+
+function Paging_Listitemload_tmp() { //For testing    
+    $("#dropdownnameNicon").click(function (event) {
+        event.preventDefault();
+        Paging_load(this.href);
+    });
+    $("#dropdownprofile").click(function (event) {
+        event.preventDefault();
+        Paging_load(this.href);
+    });
+    $("#dropdownmyupload").click(function (event) {
+        event.preventDefault();
+        Paging_load(this.href);
+    });
+    $("#dropdownhelp").click(function (event) {
+        event.preventDefault();
+        Paging_load(this.href);
+    });
+    $("#dropdowncontact").click(function (event) {
+        event.preventDefault();
+        Paging_load(this.href);
+    });
+}
+
+function Layoutbtn_display() {
+    if (g_login == false) {
+        $("#Layout_loginbtn").show();
+        $("#Layout_avatarbtn").hide();
+    }
+    else { 
+        $("#Layout_loginbtn").hide();
+        $("#Layout_avatarbtn").show();
+    }
 }
 
 $(document).ready(function () {
     Paging_loadMain();
-    Paging_Listitemload();
+    Paging_Listitemload_tmp();
 	$("#Layout_loginbtn").click(Paging_loadLogin);
 	$("#Layout_homebtn").click(Paging_loadMain);
-	$("#navbar_logo").click(Paging_loadMain);
+    $("#navbar_logo").click(Paging_loadMain);
+    Layoutbtn_display();
 });
