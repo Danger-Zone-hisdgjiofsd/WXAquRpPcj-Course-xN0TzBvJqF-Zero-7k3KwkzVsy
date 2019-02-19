@@ -32,19 +32,21 @@ function Form_Login_Valid_Username(username, block)
 		Form_Login_changeValidTxt(block, 0, "Username must has length between 5 and 20");
         return false;
     }
+    var letterdigit_count = 0;
     for (var i = 0; i < username.length; i++)
-
-        if (username[0] == '-' || username[0] == '_') {
-
-            Form_Login_changeValidTxt(block, 0, "Username should not start with underscore (_) or hyphen (-).");
+    {
+        if ((username[i] >= '0' && username[i] <= '9') || (username[i] >= 'a' && username[i] <= 'z') || (username[i] >= 'A' && username[i] <= 'Z'))
+            letterdigit_count++;
+        else if (username[i] != '-' && username[i] != '_')
+        {
+            Form_Login_changeValidTxt(block, 0, "Username should contain only letter, digit, underscore (_) and hyphen (-).");
             return false
         }
-		if (!((username[i] >= '0' && username[i] <= '9') || (username[i] >= 'a' && username[i] <= 'z') || (username[i] == '-') || username[i] == '_'))
-		{
-			Form_Login_changeValidTxt(block, 0, "Username should contain only letter, digit, underscore (_) and hyphen (-).");
-			return false
-		}
-	}
+    }
+    if (letterdigit_count < 3) {
+        Form_Login_changeValidTxt(block, 0, "Username should contain at least 3 letters or digits.");
+        return false
+    }
 	Form_Login_changeValidTxt(block, 1);
 	return true;
 }
@@ -81,12 +83,12 @@ function Form_Login_Valid_Password(pword, block)
 		Form_Login_changeValidTxt(block, 0, "Password must has length between 5 and 20");
 		return false;
 	}
-	var specials = "~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/";
+	var specials = "~!@#$%^&*_-+=`|\\(){}[]:;\"'<>,.?/";
 	for (var i = 0; i < pword.length; i++)
 	{
-		if (!((pword[i] >= '0' && pword[i] <= '9') || (pword[i] >= 'a' && pword[i] <= 'z') || (pword[i] >= '0' && pword[i] <= '9') || specials.includes(pword[i])))
+		if (!((pword[i] >= '0' && pword[i] <= '9') || (pword[i] >= 'a' && pword[i] <= 'z') || (pword[i] >= 'A' && pword[i] <= 'Z') || specials.includes(pword[i])))
 		{
-			Form_Login_changeValidTxt(block, 0 , "Password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
+			Form_Login_changeValidTxt(block, 0 , "Password should contain only letter, digit, special characters ~!@#$%^&*_-+=`|\\(){}[]:;\"'<>,.?/");
 			return false;
 		}
 	}
@@ -95,7 +97,7 @@ function Form_Login_Valid_Password(pword, block)
 }
 $(document).ready(function () {
        //signin part
-        $("#Form_Login_Signin_btn").click(function () {
+    $("#Form_Login_Signin_btn").click(function () {
             var msg_to_send = {
                 "using_email": false,
                 "password": null,
@@ -132,16 +134,18 @@ $(document).ready(function () {
 			$("#Form_Login_inputPassword").prop('disabled', true);
 			$("#Form_Login_Remember_PW").prop("disabled", true);
 			$("#Form_Login_Signin_btn").prop("disabled", true);
-            postJSON("/api/Login", JSON.stringify(msg_to_send), function(obj){
+            postJSON("/api/Login", (msg_to_send), function(obj){
 				$("#Form_Login_account").prop('disabled', false);
 				$("#Form_Login_inputPassword").prop('disabled', false);
 				$("#Form_Login_Remember_PW").prop("disabled", false);
 				$("#Form_Login_Signin_btn").prop("disabled", false);
 				if (obj["status_code"] == 0) //success 
 				{
-					g_auth_token = obj["auth_token"];
-					g_login = true;
-					localStorage.saved_auth_token = obj["auth_token"];
+                    g_auth_token = obj["auth_token"];
+                    g_username = obj["username"];
+                    g_login = true;
+                    if ($("#Form_Login_Remember_PW").is(":checked"))
+					    localStorage.saved_auth_token = obj["auth_token"];
 					$("#Layout_loginbtn").hide();
 					Paging_loadMain();
 				}
@@ -150,7 +154,14 @@ $(document).ready(function () {
 					$("#Form_Login_Login_DisplayMsg").css("color", "red");
 					$("#Form_Login_Login_DisplayMsg").html(obj["display_message"]);
 				}
-			});
+            }, function () {
+                $("#Form_Login_account").prop('disabled', false);
+                $("#Form_Login_inputPassword").prop('disabled', false);
+                $("#Form_Login_Remember_PW").prop("disabled", false);
+                $("#Form_Login_Signin_btn").prop("disabled", false);
+                $("#Form_Login_Login_DisplayMsg").css("color", "red");
+                $("#Form_Login_Login_DisplayMsg").html("Server error");
+            });
         });
 
         //register part
@@ -206,7 +217,7 @@ $(document).ready(function () {
 			$("#Form_Login_Register_PW").prop('disabled', true);
 			$("#Register_ConfirmPW").prop('disabled', true);
 			$("#Form_Login_signupbtn").prop('disabled', true);
-			postJSON("/api/Register", JSON.stringify(msg_to_send), function(obj){
+			postJSON("/api/Register", (msg_to_send), function(obj){
 				$("#Form_Login_Register_Mail").prop('disabled', false);
 				$("#Form_Login_Register_UserName").prop('disabled', false);
 				$("#Form_Login_Register_PW").prop('disabled', false);
@@ -221,7 +232,15 @@ $(document).ready(function () {
 					$("#Form_Login_Signup_DisplayMsg").css("color", "red");
 				}
 				$("#Form_Login_Signup_DisplayMsg").html(obj["display_message"]);
-			}, null);
+            }, function () {
+                $("#Form_Login_Register_Mail").prop('disabled', false);
+                $("#Form_Login_Register_UserName").prop('disabled', false);
+                $("#Form_Login_Register_PW").prop('disabled', false);
+                $("#Register_ConfirmPW").prop('disabled', false);
+                $("#Form_Login_signupbtn").prop('disabled', false);
+                $("#Form_Login_Signup_DisplayMsg").css("color", "red");
+                $("#Form_Login_Signup_DisplayMsg").html("Server error");
+            });
         });
 
         $("#Form_Login_ForgotPW_btn").click(function () {
@@ -236,7 +255,7 @@ $(document).ready(function () {
             }
 			$("#Form_Login_ForgotPW_btn").prop('disabled', true);
 			$("#Form_Login_ForgotPW_email").prop('disabled', true);
-            postJSON("/api/ForgotPassword/Request_Change", JSON.stringify(msg_to_send), function(obj)
+            postJSON("/api/ForgotPassword/Request_Change", (msg_to_send), function(obj)
 			{
 				$("#Form_Login_ForgotPW_btn").prop('disabled', false);
 				$("#Form_Login_ForgotPW_email").prop('disabled', false);
@@ -249,6 +268,12 @@ $(document).ready(function () {
 					$("#Form_Login_ForgotPW_DisplayMsg").css("color", "red");
 				}
 				$("#Form_Login_ForgotPW_DisplayMsg").html(obj["display_message"]);
-			});
+            }, function () {
+                $("#Form_Login_ForgotPW_btn").prop('disabled', false);
+                $("#Form_Login_ForgotPW_email").prop('disabled', false);
+                $("#Form_Login_ForgotPW_DisplayMsg").css("color", "red");
+                $("#Form_Login_ForgotPW_DisplayMsg").html("Server error");
+               });
+
         });
 });
