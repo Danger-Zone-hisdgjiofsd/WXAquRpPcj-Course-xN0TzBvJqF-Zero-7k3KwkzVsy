@@ -33,6 +33,7 @@ function Form_Login_Valid_Username(username, block)
         return false;
     }
     for (var i = 0; i < username.length; i++)
+    {
 
         if (username[0] == '-' || username[0] == '_') {
 
@@ -81,12 +82,12 @@ function Form_Login_Valid_Password(pword, block)
 		Form_Login_changeValidTxt(block, 0, "Password must has length between 5 and 20");
 		return false;
 	}
-	var specials = "~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/";
+	var specials = "~!@#$%^&*_-+=`|\\(){}[]:;\"'<>,.?/";
 	for (var i = 0; i < pword.length; i++)
 	{
 		if (!((pword[i] >= '0' && pword[i] <= '9') || (pword[i] >= 'a' && pword[i] <= 'z') || (pword[i] >= '0' && pword[i] <= '9') || specials.includes(pword[i])))
 		{
-			Form_Login_changeValidTxt(block, 0 , "Password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
+			Form_Login_changeValidTxt(block, 0 , "Password should contain only letter, digit, special characters ~!@#$%^&*_-+=`|\\(){}[]:;\"'<>,.?/");
 			return false;
 		}
 	}
