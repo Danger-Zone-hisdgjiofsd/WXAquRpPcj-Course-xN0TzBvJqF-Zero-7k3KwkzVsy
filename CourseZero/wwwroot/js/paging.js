@@ -1,4 +1,4 @@
-function Paging_loadMain()
+﻿function Paging_loadMain()
 {
 	//To be done
 	Paging_load("./profile.html");
@@ -19,12 +19,14 @@ function Paging_ShowSpinner(show)
 {
 	if (show)
 	{
-		$("#Layout_spinner_layer").show();
+        $("#Layout_spinner_layer").show();
+        $("#Layout_frame").stop(true, true).fadeOut('slow');
 		$("#Layout_frame_content").prop('disabled', true);
 	}
 	else
 	{
-		$("#Layout_spinner_layer").hide();
+        $("#Layout_spinner_layer").hide();
+        $("#Layout_frame").stop(true, true).fadeIn('slow');
 		$("#Layout_frame_content").prop('disabled', false);
 	}
 }
