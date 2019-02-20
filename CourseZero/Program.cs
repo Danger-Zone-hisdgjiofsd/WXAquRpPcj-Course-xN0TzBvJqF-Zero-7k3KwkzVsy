@@ -26,6 +26,8 @@ namespace CourseZero
             //Creating Upload Queue Folder
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/UploadsQueue/"))
                 Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "/UploadsQueue/");
+            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/Avatars/"))
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "/Avatars/");
             Console.WriteLine("Start");
             var host = CreateWebHostBuilder(args).Build();
             Console.WriteLine("Run webhost");

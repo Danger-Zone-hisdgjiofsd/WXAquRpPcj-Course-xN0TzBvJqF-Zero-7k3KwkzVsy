@@ -193,7 +193,7 @@ namespace CourseZero.Controllers
             private (bool valid, string error_str) password_is_valid()
             {
                 if (!password.All(c => char.IsLetterOrDigit(c) || is_char_special(c)))
-                    return (false, "Password should contain only letter, digit, special characters ~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/");
+                    return (false, "Password should contain only letter, digit, special characters ~!@#$%^&*_-+=`|\\(){}[]:;\"'<>,.?/");
                 return (true, null);
             }
             private (bool valid, string error_str) email_is_valid()
@@ -213,7 +213,7 @@ namespace CourseZero.Controllers
             }
             private static bool is_char_special(char c)
             {
-                string specials = "~!@#$%^&*_-+=` | \\(){}[]:;\"'<>,.?/";
+                string specials = "~!@#$%^&*_-+=`|\\(){}[]:;\"'<>,.?/";
                 foreach (var s in specials)
                 {
                     if (c == s)

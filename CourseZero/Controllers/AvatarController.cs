@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CourseZero.Filters;
 using CourseZero.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -15,41 +16,35 @@ using Microsoft.Net.Http.Headers;
 namespace CourseZero.Controllers
 {
     [Route("api/[controller]")]
-    public class UploadController : Controller
+    public class AvatarController : Controller
     {
-        static string[] AllowedFiles_Types = {".txt", ".doc", ".docx", ".ppt", ".pptx", ".pdf", ".wav", ".mp3", ".3gp", ".mp4", ".avi", ".mkv"};
+        static string[] AllowedFiles_Types = { ".png", ".jpg", ".jpeg", ".gif" };
         readonly AuthTokenContext authTokenContext;
-        readonly UploadHistContext uploadHistContext;
-        public UploadController(AuthTokenContext authTokenContext, UploadHistContext uploadHistContext)
+        public AvatarController(AuthTokenContext authTokenContext)
         {
             this.authTokenContext = authTokenContext;
-            this.uploadHistContext = uploadHistContext;
         }
         /// <summary>
         /// Keys are (first one MUST be auth_token):
         /// auth_token,
-        /// file_name,
-        /// file_description,
         /// file,
-        /// [file has to be less than 100MB]
+        /// [file has to be less than 1MB]
         /// </summary>
         /// <returns></returns>
         [HttpPost]
         [Route("[action]")]
         [Consumes("multipart/form-data")]
-        [RequestSizeLimit(100_000_000)]
-        public async Task<IActionResult> UploadFile()
+        [RequestSizeLimit(1_000_000)]
+        public async Task<IActionResult> UploadAvatar()
         {
             var boundary = Request.GetMultipartBoundary();
             if (string.IsNullOrWhiteSpace(boundary))
                 return BadRequest();
-            var reader = new MultipartReader(boundary, Request.Body, 80 * 1024);
+            var reader = new MultipartReader(boundary, Request.Body, 1000000);
             var valuesByKey = new Dictionary<string, string>();
             MultipartSection section;
             bool file_found = false;
             bool auth_found = false;
-            string file_name = "";
-            string file_description = "";
             int userID = -1;
             while ((section = await reader.ReadNextSectionAsync()) != null)
             {
@@ -62,17 +57,7 @@ namespace CourseZero.Controllers
                     string type = fileName.Substring(fileName.LastIndexOf('.'));
                     if (!File_Allowed(type))
                         return BadRequest();
-                    if (file_name == "")
-                        file_name = fileSection.FileName;
-                    UploadHist uploadHist = new UploadHist();
-                    uploadHist.Uploader_UserID = userID;
-                    uploadHist.Upload_Time = DateTime.Now;
-                    uploadHist.Processed = false;
-                    uploadHist.File_Name = file_name;
-                    uploadHist.File_typename = type.Substring(1);
-                    await uploadHistContext.AddAsync(uploadHist);
-                    await uploadHistContext.SaveChangesAsync();
-                    using (var stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "/UploadsQueue/" + uploadHist.ID + type, FileMode.CreateNew))
+                    using (var stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "/Avatars/" + userID + ".png", FileMode.Create))
                         await fileSection.FileStream.CopyToAsync(stream);
                 }
                 else if (contentDispo.IsFormDisposition())
@@ -86,10 +71,6 @@ namespace CourseZero.Controllers
                             return Unauthorized();
                         auth_found = true;
                     }
-                    if (formSection.Name == "file_name")
-                        file_name = value;
-                    if (formSection.Name == "file_description")
-                        file_description = value;
                 }
             }
             if (file_found && auth_found)
@@ -103,6 +84,31 @@ namespace CourseZero.Controllers
                     return true;
             return false;
         }
-
+        /// <summary>
+        /// Return Avatars/default.png if userid is invalid
+        /// </summary>
+        /// <param name="avatarByUserid_Request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("[action]")]
+        [Consumes("application/json")]
+        [ServiceFilter(typeof(AuthRequired))]
+        public IActionResult GetAvatarByUserid([FromBody]GetAvatarByUserid_Request avatarByUserid_Request)
+        {
+            if (System.IO.File.Exists((AppDomain.CurrentDomain.BaseDirectory + "Avatars/" + avatarByUserid_Request.user_id + ".png")))
+                 return PhysicalFile(AppDomain.CurrentDomain.BaseDirectory + "Avatars/" + avatarByUserid_Request.user_id + ".png", "application/octet-stream");
+            return PhysicalFile(AppDomain.CurrentDomain.BaseDirectory + "Avatars/default.png", "application/octet-stream");
+        }
+        public class GetAvatarByUserid_Request
+        {
+            [Required]
+            [StringLength(128, MinimumLength = 128)]
+            public string auth_token { get; set; }
+            /// <summary>
+            /// The avatar owner 
+            /// </summary>
+            [Required]
+            public int user_id { get; set; }
+        }
     }
 }
