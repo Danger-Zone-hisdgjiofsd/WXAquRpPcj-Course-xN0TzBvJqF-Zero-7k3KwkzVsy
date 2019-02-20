@@ -136,8 +136,10 @@ $(document).ready(function () {
 				{
 					g_auth_token = obj["auth_token"];
 					g_login = true;
-					localStorage.saved_auth_token = obj["auth_token"];
-					$("#Layout_loginbtn").hide();
+                    localStorage.saved_auth_token = obj["auth_token"];
+                    $("#layout_avatar").show();
+                    $("#Layout_loginbtn").hide();
+                    
 					Paging_loadMain();
 				}
 				else if (obj["status_code"] == 1) //fail
@@ -155,11 +157,14 @@ $(document).ready(function () {
         var confirm_block = document.getElementById("Form_Login_confirmHelpBlock");
 
         $("#Form_Login_Register_Mail").on('keyup', function () {
+        
 				Form_Login_Valid_Email($("#Form_Login_Register_Mail").val(), email_block);
 			}
         )
-        $("#Form_Login_Register_UserName").on('keyup', function () {
-			Form_Login_Valid_Username($("#Form_Login_Register_UserName").val(), username_block)
+    $("#Form_Login_Register_UserName").on('keyup', function () {
+        $("#Form_Login_Valid_Email").css("color", "yellow");
+            Form_Login_Valid_Username($("#Form_Login_Register_UserName").val(), username_block)
+            
         })
 
         $("#Form_Login_Register_PW").on('keyup', function () {
@@ -185,6 +190,7 @@ $(document).ready(function () {
 				return;
 			}
             if (!Form_Login_Valid_Email($("#Form_Login_Register_Mail").val(), email_block) || !Form_Login_Valid_Username($("#Form_Login_Register_UserName").val(), username_block) || !Form_Login_Valid_Password($("#Form_Login_Register_PW").val(), password_block) ) {
+
                 //Form_Login_changeValidTxt(confirm_block, 0, "APassword does not match");
                 return;
             }
