@@ -2,17 +2,18 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <!-- Make sure this is on the top of all, except jquery-->
     <script src="./js/global_vars.js"></script>
     <script src="./js/paging.js"></script>
+    <script src="./js/logout.js"></script>
     <!--Bootstrap JS -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js" integrity="sha384-7aThvCh9TypR7fIc2HV4O/nFMVCBwyIUKL8XCtKE+8xgCgl/PQGuFsvShjr74PBp" crossorigin="anonymous"></script>
     <!--Bootstrap JS -->
 
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
@@ -40,111 +41,114 @@
 <body>
 
     <div>
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-        <div class="row w-100">
-            <div class="col-2">
-                <a class="navbar-brand" href="#home"></a>
-                <div class="logo">
-                    <img style='height: 100%; width: 100%; ' src="./material/logo.png" id="navbar_logo" />
-                </div>
-            </div>
-            <div class="col-8 align-self-center pt-2">
-                <form class="form-inline mx-auto w-50">
-                    <input class="form-control mr-sm-1 col-6" type="search" placeholder="Search.." aria-label="Search"></input>
-                    <select class="form-control mr-sm-1 custom-select" style="color:gray">
-                        <option value="0" selected="selected">Default</option>
-                        <option value="1">Video</option>
-                        <option value="2">PDF File</option>
-                        <option value="3">...</option>
-                    </select>
-                    <button class="btn btn-info my-2 my-sm-0" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
-            <div class="btn-toolbar col-2 align-self-center pt-2">
-                <div class="dropdown">
-                    <button id="phone-search-btn" data-toggle="dropdown" class="btn btn-info my-2 my-sm-0 mr-2 dropdown-toggle" type="button"aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
-                        <form class="form">
-                            <div class="form-group">
-                                <label for="mobliedropdownformSearch">Search</label>
-                                <input class="form-control" type="search" placeholder="Search.." aria-label="Search"></input>
-                            </div>
-                            <div class="form-group">
-                                <label for="mobliedropdownformCategory">Category</label>
-                                <select class="form-control custom-select" style="color:gray">
-                                    <option value="0" selected="selected">Default</option>
-                                    <option value="1">Video</option>
-                                    <option value="2">PDF File</option>
-                                    <option value="3">...</option>
-                                </select>
-                            </div>
-                            <button class="btn btn-info my-2 my-sm-0 col" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </form>
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <div class="row w-100">
+                <div class="col-2">
+                    <a class="navbar-brand" href="#home"></a>
+                    <div class="logo">
+                        <img style='height: 100%; width: 100%; ' src="./material/logo.png" id="navbar_logo" />
                     </div>
                 </div>
-                <button id="uploadbtn" class="btn btn-info my-2 my-sm-0 mr-2">
-                    <i class="fas fa-upload"></i>
-                </button>
+                <div class="col-8 align-self-center pt-2">
+                    <form class="form-inline mx-auto w-50">
+                        <input class="form-control mr-sm-1 col-6" type="search" placeholder="Search.." aria-label="Search"></input>
+                        <select class="form-control mr-sm-1 custom-select" style="color:gray">
+                            <option value="0" selected="selected">Default</option>
+                            <option value="1">Video</option>
+                            <option value="2">PDF File</option>
+                            <option value="3">...</option>
+                        </select>
+                        <button class="btn btn-info my-2 my-sm-0" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="btn-toolbar col-2 align-self-center pt-2">
+                    <div class="dropdown">
+                        <button id="phone-search-btn" data-toggle="dropdown" class="btn btn-info my-2 my-sm-0 mr-2 dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
+                            <form class="form">
+                                <div class="form-group">
+                                    <label for="mobliedropdownformSearch">Search</label>
+                                    <input class="form-control" type="search" placeholder="Search.." aria-label="Search"></input>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mobliedropdownformCategory">Category</label>
+                                    <select class="form-control custom-select" style="color:gray">
+                                        <option value="0" selected="selected">Default</option>
+                                        <option value="1">Video</option>
+                                        <option value="2">PDF File</option>
+                                        <option value="3">...</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-info my-2 my-sm-0 col" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <button id="uploadbtn" class="btn btn-info my-2 my-sm-0 mr-2">
+                        <i class="fas fa-upload"></i>
+                    </button>
 
-                <button id="Layout_loginbtn" type="button" class="btn btn-info my-2 my-sm-0 mr-2">Login</button>
-                <div class="dropdown dropleft" style="cursor: pointer;">
-                    <img id="layout_avatar" data-toggle="dropdown" src="./material/blank-profile-picture.png">
-                    <ul class="dropdown-menu" style="width:250px;">
-                        <li class="container">
-                            <div class="row pl-3"><a href="profile.html">
-                                <img id="dropdown_avatar" data-toggle="dropdown" src="./material/blank-profile-picture.png">
-                                <a class="pl-2 pt-3" style="font-weight: bold;">User Name</a>
-                                </a>
-                            </div>
-                        </li>
-                        <li class="dropdown-divider"></li>
-                        <li class="dropdown-item"><a href="profile.html">Profile</a></li>
-                        <li class="dropdown-item"><a href="myupload.html">My upload</a></li>
-                        <li class="dropdown-item"><a href="#">My favorite</a></li>
-                        <li class="dropdown-divider"></li>
-                        <li class="dropdown-item"><a href="#">Sign Out</a></li>
-                    </ul>
+                    <button id="Layout_loginbtn" type="button" class="btn btn-info my-2 my-sm-0 mr-2">Login</button>
+                    <div class="dropdown dropleft" style="cursor: pointer;">
+                        <img id="layout_avatar" data-toggle="dropdown" src="./material/blank-profile-picture.png">
+                        <ul class="dropdown-menu" style="width:250px;">
+                            <li class="container">
+                                <div class="row pl-3">
+                                    <a href="profile.html">
+                                        <img id="dropdown_avatar" data-toggle="dropdown" src="./material/blank-profile-picture.png">
+                                        <a class="pl-2 pt-3" style="font-weight: bold;" id="layout_username">User Name</a>
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li class="dropdown-item"><a href="profile.html">Profile</a></li>
+                            <li class="dropdown-item"><a href="myupload.html">My upload</a></li>
+                            <li class="dropdown-item"><a href="#">My favorite</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li class="dropdown-item" id="signout_btn" onclick=" SignOut_Clicked()">Sign Out</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <nav class="navbar-btn navbar-light" style="background-color: #e3f2fd;">
-        <div id="navbtn" class="container-fluid">
-            <div class="row w-100">
-                <div class="btn col" href="#home" id="Layout_homebtn"><i class="fas fa-home pr-2"></i><span>Home</span></div>
-                <div class="btn col" href="#history"><i class="fas fa-history pr-2"></i><span>History</span></div>
-                <div class="btn col" href="#watch_later"><i class="fas fa-clock pr-2"></i><span>Watch Later</span></div>
-                <div class="btn dropdown col" data-toggle="dropdown">
-                    <i class="fas fa-question pr-2"></i><span class="caret">Other</span>
-                    <ul id="Layout_otherbtn" class="dropdown-menu w-100" style="background-color: #4e5e69;">
-                        <li><a href="help.html">Help</a></li>
-                        <li><a href="contact.html">Contact us</a></li>
-                    </ul>
+        <nav class="navbar-btn navbar-light" style="background-color: #e3f2fd;">
+            <div id="navbtn" class="container-fluid">
+                <div class="row w-100">
+                    <div class="btn col" href="#home" id="Layout_homebtn"><i class="fas fa-home pr-2"></i><span>Home</span></div>
+                    <div class="btn col" href="#history"><i class="fas fa-history pr-2"></i><span>History</span></div>
+                    <div class="btn col" href="#watch_later"><i class="fas fa-clock pr-2"></i><span>Watch Later</span></div>
+                    <div class="btn dropdown col" data-toggle="dropdown">
+                        <i class="fas fa-question pr-2"></i><span class="caret">Other</span>
+                        <ul id="Layout_otherbtn" class="dropdown-menu w-100" style="background-color: #4e5e69;">
+                            <li><a href="help.html">Help</a></li>
+                            <li><a href="contact.html">Contact us</a></li>
+                        </ul>
+                    </div>
+
                 </div>
-            
             </div>
-        </div>
-    </nav>
+        </nav>
     </div>
 
-	<div id="Layout_frame" class="container-fluid " style="background:white; padding:0;">	
-	<div id="Layout_spinner_layer" class="fullscreen text-center" style="background:yellow;background: rgba(0, 0, 0, 0.05);  position: absolute; display:none;">
-		<div class="row h-100">
-			<div class="col-sm-12 my-auto">
-				<i class="fas fa-circle-notch fa-7x " style="color: #28ab4b;animation: spin 2s linear infinite;"></i>
-			</div>
-		</div>
-	</div>
-	<div id="Layout_frame_content">
-		
-	</div>
-	</div>
+    <div id="Layout_frame" class="container-fluid " style="background:white; padding:0;">
+        <div id="Layout_spinner_layer" class="fullscreen text-center" style="background:yellow;background: rgba(0, 0, 0, 0.05);  position: absolute; display:none;">
+            <div class="row h-100">
+                <div class="col-sm-12 my-auto">
+                    <i class="fas fa-circle-notch fa-7x " style="color: #28ab4b;animation: spin 2s linear infinite;"></i>
+                </div>
+            </div>
+        </div>
+        <div id="Layout_frame_content">
+
+        </div>
+    </div>
+
+   
 </body>
 </html>
