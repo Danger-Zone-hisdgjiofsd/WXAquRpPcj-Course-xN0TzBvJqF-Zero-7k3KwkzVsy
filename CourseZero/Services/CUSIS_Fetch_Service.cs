@@ -39,6 +39,7 @@ namespace CourseZero.Services
         static Dictionary<string, Course> Courses = new Dictionary<string, Course>();
         static string Courses_Json_Str = "";
         static bool Courses_Json_Str_Lazy_added = false;
+        public static (int lower, int upper) CourseID_range = (int.MaxValue, int.MinValue);
         bool Initial = true;
         public static string Get_Course_Json_Str()
         {
@@ -58,6 +59,10 @@ namespace CourseZero.Services
                 foreach (var course in CourseContext.Courses)
                 {
                     Courses.Add(course.Prefix+course.Course_Code, course);
+                    if (CourseID_range.lower > course.ID)
+                        CourseID_range.lower = course.ID;
+                    if (CourseID_range.upper < course.ID)
+                        CourseID_range.upper = course.ID;
                 }
             }
             while (true)
@@ -100,12 +105,17 @@ namespace CourseZero.Services
                 }
                 Courses.Clear();
                 Courses_Json_Str_Lazy_added = false;
+                CourseID_range = (int.MaxValue, int.MinValue);
                 using (var scope = serviceScopeFactory.CreateScope())
                 {
                     var CourseContext = scope.ServiceProvider.GetService<CourseContext>();
                     foreach (var course in CourseContext.Courses)
                     {
                         Courses.Add(course.Prefix + course.Course_Code, course);
+                        if (CourseID_range.lower > course.ID)
+                            CourseID_range.lower = course.ID;
+                        if (CourseID_range.upper < course.ID)
+                            CourseID_range.upper = course.ID;
                     }
                 }
                 Get_Course_Json_Str();
