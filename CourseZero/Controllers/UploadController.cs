@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CourseZero.Models;
+using CourseZero.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace CourseZero.Controllers
         /// auth_token,
         /// file_name,
         /// file_description,
+        /// related_courseid,
         /// file,
         /// [file has to be less than 100MB]
         /// </summary>
@@ -48,13 +50,14 @@ namespace CourseZero.Controllers
             MultipartSection section;
             bool file_found = false;
             bool auth_found = false;
+            int courseID = -1;
             string file_name = "";
             string file_description = "";
             int userID = -1;
             while ((section = await reader.ReadNextSectionAsync()) != null)
             {
                 var contentDispo = section.GetContentDispositionHeader();
-                if (contentDispo.IsFileDisposition() && !file_found && auth_found)
+                if (contentDispo.IsFileDisposition() && !file_found && auth_found && courseID != -1)
                 {
                     file_found = true;
                     var fileSection = section.AsFileSection();
@@ -70,6 +73,7 @@ namespace CourseZero.Controllers
                     uploadHist.Processed = false;
                     uploadHist.File_Name = file_name;
                     uploadHist.File_typename = type.Substring(1);
+                    uploadHist.Related_courseID = courseID;
                     await uploadHistContext.AddAsync(uploadHist);
                     await uploadHistContext.SaveChangesAsync();
                     using (var stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "/UploadsQueue/" + uploadHist.ID + type, FileMode.CreateNew))
@@ -90,6 +94,12 @@ namespace CourseZero.Controllers
                         file_name = value;
                     if (formSection.Name == "file_description")
                         file_description = value;
+                    if (formSection.Name == "related_courseid")
+                    {
+                        courseID = int.TryParse(value, out courseID) ? courseID : -1;
+                        if (CUSIS_Fetch_Service.CourseID_range.lower > courseID || courseID > CUSIS_Fetch_Service.CourseID_range.upper)
+                            return BadRequest();
+                    }
                 }
             }
             if (file_found && auth_found)

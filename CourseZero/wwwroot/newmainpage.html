@@ -2,15 +2,21 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Make sure this is on the top of all, except jquery-->
     <script src="./js/global_vars.js"></script>
     <script src="./js/paging.js"></script>
-
     <!--Bootstrap JS -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js" integrity="sha384-7aThvCh9TypR7fIc2HV4O/nFMVCBwyIUKL8XCtKE+8xgCgl/PQGuFsvShjr74PBp" crossorigin="anonymous"></script>
+    <!--Bootstrap JS -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <!--Bootstrap JS -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <link rel="stylesheet" href="newmainpage.css">
@@ -90,19 +96,19 @@
                 <div id="Layout_avatarbtn" class="dropdown dropleft" style="cursor: pointer;">
                     <img id="layout_avatar" data-toggle="dropdown" src="./material/blank-profile-picture.png">
                     <ul class="dropdown-menu" style="width:250px;">
-                        <li class="container dropdown-item">
-                            <div class="row pl-3"><a id="dropdownnameNicon" href="profile.html">
+                        <li class="container dropdown-item"   id="dropdownnameNicon" href="profile.html">
+                            <div class="row pl-3"><a>
                                 <img id="dropdown_avatar" data-toggle="dropdown" src="./material/blank-profile-picture.png">
                                 <span class="pl-2 pt-3" style="font-weight: bold;">User Name</span>
                                 </a>
                             </div>
                         </li>
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item"><a id="dropdownprofile" href="profile.html">Profile</a></li>
-                        <li class="dropdown-item"><a id="dropdownmyupload" href="myupload.html">My upload</a></li>
-                        <li class="dropdown-item"><a id="dropdownmyfavor" href="#">My favorite</a></li>
+                        <li class="dropdown-item"  id="dropdownprofile" href="profile.html"><a>Profile</a></li>
+                        <li class="dropdown-item"  id="dropdownmyupload" href="myupload.html"><a>My upload</a></li>
+                        <li class="dropdown-item"  id="dropdownmyfavor" href="#"><a>My favorite</a></li>
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item" onclick="SignOut_Clicked()"><a id="dropdownsignout" href="#">Sign Out</a></li>
+                        <li class="dropdown-item"  id="dropdownsignout" href="#"><a>Sign Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -118,8 +124,8 @@
                 <div class="btn dropdown col" data-toggle="dropdown">
                     <i class="fas fa-question pr-2"></i><span class="caret">Other</span>
                     <ul id="Layout_otherbtn" class="dropdown-menu w-100" style="background-color: #4e5e69;">
-                        <li class="dropdown-item"><a id="dropdownhelp" href="help.html">Help</a></li>
-                        <li class="dropdown-item"><a id="dropdowncontact" href="contact.html">Contact us</a></li>
+                        <li class="dropdown-item"   id="dropdownhelp" href="help.html"><a>Help</a></li>
+                        <li class="dropdown-item"   id="dropdowncontact" href="contact.html"><a>Contact us</a></li>
                     </ul>
                 </div>
             
