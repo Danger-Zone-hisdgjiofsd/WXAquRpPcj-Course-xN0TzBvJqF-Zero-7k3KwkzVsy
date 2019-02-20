@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <Folder Include="References\" />
-    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
   <ItemGroup>
