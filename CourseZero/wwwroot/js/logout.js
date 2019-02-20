@@ -4,19 +4,22 @@
     }
     msg_to_send.auth_token = g_auth_token;
     g_login = false;
-    postJSON("/api/Session/Logout", JSON.stringify(msg_to_send));
-    localStorage.removeItem("saved_auth_token");
+    postJSON("/api/Session/Logout", msg_to_send);
+    if (localStorage.getItem("saved_auth_token")!=null)
+        localStorage.removeItem("saved_auth_token");
 }
 
 function Logout_Spec(token) {
+
     var msg_to_send = {
         "auth_token": null,
         "token_to_be_removed": null
     }
+
     msg_to_send.auth_token = g_auth_token;
     msg_to_send.token_to_be_removed = token;
 
-    postJSON("/api/Session/Logout_Specific_Session", JSON.stringify(msg_to_send));
+    postJSON("/api/Session/Logout_Specific_Session", msg_to_send);
    
 }
 
@@ -53,14 +56,15 @@ function getAllSession() {
     var msg_to_send = {
         "auth_token": null
     }
-
+    console.log(g_auth_token);
+    
     msg_to_send.auth_token = g_auth_token;
-
-    postJSON("/api/Session/Get_All_Sessions", JSON.stringify(msg_to_send), function (obj) {
+    console.log(msg_to_send);
+    postJSON("/api/Session/Get_All_Sessions", msg_to_send, function (obj) {
         sessions = obj["sessions"];
         if (obj["status_code"] == 0) //success
         {
-
+            
             var text;
             for (var i = 0; i < sessions.length; i++) {
                 if (sessions[i].token == msg_to_send.auth_token) {
