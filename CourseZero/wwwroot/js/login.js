@@ -150,9 +150,6 @@ $(document).ready(function () {
                     $("#Layout_avatarbtn").show();
                     $(document).trigger('test');
                     Paging_loadMain();
-                   
-
-
 				}
 				else if (obj["status_code"] == 1) //fail
 				{

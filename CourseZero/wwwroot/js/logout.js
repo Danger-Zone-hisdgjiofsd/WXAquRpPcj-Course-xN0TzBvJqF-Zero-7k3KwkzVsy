@@ -103,9 +103,8 @@ function SignOut_Clicked()  {
         if (confirm('Logout?')) {
             Logout();
             Paging_loadMain();
-            $("#layout_avatar").hide();
+            $("#Layout_avatarbtn").hide();
             $("#Layout_loginbtn").show();
-
         }
     }
 }
