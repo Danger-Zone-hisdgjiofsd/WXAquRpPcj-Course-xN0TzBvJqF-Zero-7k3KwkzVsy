@@ -14,3 +14,9 @@ function postJSON (url, data, onsuccess, onfail)
     'error':  onfail
     })
 };
+$(document).ready(function(){
+    $("#Layout_loginbtn").on('test', function () {
+        alert('Test was caught');
+    }
+    );
+});

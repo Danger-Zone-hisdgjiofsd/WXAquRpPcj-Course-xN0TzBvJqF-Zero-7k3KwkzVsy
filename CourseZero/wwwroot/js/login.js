@@ -148,7 +148,11 @@ $(document).ready(function () {
 					    localStorage.saved_auth_token = obj["auth_token"];
                     $("#Layout_loginbtn").hide();
                     $("#Layout_avatarbtn").show();
-					Paging_loadMain();
+                    $(document).trigger('test');
+                    Paging_loadMain();
+                   
+
+
 				}
 				else if (obj["status_code"] == 1) //fail
 				{

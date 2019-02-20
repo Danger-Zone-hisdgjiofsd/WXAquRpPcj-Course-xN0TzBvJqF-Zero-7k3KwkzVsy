@@ -2,21 +2,15 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <!-- Make sure this is on the top of all, except jquery-->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="./js/global_vars.js"></script>
     <script src="./js/paging.js"></script>
+
     <!--Bootstrap JS -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js" integrity="sha384-7aThvCh9TypR7fIc2HV4O/nFMVCBwyIUKL8XCtKE+8xgCgl/PQGuFsvShjr74PBp" crossorigin="anonymous"></script>
-    <!--Bootstrap JS -->
-
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!--Bootstrap JS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <link rel="stylesheet" href="newmainpage.css">
@@ -108,7 +102,7 @@
                         <li class="dropdown-item"><a id="dropdownmyupload" href="myupload.html">My upload</a></li>
                         <li class="dropdown-item"><a id="dropdownmyfavor" href="#">My favorite</a></li>
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item"><a id="dropdownsignout" href="#">Sign Out</a></li>
+                        <li class="dropdown-item" onclick="SignOut_Clicked()"><a id="dropdownsignout" href="#">Sign Out</a></li>
                     </ul>
                 </div>
             </div>
