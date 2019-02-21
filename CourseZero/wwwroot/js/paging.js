@@ -53,11 +53,15 @@ function Paging_Listitemload() { //For testing
     });
     $("#dropdownhelp").click(function (event) {
         event.preventDefault();
-        Paging_load("help.html");
+        Paging_load("./help.html");
     });
     $("#dropdowncontact").click(function (event) {
         event.preventDefault();
-        Paging_load("contact.html");
+        Paging_load("./contact.html");
+    });
+    $("#advancedsearch").click(function (event) {
+        event.preventDefault();
+        Paging_load("./advancedsearch.html");
     });
 }
 

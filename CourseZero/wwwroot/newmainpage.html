@@ -4,9 +4,9 @@
 <head>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <!-- Make sure this is on the top of all, except jquery-->
+    <script src="./js/logout.js"></script>
     <script src="./js/global_vars.js"></script>
     <script src="./js/paging.js"></script>
-     <script src="./js/logout.js"></script>
     <!--Bootstrap JS -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -61,6 +61,7 @@
                     <button class="btn btn-info my-2 my-sm-0" type="submit">
                         <i class="fas fa-search"></i>
                     </button>
+                    <a id="advancedsearch" href="#advsearch" style="margin-left:55%">Advanced search</a>
                 </form>
             </div>
             <div class="btn-toolbar col-2 align-self-center pt-2">
@@ -105,11 +106,11 @@
                             </div>
                         </li>
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item"  id="dropdownprofile" href="profile.html"><a>Profile</a></li>
-                        <li class="dropdown-item"  id="dropdownmyupload" href="myupload.html"><a>My upload</a></li>
-                        <li class="dropdown-item"  id="dropdownmyfavor" href="#"><a>My favorite</a></li>
+                        <li class="dropdown-item" id="dropdownprofile" href="profile.html"><a>Profile</a></li>
+                        <li class="dropdown-item" id="dropdownmyupload" href="myupload.html"><a>My upload</a></li>
+                        <li class="dropdown-item" id="dropdownmyfavor" href="#"><a>My favorite</a></li>
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item"  id="dropdownsignout" onclick="SignOut_Clicked()" href="#"><a>Sign Out</a></li>
+                        <li class="dropdown-item" id="dropdownsignout" onclick="SignOut_Clicked()" href="#"><a>Sign Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -120,13 +121,13 @@
         <div id="navbtn" class="container-fluid">
             <div class="row w-100">
                 <div class="btn col" href="#home" id="Layout_homebtn"><i class="fas fa-home pr-2"></i><span>Home</span></div>
-                <div class="btn col" href="#history"><i class="fas fa-history pr-2"></i><span>History</span></div>
+                <div class="btn col" id="testing" href="#history"><i class="fas fa-history pr-2"></i><span>History</span></div>
                 <div class="btn col" href="#watch_later"><i class="fas fa-clock pr-2"></i><span>Watch Later</span></div>
                 <div class="btn dropdown col" data-toggle="dropdown">
                     <i class="fas fa-question pr-2"></i><span class="caret">Other</span>
                     <ul id="Layout_otherbtn" class="dropdown-menu w-100" style="background-color: #4e5e69;">
-                        <li class="dropdown-item"   id="dropdownhelp" href="help.html"><a>Help</a></li>
-                        <li class="dropdown-item"   id="dropdowncontact" href="contact.html"><a>Contact us</a></li>
+                        <li class="dropdown-item" id="dropdownhelp" href="help.html"><a>Help</a></li>
+                        <li class="dropdown-item" id="dropdowncontact" href="contact.html"><a>Contact us</a></li>
                     </ul>
                 </div>
             
