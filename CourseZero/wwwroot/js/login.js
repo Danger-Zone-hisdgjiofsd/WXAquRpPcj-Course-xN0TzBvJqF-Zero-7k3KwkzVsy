@@ -147,7 +147,7 @@ $(document).ready(function () {
                     if ($("#Form_Login_Remember_PW").is(":checked"))
 					    localStorage.saved_auth_token = obj["auth_token"];
                     $("#Layout_loginbtn").hide();
-                    $("#Layout_avatarbtn").show();
+                    $("#layout_avatar").show();
                     $(document).trigger('test');
                     Paging_loadMain();
 				}
