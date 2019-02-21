@@ -28,7 +28,7 @@ function adddiv(id) {
     var element = document.createElement('div');
     element.className = "pastupload row pt-4 pb-4";
     element.id = "Logout_Session_frame_" + id;
-    element.setAttribute("onclick", "pickLogout(this);");
+    element.setAttribute("onclick", "openModal(this);");
     element.setAttribute("style", "border: 1px; border-radius: 5px;border-style: solid;border-color: grey;");
     var word = document.createElement('div');
     word.className = "col-6";
@@ -57,7 +57,14 @@ function adddiv(id) {
 }
 
 var sessions, session_left=0;
+var ID_trigger;
+$('#logout_session_modal').on('show.bs.modal', function (e) {
+    var temp = $(e.relatedTarget);
+    console.log(temp);
+    ID_trigger = temp[0].id;
+    console.log(ID_trigger);
 
+});
 function checkShow() {
     if (session_left > 1)
         document.getElementById("Logout_Session_btn").style.display = "block";
@@ -117,28 +124,34 @@ function getAllSession() {
     });
 }
 
-function pickLogout(obj) {
-    if (confirm("Do you want to logout this session? ")) {
-        var id = obj.getAttribute('id');
-        var logout_select = id.substring(21);
-        Logout_Spec(sessions[logout_select].token);
-        obj.remove();
-        session_left--;
-        checkShow();
-        alert("Done");
-    }
+function openModal(obj) {
+    console.log("click");
+    $("#logout_session_modal").modal('show',obj);
 }
 
-function SignOut_Clicked()  {
+function pickLogout() {
+  
+
+    var logout_select = ID_trigger.substring(21);
+    var obj = "#" + ID_trigger;
+        Logout_Spec(sessions[logout_select].token);
+        $(obj).remove();
+        session_left--;
+        checkShow();
+   
+    
+}
+
+function SignOut_Clicked() {
+   
     if (g_login) {
-        $("#logout_session_modal").modal();
-        if (confirm('Logout?')) {
+    
             Logout();
             Paging_loadMain();
             $("#layout_avatar").hide();
             $("#Layout_loginbtn").show();
 
-        }
+        
     }
 }
 
@@ -153,3 +166,11 @@ function logout_All_Session() {
     }
 }
 
+function whichAction() {
+    if (ID_trigger == "Logout_Session_btn")
+        logout_All_Session();
+    else if (ID_trigger.includes("Logout_Session_frame_"))
+        pickLogout();
+    else if (ID_trigger == "dropdownsignout")
+        SignOut_Clicked();
+}
