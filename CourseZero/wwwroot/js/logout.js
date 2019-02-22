@@ -58,13 +58,16 @@ function adddiv(id) {
 
 var sessions, session_left=0;
 var ID_trigger;
+
+
 $('#logout_session_modal').on('show.bs.modal', function (e) {
+   
     var temp = $(e.relatedTarget);
     console.log(temp);
     ID_trigger = temp[0].id;
     console.log(ID_trigger);
-
 });
+
 function checkShow() {
     if (session_left > 1)
         document.getElementById("Logout_Session_btn").style.display = "block";
@@ -126,6 +129,7 @@ function getAllSession() {
 
 function openModal(obj) {
     console.log("click");
+
     $("#logout_session_modal").modal('show',obj);
 }
 
@@ -146,16 +150,16 @@ function SignOut_Clicked() {
    
     if (g_login) {
     
-            Logout();
-            Paging_loadMain();
-            $("#layout_avatar").hide();
-            $("#Layout_loginbtn").show();
+        Logout();
+        Layoutbtn_display();
+        Paging_loadMain();
 
-        
+
     }
 }
 
 function logout_All_Session() {
+  
     for (var i = 0; i < sessions.length; i++) {
         if (sessions[i].token != g_auth_token) {
             Logout_Spec(sessions[i].token);
