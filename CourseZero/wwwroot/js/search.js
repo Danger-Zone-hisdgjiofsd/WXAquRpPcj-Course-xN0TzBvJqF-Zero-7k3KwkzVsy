@@ -18,7 +18,7 @@ function preprocess_prefix_data(obj) {
     course_prefix = course_prefix.filter(onlyUnique);
     course_prefix.sort();
     course_prefix.forEach(add_option_to_course_prefix);
-    console.log(text);
+    //console.log(text);
 }
 
 function add_option_to_course_prefix(value) { 
@@ -32,7 +32,7 @@ function get_CourseCode_prefix() {
     msg_to_send.auth_token = g_auth_token;
     postJSON("/api/General/GetAllCourses", msg_to_send, function (obj) {
         course = obj;
-        console.log(course);
+        //console.log(course);
         preprocess_prefix_data(course);
         document.getElementById("coursecode-prefix").innerHTML = text;
     });
