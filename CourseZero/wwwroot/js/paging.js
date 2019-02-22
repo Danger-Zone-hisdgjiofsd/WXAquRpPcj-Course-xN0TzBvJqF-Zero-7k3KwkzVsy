@@ -59,7 +59,7 @@ function Paging_Listitemload() { //For testing
         event.preventDefault();
         Paging_load("./contact.html");
     });
-    $("#advancedsearch").click(function (event) {
+    $("#Layout_advancedsearch").click(function (event) {
         event.preventDefault();
         Paging_load("./advancedsearch.html");
     });

@@ -7,6 +7,8 @@
     <!-- Latest compiled and minified CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+    <script src="./js/search.js"></script>
 </head>
 
 <body>
@@ -27,107 +29,6 @@
                         <div class="form-group row">
                             <label class="col-3 col-form-label">Course code:</label>
                             <select id="coursecode-prefix" class="col-3 align-self-center" data-live-search="true" multiple="multiple">
-                                <optgroup label="Faculty of Arts">
-                                    <option>ANTH</option>
-                                    <option>CHLL</option>
-                                    <option>CULS</option>
-                                    <option>CUMS</option>
-                                    <option>CUMT</option>
-                                    <option>ENGE</option>
-                                    <option>FAAS</option>
-                                    <option>HIST</option>
-                                    <option>JASP</option>
-                                    <option>LING</option>
-                                    <option>MUSC</option>
-                                    <option>PHIL</option>
-                                    <option>RELS</option>
-                                    <option>THEO</option>
-                                    <option>TRAN</option>
-                                </optgroup>
-                                <optgroup label="Faculty of Business Administration">
-                                    <option>HTMG</option>
-                                    <option>IBBA</option>
-                                    <option>IFAA</option>
-                                    <option>PACC</option>
-                                    <option>QFIN</option>
-                                </optgroup>
-                                <optgroup label="Faculty of Education">
-                                    <option>BMED</option>
-                                    <option>CHED</option>
-                                    <option>ESHE</option>
-                                    <option>LSED</option>
-                                    <option>PESH</option>
-                                </optgroup>
-                                <optgroup label="Faculty of Education">
-                                    <option>BERG</option>
-                                    <option>BMEG</option>
-                                    <option>CENG</option>
-                                    <option>CSCI</option>
-                                    <option>EEEN</option>
-                                    <option>BMED</option>
-                                    <option>ELEG</option>
-                                    <option>FTEC</option>
-                                    <option>IERG</option>
-                                    <option>MAEG</option>
-                                    <option>SEEM</option>
-                                </optgroup>
-                                <optgroup label="Faculty of Law">
-                                    <option>LAWS</option>
-                                </optgroup>
-                                <optgroup label="Faculty of Medicine">
-                                    <option>BCME</option>
-                                    <option>BMSC</option>
-                                    <option>BSCG</option>
-                                    <option>CHPR</option>
-                                    <option>MEDU</option>
-                                    <option>NURS</option>
-                                    <option>PHAR</option>
-                                    <option>PHPC</option>
-                                </optgroup>
-                                <optgroup label="Faculty of Science">
-                                    <option>BCHE</option>
-                                    <option>BIOL</option>
-                                    <option>BSCI</option>
-                                    <option>CMBI</option>
-                                    <option>CHEM</option>
-                                    <option>ENSC</option>
-                                    <option>ESSC</option>
-                                    <option>FNSC</option>
-                                    <option>MATH</option>
-                                    <option>MBTE</option>
-                                    <option>NSCI</option>
-                                    <option>PHYS</option>
-                                    <option>RMSC</option>
-                                    <option>STAT</option>
-                                </optgroup>
-                                <optgroup label="Faculty of Social Science">
-                                    <option>ARCH</option>
-                                    <option>BSSC</option>
-                                    <option>COMM</option>
-                                    <option>GCOM</option>
-                                    <option>GDRS</option>
-                                    <option>GLBS</option>
-                                    <option>GLSD</option>
-                                    <option>GPAD</option>
-                                    <option>GRMD</option>
-                                    <option>PSYC</option>
-                                    <option>SOCI</option>
-                                    <option>SOWK</option>
-                                    <option>URSP</option>
-                                </optgroup>
-                                <optgroup label="Centre for China Studies">
-                                    <option>CCSS</option>
-                                </optgroup>
-                                <optgroup label="Double Degree Programmes">
-                                    <option>BAJD</option>
-                                    <option>CLED</option>
-                                    <option>ELED</option>
-                                </optgroup>
-                                <optgroup label="Interdisciplinary Major Programmes">
-                                    <option>GLEF</option>
-                                    <option>QFRM</option>
-                                    <option>MIEG</option>
-                                </optgroup>
                             </select>
                             <script>
                                 $(document).ready(function (e) {
@@ -149,7 +50,7 @@
                             </select>
                         </div>
                         <div class="row justify-content-end">
-                            <button class="btn btn-info my-2 my-sm-0 w-25" type="submit">
+                            <button id="advancedsearchbtn" class="btn btn-info my-2 my-sm-0 w-25" type="submit">
                                 <i class="fas fa-search"><span class="pl-2">Search</span></i>
                             </button>
                         </div>
