@@ -37,10 +37,17 @@ namespace CourseZero.Services
             }
         }
         static Dictionary<string, Course> Courses = new Dictionary<string, Course>();
+        static Dictionary<int, Course> Courses_FromID = new Dictionary<int, Course>();
         static string Courses_Json_Str = "";
         static bool Courses_Json_Str_Lazy_added = false;
         public static (int lower, int upper) CourseID_range = (int.MaxValue, int.MinValue);
         bool Initial = true;
+        public static Course GetCourse_By_CourseID(int id)
+        {
+            if (Courses_FromID.ContainsKey(id))
+                return Courses_FromID[id];
+            return null;
+        }
         public static string Get_Course_Json_Str()
         {
             if (!Courses_Json_Str_Lazy_added)
@@ -53,12 +60,14 @@ namespace CourseZero.Services
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Courses.Clear();
+            Courses_FromID.Clear();
             using (var scope = serviceScopeFactory.CreateScope())
             {
                 var CourseContext = scope.ServiceProvider.GetService<CourseContext>();
                 foreach (var course in CourseContext.Courses)
                 {
                     Courses.Add(course.Prefix+course.Course_Code, course);
+                    Courses_FromID.Add(course.ID, course);
                     if (CourseID_range.lower > course.ID)
                         CourseID_range.lower = course.ID;
                     if (CourseID_range.upper < course.ID)
@@ -104,6 +113,7 @@ namespace CourseZero.Services
                     courseContext.Dispose();
                 }
                 Courses.Clear();
+                Courses_FromID.Clear();
                 Courses_Json_Str_Lazy_added = false;
                 CourseID_range = (int.MaxValue, int.MinValue);
                 using (var scope = serviceScopeFactory.CreateScope())
@@ -112,6 +122,7 @@ namespace CourseZero.Services
                     foreach (var course in CourseContext.Courses)
                     {
                         Courses.Add(course.Prefix + course.Course_Code, course);
+                        Courses_FromID.Add(course.ID, course);
                         if (CourseID_range.lower > course.ID)
                             CourseID_range.lower = course.ID;
                         if (CourseID_range.upper < course.ID)
