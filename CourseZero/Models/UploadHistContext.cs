@@ -22,11 +22,13 @@ namespace CourseZero.Models
         public int ID { get; set; }
         public string File_Name { get; set; }
         public string File_typename { get; set; }
+        public string File_Description { get; set; }
         public int Related_courseID { get; set; }
         public int Uploader_UserID { get; set; }
         public DateTime Upload_Time { get; set; }
         public bool Processed { get; set; }
         public bool Processed_Success { get; set; }
+        public int Procesed_ErrorMsg { get; set; }
         public int Processed_FileID { get; set; }
     }
 }
