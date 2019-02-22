@@ -62,6 +62,7 @@ function Paging_Listitemload() { //For testing
     $("#Layout_advancedsearch").click(function (event) {
         event.preventDefault();
         Paging_load("./advancedsearch.html");
+        get_CourseCode_prefix();
     });
 }
 

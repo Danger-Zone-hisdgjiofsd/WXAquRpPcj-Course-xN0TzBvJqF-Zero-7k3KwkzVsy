@@ -26,21 +26,14 @@ function add_option_to_course_prefix(value) {
 }
 
 function get_CourseCode_prefix() { 
-    var msg_to_send = {
-        "auth_token": null
+    var msg = {
+        "auth_token": "+jyvhxlp+5jlm0y2x5ocxg2ucz4xy4wpf4dmahgatq26ji5ifzv9dxzvzj905ow/bk9gfcwljc07jn2uao/e9f6kg5qawgnevkmcrrk3quft0kj3nbui+7gprfplua7d"
     }
-    msg_to_send.auth_token = g_auth_token;
-    postJSON("/api/General/GetAllCourses", msg_to_send, function (obj) {
+
+    postJSON("/api/General/GetAllCourses", msg, function (obj) {
         course = obj;
         //console.log(course);
         preprocess_prefix_data(course);
         document.getElementById("coursecode-prefix").innerHTML = text;
     });
 }
-
-$(document).ready(function () {
-    $("#Layout_advancedsearch").click(function (event) {
-        event.preventDefault();
-        get_CourseCode_prefix();
-    });
-});
