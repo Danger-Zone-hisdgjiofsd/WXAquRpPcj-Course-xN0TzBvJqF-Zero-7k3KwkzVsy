@@ -23,8 +23,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1000" />
+    <PackageReference Include="Microsoft.Office.Interop.PowerPoint" Version="15.0.4420.1017" />
+    <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1003" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
     <PackageReference Include="Z.Linq.Async" Version="1.0.3" />
   </ItemGroup>
 
@@ -35,6 +39,10 @@
   <ItemGroup>
     <Reference Include="DeviceDetector.NET">
       <HintPath>References\DeviceDetector.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="office">
+      <HintPath>..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\office\15.0.0.0__71e9bce111e9429c\office.dll</HintPath>
+      <Private>true</Private>
     </Reference>
     <Reference Include="YamlDotNet">
       <HintPath>References\YamlDotNet.dll</HintPath>
