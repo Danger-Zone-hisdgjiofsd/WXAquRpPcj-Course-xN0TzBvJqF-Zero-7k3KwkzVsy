@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CourseZero.Models;
 using CourseZero.Services;
+using CourseZero.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace CourseZero.Controllers
     [Route("api/[controller]")]
     public class UploadController : Controller
     {
-        static string[] AllowedFiles_Types = {".txt", ".doc", ".docx", ".ppt", ".pptx", ".pdf", ".wav", ".mp3", ".3gp", ".mp4", ".avi", ".mkv"};
+        
         readonly AuthTokenContext authTokenContext;
         readonly UploadHistContext uploadHistContext;
         public UploadController(AuthTokenContext authTokenContext, UploadHistContext uploadHistContext)
@@ -39,12 +40,13 @@ namespace CourseZero.Controllers
         [HttpPost]
         [Route("[action]")]
         [Consumes("multipart/form-data")]
+        [Produces("application/json")]
         [RequestSizeLimit(100_000_000)]
-        public async Task<IActionResult> UploadFile()
+        public async Task<UploadFile_Response> UploadFile()
         {
             var boundary = Request.GetMultipartBoundary();
             if (string.IsNullOrWhiteSpace(boundary))
-                return BadRequest();
+                return new UploadFile_Response(2);
             var reader = new MultipartReader(boundary, Request.Body, 80 * 1024);
             var valuesByKey = new Dictionary<string, string>();
             MultipartSection section;
@@ -54,6 +56,7 @@ namespace CourseZero.Controllers
             string file_name = "";
             string file_description = "";
             int userID = -1;
+            UploadHist uploadHist = new UploadHist();
             while ((section = await reader.ReadNextSectionAsync()) != null)
             {
                 var contentDispo = section.GetContentDispositionHeader();
@@ -62,18 +65,22 @@ namespace CourseZero.Controllers
                     file_found = true;
                     var fileSection = section.AsFileSection();
                     var fileName = fileSection.FileName;
-                    string type = fileName.Substring(fileName.LastIndexOf('.'));
-                    if (!File_Allowed(type))
-                        return BadRequest();
+                    int dot_index = fileName.LastIndexOf('.');
+                    if (dot_index < 0)
+                        return new UploadFile_Response(3);
+                    string type = fileName.Substring(dot_index);
+                    if (!File_Process_Tool.File_Allowed(type))
+                        return new UploadFile_Response(3);
                     if (file_name == "")
                         file_name = fileSection.FileName;
-                    UploadHist uploadHist = new UploadHist();
+                    file_name = file_name.Substring(0, dot_index);
                     uploadHist.Uploader_UserID = userID;
                     uploadHist.Upload_Time = DateTime.Now;
                     uploadHist.Processed = false;
                     uploadHist.File_Name = file_name;
-                    uploadHist.File_typename = type.Substring(1);
+                    uploadHist.File_typename = type;
                     uploadHist.Related_courseID = courseID;
+                    uploadHist.File_Description = file_description;
                     await uploadHistContext.AddAsync(uploadHist);
                     await uploadHistContext.SaveChangesAsync();
                     using (var stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "/UploadsQueue/" + uploadHist.ID + type, FileMode.CreateNew))
@@ -87,7 +94,7 @@ namespace CourseZero.Controllers
                     {
                         userID = await authTokenContext.Get_User_ID_By_Token(value);
                         if (userID == -1)
-                            return Unauthorized();
+                            return new UploadFile_Response(1);
                         auth_found = true;
                     }
                     if (formSection.Name == "file_name")
@@ -98,21 +105,33 @@ namespace CourseZero.Controllers
                     {
                         courseID = int.TryParse(value, out courseID) ? courseID : -1;
                         if (CUSIS_Fetch_Service.CourseID_range.lower > courseID || courseID > CUSIS_Fetch_Service.CourseID_range.upper)
-                            return BadRequest();
+                            return new UploadFile_Response(4);
                     }
                 }
             }
-            if (file_found && auth_found)
-                return Ok();
-            return BadRequest();
+            if (file_found && auth_found && courseID != -1)
+            {
+                File_Process_Service.Process_Queue.Enqueue(uploadHist);
+                return new UploadFile_Response(0, uploadHist.ID);
+            }
+            return new UploadFile_Response(2);
         }
-        private bool File_Allowed(string typename)
+        
+        public class UploadFile_Response
         {
-            foreach (var s in AllowedFiles_Types)
-                if (s == typename)
-                    return true;
-            return false;
+            /// <summary>
+            /// 0 is success, 1 is fail due to auth error, 2 is fail due to lack of parameters, 3 is fail due to invalid file type, 4 is faul due to invalid parameters
+            /// </summary>
+            public int status_code { get; set; }
+            /// <summary>
+            /// return an upload_id when success
+            /// </summary>
+            public int upload_id { get; set; }
+            public UploadFile_Response(int status_code, int upload_id = -1)
+            {
+                this.status_code = status_code;
+                this.upload_id = upload_id;
+            }
         }
-
     }
 }
