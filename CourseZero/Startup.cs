@@ -29,6 +29,7 @@ namespace CourseZero
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IHostedService, CUSIS_Fetch_Service>();
+            services.AddSingleton<IHostedService, File_Process_Service>();
             services.AddMvc();
             services.AddSwaggerGen(x =>
             {
@@ -56,6 +57,10 @@ namespace CourseZero
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
             services.AddDbContext<CourseContext>(options =>
+            {
+                options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
+            });
+            services.AddDbContext<UploadedFileContext>(options =>
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
