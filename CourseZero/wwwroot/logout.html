@@ -1,37 +1,46 @@
 ﻿<html>
 <head>
-
     <link rel="stylesheet" href="myupload.css">
-    <script src="./js/logout.js"></script>
 </head>
 <body>
     <!--ID Prefix: Logout_Session-->
-    <div class="container p-3">
-        <div class="row justify-content-center bg-dark">
+    
+    <div  class="container p-3">
+
             <div class="col-10 h-100 position-absolute">
-                <div class="container-fluid no-padding">
+                <div class="container-fluid no-padding" style="width:80%;" id="Logout_Session_Frame">
                     <div class="row border-bottom border-dark justify-content-between">
                         <div class="col-11 align-self-center">
                             <h1>My Session</h1>
                         </div>
-                    </div>
 
-                    <div class="pastupload row pt-4 pb-4">
-                        <div class="col-8">
+                        <div>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#logout_session_modal" style="display: block; " id="Logout_Session_btn">Logout all sessions?</button>
+                            <!-- Modal -->
+
+                        </div>
+                    </div>
+                    
+                  
+
+                    <div class="pastupload row pt-4 pb-4" style=" border: 1px;border-radius: 5px;border-style: solid;border-color: grey;">
+
+                        <div class="col-6">
                             <p id="Logout_Session_Current_device">Current Device: </p>
                             <p id="Logout_Session_Current_browser">Access Browser: </p>
 
                         </div>
+                        <div class="col-3">
+                            <i id="Logout_Session_Current_pic" class="fab fa-chrome fa-5x"></i>
+
+                        </div>
+
                     </div>
 
                 </div>
             </div>
-        </div>
+   
     </div>
-
-
-    <script>
-        getAllSession();
-    </script>
+    <script> getAllSession();</script>
 </body>
 </html>

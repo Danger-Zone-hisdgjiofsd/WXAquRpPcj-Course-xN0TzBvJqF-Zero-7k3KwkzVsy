@@ -53,11 +53,20 @@ function Paging_Listitemload() { //For testing
     });
     $("#dropdownhelp").click(function (event) {
         event.preventDefault();
-        Paging_load("help.html");
+        Paging_load("./help.html");
     });
     $("#dropdowncontact").click(function (event) {
         event.preventDefault();
-        Paging_load("contact.html");
+        Paging_load("./contact.html");
+    });
+    $("#Layout_advancedsearch").click(function (event) {
+        event.preventDefault();
+        if (g_auth_token != "") {
+            Paging_load("./advancedsearch.html");
+        }
+        else { 
+            alert("Please login first!");
+        }
     });
 }
 

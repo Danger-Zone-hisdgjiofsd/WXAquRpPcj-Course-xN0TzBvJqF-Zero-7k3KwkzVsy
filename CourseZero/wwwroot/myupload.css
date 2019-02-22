@@ -10,3 +10,10 @@
 .pastupload:hover {
     background-color: lightskyblue;
 }
+
+#Logout_Session_Frame {
+    border: 1px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: grey;
+}
