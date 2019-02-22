@@ -53,14 +53,14 @@
                 </div>
                 <div class="col-8 align-self-center pt-2">
                     <form class="form-inline mx-auto w-50">
-                        <input class="form-control mr-sm-1 col-6" type="search" placeholder="Search.." aria-label="Search">
-                        <select class="form-control mr-sm-1 custom-select" style="color:gray">
+                        <input id="Layout_searchinput" class="form-control mr-sm-1 col-6" type="search" disabled="disabled" placeholder="Search.." aria-label="Search">
+                        <select id="Layout_searchselect" class="form-control mr-sm-1 custom-select" disabled="disabled" style="color:gray">
                             <option value="0" selected="selected">Default</option>
                             <option value="1">Video</option>
                             <option value="2">PDF File</option>
                             <option value="3">...</option>
                         </select>
-                        <button class="btn btn-info my-2 my-sm-0" type="submit">
+                        <button id="Layout_searchbtn" class="btn btn-info my-2 my-sm-0" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
                         <a id="Layout_advancedsearch" href="#advsearch" style="margin-left:55%">Advanced search</a>
