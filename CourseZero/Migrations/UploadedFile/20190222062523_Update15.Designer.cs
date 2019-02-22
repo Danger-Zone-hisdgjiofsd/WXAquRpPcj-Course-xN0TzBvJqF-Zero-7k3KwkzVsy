@@ -4,14 +4,16 @@ using CourseZero.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CourseZero.Migrations.UploadHist
+namespace CourseZero.Migrations.UploadedFile
 {
-    [DbContext(typeof(UploadHistContext))]
-    partial class UploadHistContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(UploadedFileContext))]
+    [Migration("20190222062523_Update15")]
+    partial class Update15
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,35 +21,41 @@ namespace CourseZero.Migrations.UploadHist
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CourseZero.Models.UploadHist", b =>
+            modelBuilder.Entity("CourseZero.Models.UploadedFile", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("File_Description");
+                    b.Property<byte[]>("Binary");
 
-                    b.Property<string>("File_Name");
+                    b.Property<string>("Course_Prefix");
 
-                    b.Property<string>("File_typename");
+                    b.Property<int>("DisLikes");
 
-                    b.Property<int>("Procesed_ErrorMsg");
+                    b.Property<string>("File_Description")
+                        .HasMaxLength(10240);
 
-                    b.Property<bool>("Processed");
+                    b.Property<string>("File_Name")
+                        .HasMaxLength(256);
 
-                    b.Property<int>("Processed_FileID");
+                    b.Property<string>("File_Typename");
 
-                    b.Property<bool>("Processed_Success");
+                    b.Property<int>("Likes");
 
                     b.Property<int>("Related_courseID");
+
+                    b.Property<bool>("Stored_Internally");
 
                     b.Property<DateTime>("Upload_Time");
 
                     b.Property<int>("Uploader_UserID");
 
+                    b.Property<string>("Words_for_Search");
+
                     b.HasKey("ID");
 
-                    b.ToTable("UploadHistories");
+                    b.ToTable("UploadedFiles");
                 });
 #pragma warning restore 612, 618
         }
