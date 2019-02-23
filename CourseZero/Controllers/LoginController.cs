@@ -8,7 +8,6 @@ using CourseZero.Models;
 using CourseZero.Tools;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Z.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -71,7 +70,7 @@ namespace CourseZero.Controllers
                 break;
             }
             AuthToken auth_Token_Obj;
-            var existing_tokens = await authTokenContext.AuthTokens.WhereAsync(x => x.userID == user.ID).OrderByDescending(x => x.Last_access_Time);
+            var existing_tokens = authTokenContext.AuthTokens.Where(x => x.userID == user.ID).OrderByDescending(x => x.Last_access_Time);
             if (existing_tokens.Count() == 20) // Max token per user is 20
                 authTokenContext.AuthTokens.Remove(existing_tokens.Last());
 

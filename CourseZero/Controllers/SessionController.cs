@@ -7,7 +7,6 @@ using CourseZero.Filters;
 using CourseZero.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Z.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -55,7 +54,7 @@ namespace CourseZero.Controllers
                 return Response;
             }
             Response.status_code = 0;
-            var list_of_auth_tokens = await authTokenContext.AuthTokens.WhereAsync(x => x.userID == current_token.userID);
+            var list_of_auth_tokens = authTokenContext.AuthTokens.Where(x => x.userID == current_token.userID);
             Response.sessions = new List<AuthToken>();
             Response.sessions.AddRange(list_of_auth_tokens);
             return Response;

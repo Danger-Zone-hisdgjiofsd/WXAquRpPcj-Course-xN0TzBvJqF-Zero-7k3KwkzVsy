@@ -7,7 +7,6 @@ using CourseZero.Hashing;
 using CourseZero.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Z.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -61,7 +60,7 @@ namespace CourseZero.Controllers
             var hashing_pw_result = Hashing_Tool.Hash_Password_by_Random_Salt(request.new_password);
             user.password_hash = hashing_pw_result.hashed_pw;
             user.password_salt = hashing_pw_result.salt;
-            var sessions = await authTokenContext.AuthTokens.WhereAsync(x => x.userID == token.userID);
+            var sessions = authTokenContext.AuthTokens.Where(x => x.userID == token.userID);
             authTokenContext.AuthTokens.RemoveRange(sessions);
             await userContext.SaveChangesAsync();
             await authTokenContext.SaveChangesAsync();
