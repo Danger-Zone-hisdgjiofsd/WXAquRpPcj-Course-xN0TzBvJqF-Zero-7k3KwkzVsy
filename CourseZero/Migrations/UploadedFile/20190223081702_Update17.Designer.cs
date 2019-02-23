@@ -4,14 +4,16 @@ using CourseZero.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CourseZero.Migrations.UploadedFile
 {
     [DbContext(typeof(UploadedFileContext))]
-    partial class UploadedFileContextModelSnapshot : ModelSnapshot
+    [Migration("20190223081702_Update17")]
+    partial class Update17
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
