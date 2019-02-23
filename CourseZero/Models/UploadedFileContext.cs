@@ -14,6 +14,11 @@ namespace CourseZero.Models
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UploadedFile>().HasIndex(c => new { c.Upload_Time});
+            modelBuilder.Entity<UploadedFile>().HasIndex(c => new { c.Likes });
+        }
         public DbSet<UploadedFile> UploadedFiles { get; set; }
     }
     public class UploadedFile
