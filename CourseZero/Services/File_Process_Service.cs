@@ -1,5 +1,6 @@
 ﻿using CourseZero.Models;
 using CourseZero.Tools;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -11,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Z.Linq;
 using static CourseZero.Tools.File_Process_Tool;
 
 namespace CourseZero.Services
@@ -35,7 +35,7 @@ namespace CourseZero.Services
             using (var scope = serviceScopeFactory.CreateScope())
             {
                 var uploadHistContext = scope.ServiceProvider.GetService<UploadHistContext>();
-                var incompleted_jobs = await uploadHistContext.UploadHistories.WhereAsync(x => !x.Processed);
+                var incompleted_jobs = uploadHistContext.UploadHistories.Where(x => !x.Processed);
                 foreach (var job in incompleted_jobs)
                 {
                     count++;
