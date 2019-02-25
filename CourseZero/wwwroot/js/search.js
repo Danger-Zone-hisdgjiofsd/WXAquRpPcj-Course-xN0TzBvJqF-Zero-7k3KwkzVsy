@@ -37,6 +37,7 @@ function add_option_to_prefix() {
 }
 
 $(document).ready(function (e) {
+    
     $("#coursecode-prefix").select2({
         placeholder: "Course Subject"
     }
