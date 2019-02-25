@@ -13,18 +13,30 @@ function Form_Login_changeValidTxt(input, valid, showtxt = "")
 function Form_Login_show_Login() {
 	document.getElementById('Form_Login_Login_Form').style.display = 'block';
 	document.getElementById('Form_Login_Signup_Form').style.display = 'none';
-	document.getElementById('Form_Login_ForgotPW_Form').style.display = 'none';
+    document.getElementById('Form_Login_ForgotPW_Form').style.display = 'none';
+    document.getElementById('Form_Login_Reissue_Form').style.display = 'none';
 }
 function Form_Login_show_SignUp() {
 	document.getElementById('Form_Login_Login_Form').style.display = 'none';
 	document.getElementById('Form_Login_Signup_Form').style.display = 'block';
-	document.getElementById('Form_Login_ForgotPW_Form').style.display = 'none';
+    document.getElementById('Form_Login_ForgotPW_Form').style.display = 'none';
+    document.getElementById('Form_Login_Reissue_Form').style.display = 'none';
 }
 function Form_Login_show_ForgotPW() {
 	document.getElementById('Form_Login_Login_Form').style.display = 'none';
 	document.getElementById('Form_Login_Signup_Form').style.display = 'none';
-	document.getElementById('Form_Login_ForgotPW_Form').style.display = 'block';
+    document.getElementById('Form_Login_ForgotPW_Form').style.display = 'block';
+    document.getElementById('Form_Login_Reissue_Form').style.display = 'none';
 }
+
+function Form_Login_show_Reissue() {
+    document.getElementById('Form_Login_Login_Form').style.display = 'none';
+    document.getElementById('Form_Login_Signup_Form').style.display = 'none';
+    document.getElementById('Form_Login_ForgotPW_Form').style.display = 'none';
+    document.getElementById('Form_Login_Reissue_Form').style.display = 'block';
+
+}
+
 function Form_Login_Valid_Username(username, block)
 {
 	if (username.length < 5 || username.length > 20)
@@ -97,6 +109,9 @@ function Form_Login_Valid_Password(pword, block)
 }
 $(document).ready(function () {
        //signin part
+
+  
+
     $("#Form_Login_Signin_btn").click(function () {
             var msg_to_send = {
                 "using_email": false,
@@ -143,19 +158,29 @@ $(document).ready(function () {
 				{
                     g_auth_token = obj["auth_token"];
                     g_username = obj["username"];
+                   
+                    
                     g_login = true;
                     if ($("#Form_Login_Remember_PW").is(":checked"))
 					    localStorage.saved_auth_token = obj["auth_token"];
                     $("#Layout_loginbtn").hide();
                     $("#Layout_avatarbtn").show();
-                    $(document).trigger('test');
                     Paging_loadMain();
+               
                     document.dispatchEvent(search_available);
 				}
 				else if (obj["status_code"] == 1) //fail
 				{
-					$("#Form_Login_Login_DisplayMsg").css("color", "red");
-					$("#Form_Login_Login_DisplayMsg").html(obj["display_message"]);
+                    $("#Form_Login_Login_DisplayMsg").css("color", "red");
+                 
+                       
+                    $("#Form_Login_Login_DisplayMsg").html(obj["display_message"]);
+                    if (obj["display_message"] == "Please verify your email first") {
+                        var outmsg = document.getElementById("Form_Login_Login_DisplayMsg");
+                        var word = "<a href=\"javascript:Form_Login_show_Reissue();\" style=\"color: blue;\">, need reissue?</a> ";
+                        outmsg.innerHTML += word;
+                        
+                    }
 				}
             }, function () {
                 $("#Form_Login_account").prop('disabled', false);
@@ -278,5 +303,38 @@ $(document).ready(function () {
                 $("#Form_Login_ForgotPW_DisplayMsg").html("Server error");
                });
 
-        });
+    });
+
+    $("#Form_Login_Reissus_btn").click(function () {
+        if (!Form_Login_Valid_Email($("#Form_Login_Reissue_email").val())) {
+            $("#Form_Login_Reissue_DisplayMsg").css("color", "red");
+            $("#Form_Login_Reissue_DisplayMsg").html("Invalid Email");
+            return;
+        }
+
+        var msg_to_send = {
+            "email": $("#Form_Login_Reissue_email").val(),
+        }
+        $("#Form_Login_Reissue_btn").prop('disabled', true);
+        $("#Form_Login_Reissue_email").prop('disabled', true);
+        postJSON("/api/Register/Reissue_Email", (msg_to_send), function (obj) {
+            $("#Form_Login_Reissue_btn").prop('disabled', false);
+            $("#Form_Login_Reissue_email").prop('disabled', false);
+            if (obj["status_code"] == 0) //success 
+            {
+                $("#Form_Login_Reissue_DisplayMsg").css("color", "green");
+            }
+            else if (obj["status_code"] == 1) //fail
+            {
+                $("#Form_Login_Reissue_DisplayMsg").css("color", "red");
+            }
+            $("#Form_Login_Reissue_DisplayMsg").html(obj["display_message"]);
+        }, function () {
+            $("#Form_Login_Reissue_btn").prop('disabled', false);
+            $("#Form_Login_Reissue_email").prop('disabled', false);
+            $("#Form_Login_Reissue_DisplayMsg").css("color", "red");
+            $("#Form_Login_Reissue_DisplayMsg").html("Server error");
+            });
+
+    });
 });
