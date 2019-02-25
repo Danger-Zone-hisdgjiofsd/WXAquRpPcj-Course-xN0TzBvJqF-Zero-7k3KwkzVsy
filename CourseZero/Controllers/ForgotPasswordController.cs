@@ -8,7 +8,7 @@ using CourseZero.Email;
 using CourseZero.Hashing;
 using CourseZero.Models;
 using Microsoft.AspNetCore.Mvc;
-using Z.Linq;
+
 
 namespace CourseZero.Controllers
 {
@@ -80,7 +80,7 @@ namespace CourseZero.Controllers
             user.password_salt = hashing_pw_result.salt;
             user.password_change_hash = "";
             user.password_change_new_password = "";
-            var sessions = await authTokenContext.AuthTokens.WhereAsync(x => x.userID == id);
+            var sessions =  authTokenContext.AuthTokens.Where(x => x.userID == id);
             authTokenContext.AuthTokens.RemoveRange(sessions);
             await userContext.SaveChangesAsync();
             await authTokenContext.SaveChangesAsync();
