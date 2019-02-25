@@ -29,7 +29,7 @@ function adddiv(id) {
     element.className = "pastupload row pt-4 pb-4";
     element.id = "Logout_Session_frame_" + id;
     element.setAttribute("onclick", "openModal(this);");
-    element.setAttribute("style", "border: 1px; border-radius: 5px;border-style: solid;border-color: grey;");
+    element.setAttribute("style", "border: 1px; border-radius: 5px;border-style: solid;border-color: grey; ");
     var word = document.createElement('div');
     word.className = "col-6";
     var picframe = document.createElement('div');
@@ -52,7 +52,7 @@ function adddiv(id) {
     picframe.appendChild(pic);
     element.appendChild(word);
     element.appendChild(picframe);
-    document.getElementsByClassName("container-fluid no-padding")[0].appendChild(element);
+    document.getElementById("Logout_Session_Frame").appendChild(element);
 
 }
 
