@@ -1,12 +1,19 @@
 ﻿function Paging_loadMain()
 {
 	//To be done
-	Paging_load("./profile.html");
+    Paging_load("./profile.html");
+   
+    if (g_login)
+        document.getElementById("layout_username").innerHTML =g_username;
 }
 function Paging_loadLogin()
 {
-	if (!g_login)
-		Paging_load("./testlogin.html");
+    if (!g_login) {
+       // if (localStorage.getItem("saved_auth_token") != null)
+            //Autologin();
+        //else
+            Paging_load("./testlogin.html");
+    }
 }
 function Paging_load(path)
 {
@@ -89,3 +96,25 @@ $(document).ready(function () {
     $("#navbar_logo").click(Paging_loadMain);
     Layoutbtn_display();
 });
+
+function Autologin() {
+
+    if (localStorage.getItem("saved_auth_token") != null) {
+        var msg_to_send =
+        {
+            "auth_token": localStorage.getItem("saved_auth_token")
+        }
+        postJSON("/api/General/GetUserInfo", (msg_to_send), function (obj) {
+            if (obj["status_code"] == 0) //success 
+            {
+
+                g_auth_token = localStorage.getItem("saved_auth_token");
+                g_username = obj["username"];
+                g_login = true;
+                $("#Layout_loginbtn").hide();
+                $("#Layout_avatarbtn").show();
+                document.dispatchEvent(search_available);
+            } else return;
+        })
+    }
+} 
