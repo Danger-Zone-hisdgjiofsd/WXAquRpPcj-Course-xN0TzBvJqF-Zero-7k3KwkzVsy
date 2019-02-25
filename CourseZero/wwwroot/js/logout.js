@@ -63,9 +63,9 @@ var ID_trigger;
 $('#logout_session_modal').on('show.bs.modal', function (e) {
    
     var temp = $(e.relatedTarget);
-
+    console.log(temp);
     ID_trigger = temp[0].id;
-
+    console.log(ID_trigger);
 });
 
 function checkShow() {
