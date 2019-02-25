@@ -33,15 +33,19 @@ function add_option_to_prefix() {
     for (i = 0; i < g_course_prefix.length; i++) {
         text += "<option>" + g_course_prefix[i] + "</option>";
     }
+    //console.log(text);
     document.getElementById("coursecode-prefix").innerHTML = text;
 }
 
 $(document).ready(function (e) {
+    $('.datepicker').datepicker({
+        daysOfWeekHighlighted: "0",
+        autoclose: true,
+        todayHighlight: true,
+    });
+
     
-    $("#coursecode-prefix").select2({
-        placeholder: "Course Subject"
-    }
-    );
+
     document.addEventListener('Search', function (e) {
         get_CourseCode_prefix();
         document.getElementById('Layout_searchinput').disabled = false;
@@ -51,5 +55,7 @@ $(document).ready(function (e) {
     }, false); 
     if (g_auth_token != "") {
         add_option_to_prefix();
+        $("#coursecode-prefix").selectpicker({
+        });
     }
 });
