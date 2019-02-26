@@ -19,6 +19,10 @@ namespace CourseZero.Models
             modelBuilder.Entity<UploadedFile>().HasIndex(c => new { c.Upload_Time});
             modelBuilder.Entity<UploadedFile>().HasIndex(c => new { c.Likes });
         }
+        public async Task<UploadedFile> Get_File_By_FileID(int fileid)
+        {
+            return await UploadedFiles.FirstOrDefaultAsync(x => x.ID == fileid);
+        }
         public DbSet<UploadedFile> UploadedFiles { get; set; }
     }
     public class UploadedFile
