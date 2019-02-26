@@ -69,6 +69,10 @@ namespace CourseZero
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env, Microsoft.AspNetCore.Hosting.IApplicationLifetime Lifetime)
         {
+            app.UseDefaultFiles(new DefaultFilesOptions
+            {
+                DefaultFileNames = new List<string> { "newmainpage.html" }
+            });
             app.UseStaticFiles();
             app.UseMvc();
 
