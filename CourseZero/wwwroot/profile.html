@@ -18,7 +18,7 @@
                             <h1>Profile</h1>
                         </div>
                         <div class=" col-1 align-self-end pb-2 " style="text-align: left;">
-                            <p  id="profile_edit_btn">edit </p>
+                            <p id="profile_edit_btn">edit </p>
                         </div>
                     </div>
                     <div class="row pt-4 pb-4 border-bottom border-dark">
@@ -29,7 +29,7 @@
                             <h3>.User Name.</h3>
                         </div>
                     </div>
-                    <div class="row pt-2">
+                    <div class="row pt-2 ">
                         <div class="col-2">
                             Name:
                         </div>
@@ -45,24 +45,89 @@
                             .SID no.
                         </div>
                     </div>
-                    <div class="row pt-2">
+                    <div class="row pt-2 pb-4 border-bottom border-dark">
                         <div class="col-2">
                             Contact:
                         </div>
                         <div class="col-4">
                             .Email Address.(Email)
                         </div>
-                        <div class="col-4">
+                        <div class="col-4 ">
                             .Phone no. (Moblie)
                         </div>
+
+
                     </div>
+                    <div class="col-2" id="profile_Change_PW_col"onclick="showPWcol()">
+                        <i class="fas fa-key" >Change Password</i>
+                    </div>
+                    <div id="profile_change_PW_form" style="display:none">
+                        <form class="form-inline mt-4">
+                            <div class="form-group mb-2 col-2">
+                                <label for="inputPassword2" class="sr-only">Old Password</label>
+                                <input type="password" class="form-control" id="profile_oldPassword" placeholder="Old Password">
+                            </div>
+                            <div class="form-group  mb-2 col-2">
+                                <label for="inputPassword2" class="sr-only">New Password</label>
+                                <input type="password" class="form-control" id="profile_newPassword" placeholder="New Password">
+                            </div>
+                            <div class="form-group  mb-2 col-2">
+                                <label for="inputPassword2" class="sr-only">Confirm Password</label>
+                                <input type="password" class="form-control" id="profile_confirmPassword" placeholder="Confirm Password">
+                                <small id="Profile_checkBlock" class="form-text text-muted "> </small>
+                            </div>
+                            <button type="button" class="btn btn-primary mb-2 hide-child" id="profile_pw_btn">Change Password</button>
+                        </form>
+                    </div>
+                    <div class="row pt-4 ">
+                        <button type="button" class="btn btn-secondary" id="profile_sm_btn">Open Session Manager</button>
+                    </div>
+
+                    <div id="Profile_frame_content" style="display:none">
+
+                    </div>
+
                 </div>
-            </div>
-        </div>
     </div>
     <script>
-        $("#profile_edit_btn").click(function () {
-            Paging_load("logout.html");
-        });</script>
+
+        $("#Profile_frame_content").load("logout.html");
+        $("#profile_sm_btn").click(function () {
+            var ele = document.getElementById('Profile_frame_content');
+            if (ele.style.display == 'none') {
+                document.getElementById("profile_sm_btn").innerHTML = "Close Session Manager";
+                ele.style.display = 'block';
+            }
+            else {
+                ele.style.display = 'none';
+                document.getElementById("profile_sm_btn").innerHTML = "Open Session Manager";
+              
+
+            }
+        });
+        
+        function showPWcol() {
+            var ele = document.getElementById('profile_change_PW_form');
+            if (ele.style.display == 'none') {
+                ele.style.display = 'block';
+            }
+            else {
+
+                ele.style.display = 'none';
+            }
+        };
+      
+        $("#profile_confirmPassword").on('keyup', function () {
+           
+        })
+        $("#profile_pw_btn").click(function () {
+            var msg_to_send = {
+                "auth_token": g_auth_token,
+                "old_password": null,
+                "new_password": null
+            }
+        })
+        
+    </script>
 </body>
 </html>

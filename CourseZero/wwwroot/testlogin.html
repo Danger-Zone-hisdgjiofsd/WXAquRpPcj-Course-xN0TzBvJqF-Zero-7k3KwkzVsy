@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign In</h5>
                         <a href="javascript:Paging_loadMain();" class="close" title="Close"> &times;</a>
-						<div id="Form_Login_Login_DisplayMsg"></div>
+                        <div id="Form_Login_Login_DisplayMsg"></div>
                         <form class="form-signin">
                             <div class="form-label-group">
                                 <input type="text" id="Form_Login_account" class="form-control" placeholder="Email address" required>
@@ -24,7 +24,7 @@
                             </div>
 
                             <div class="form-label-group">
-                                <input type="password" id="Form_Login_inputPassword" class="form-control" placeholder="Password" >
+                                <input type="password" id="Form_Login_inputPassword" class="form-control" placeholder="Password">
                                 <label for="Form_Login_inputPassword">Password</label>
                             </div>
 
@@ -56,7 +56,7 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">Sign Up</h5>
                         <a href="javascript:Form_Login_show_Login();" class="close" title="Close"> &times;</a>
-						<div id="Form_Login_Signup_DisplayMsg"></div>
+                        <div id="Form_Login_Signup_DisplayMsg"></div>
                         <form class="form-signin">
                             <div class="form-label-group">
                                 <input type="email" id="Form_Login_Register_Mail" class="form-control" placeholder="Email Address" required>
@@ -96,13 +96,13 @@
 
                             <button id="Form_Login_signupbtn" class="btn btn-lg btn-primary btn-block " type="button">Sign Up</button>
 
-							<label >
-                                     By creating an account you agree to our <a href="/policy.html"
-                                                                               onclick="window.open(this.href,'targetWindow',
+                            <label>
+                                By creating an account you agree to our <a href="/policy.html"
+                                                                           onclick="window.open(this.href,'targetWindow',
                                      'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=600');return false;">Privacy Policy</a> and <a href="/term_of_use.html"
                                                                                                                                                                                onclick="window.open(this.href,'targetWindow',
                                      'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=600');return false;">Terms of Use</a>.
-							</label>
+                            </label>
 
 
                         </form>
@@ -120,7 +120,7 @@
                         <h5 class="card-title text-center">Forgot your Password?</h5>
                         <a href="javascript:Form_Login_show_Login();" class="close" title="Close"> &times;</a>
                         <form class="form-signin">
-							<div id="Form_Login_ForgotPW_DisplayMsg"></div>
+                            <div id="Form_Login_ForgotPW_DisplayMsg"></div>
                             <div class="form-label-group">
                                 <input type="email" id="Form_Login_ForgotPW_email" class="form-control" placeholder="Email address" required>
                                 <label for="Form_Login_ForgotPW_email">Type you Email address</label>
@@ -128,7 +128,32 @@
 
                             <button class="btn btn-lg btn-primary btn-block " type="button" id="Form_Login_ForgotPW_btn">Reset Password</button>
                             <hr class="my-4">
-                                
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="Form_Login_Reissue_Form" class="container" style="display:none">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Reissue Email</h5>
+                        <a href="javascript:Form_Login_show_Login();" class="close" title="Close"> &times;</a>
+                        <form class="form-signin">
+                            <div id="Form_Login_Reissue_DisplayMsg"></div>
+                            <div class="form-label-group">
+                                <input type="email" id="Form_Login_Reissue_email" class="form-control" placeholder="Email address" required>
+                                <label for="Form_Login_Reissue_email">Type you Email address</label>
+                            </div>
+
+                            <button class="btn btn-lg btn-primary btn-block " type="button" id="Form_Login_Reissus_btn">Reissue Email</button>
+                            <hr class="my-4">
+
 
                         </form>
                     </div>
