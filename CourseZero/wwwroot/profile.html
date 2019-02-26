@@ -5,7 +5,7 @@
 
     <title>Profile</title>
     <link rel="stylesheet" href="profile.css">
-
+    <script src="./js/login.js"></script>
 </head>
 
 <body>
@@ -21,6 +21,7 @@
                             <p id="profile_edit_btn">edit </p>
                         </div>
                     </div>
+
                     <div class="row pt-4 pb-4 border-bottom border-dark">
                         <div class="col-6 align-self-center avatar">
                             <img src="./material/blank-profile-picture.png">
@@ -58,25 +59,28 @@
 
 
                     </div>
-                    <div class="col-2" id="profile_Change_PW_col"onclick="showPWcol()">
-                        <i class="fas fa-key" >Change Password</i>
+                    <div class="col-2" id="profile_Change_PW_col" onclick="showPWcol()">
+                        <i class="fas fa-key">Change Password</i>
                     </div>
                     <div id="profile_change_PW_form" style="display:none">
                         <form class="form-inline mt-4">
-                            <div class="form-group mb-2 col-2">
+                            <div class="form-group mb-auto col-2">
                                 <label for="inputPassword2" class="sr-only">Old Password</label>
                                 <input type="password" class="form-control" id="profile_oldPassword" placeholder="Old Password">
+                                <small id="Profile_oldpwBlock" class="form-text text-muted"></small>
                             </div>
                             <div class="form-group  mb-2 col-2">
                                 <label for="inputPassword2" class="sr-only">New Password</label>
                                 <input type="password" class="form-control" id="profile_newPassword" placeholder="New Password">
+                                <small id="Profile_pwBlock" class="form-text text-muted">Must be at least 5 characters.</small>
                             </div>
-                            <div class="form-group  mb-2 col-2">
+                            <div class="form-group  mb-auto col-2">
                                 <label for="inputPassword2" class="sr-only">Confirm Password</label>
                                 <input type="password" class="form-control" id="profile_confirmPassword" placeholder="Confirm Password">
-                                <small id="Profile_checkBlock" class="form-text text-muted "> </small>
+                                <small id="Profile_checkBlock" class="form-text text-muted"> </small>
                             </div>
-                            <button type="button" class="btn btn-primary mb-2 hide-child" id="profile_pw_btn">Change Password</button>
+                            <button type="button" class="btn btn-primary mb-auto ml-3 hide-child" id="profile_pw_btn">Change Password</button>
+                            <p id="Profile_ChangePW_DisplayMsg" style="font-size:120%"></p>
                         </form>
                     </div>
                     <div class="row pt-4 ">
@@ -89,45 +93,6 @@
 
                 </div>
     </div>
-    <script>
-
-        $("#Profile_frame_content").load("logout.html");
-        $("#profile_sm_btn").click(function () {
-            var ele = document.getElementById('Profile_frame_content');
-            if (ele.style.display == 'none') {
-                document.getElementById("profile_sm_btn").innerHTML = "Close Session Manager";
-                ele.style.display = 'block';
-            }
-            else {
-                ele.style.display = 'none';
-                document.getElementById("profile_sm_btn").innerHTML = "Open Session Manager";
-              
-
-            }
-        });
-        
-        function showPWcol() {
-            var ele = document.getElementById('profile_change_PW_form');
-            if (ele.style.display == 'none') {
-                ele.style.display = 'block';
-            }
-            else {
-
-                ele.style.display = 'none';
-            }
-        };
-      
-        $("#profile_confirmPassword").on('keyup', function () {
-           
-        })
-        $("#profile_pw_btn").click(function () {
-            var msg_to_send = {
-                "auth_token": g_auth_token,
-                "old_password": null,
-                "new_password": null
-            }
-        })
-        
-    </script>
+   <script src="./js/profile_settings.js"></script>
 </body>
 </html>

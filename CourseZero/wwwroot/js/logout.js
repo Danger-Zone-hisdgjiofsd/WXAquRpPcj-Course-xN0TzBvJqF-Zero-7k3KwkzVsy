@@ -7,6 +7,7 @@
     postJSON("/api/Session/Logout", msg_to_send);
     if (localStorage.getItem("saved_auth_token")!=null)
         localStorage.removeItem("saved_auth_token");
+    sessionStorage.removeItem("saved_auth_token");
 }
 
 function Logout_Spec(token) {
@@ -31,10 +32,10 @@ function adddiv(id) {
     element.setAttribute("onclick", "openModal(this);");
     element.setAttribute("style", "border: 1px; border-radius: 5px;border-style: solid;border-color: grey; ");
     var word = document.createElement('div');
-    word.className = "col-6";
+    word.className = "col-6 pl-5";
     var picframe = document.createElement('div');
     var pic = document.createElement('i');
-    picframe.className = "col-3"
+    picframe.className = "col-3 pl-5"
     pic.setAttribute("class", "fab fa-chrome fa-5x");
     pic.id = "Logout_Session_Pic_" + id;
     var LAT = document.createElement('p');
@@ -63,9 +64,9 @@ var ID_trigger;
 $('#logout_session_modal').on('show.bs.modal', function (e) {
    
     var temp = $(e.relatedTarget);
-    console.log(temp);
+    
     ID_trigger = temp[0].id;
-    console.log(ID_trigger);
+
 });
 
 function checkShow() {
@@ -128,7 +129,7 @@ function getAllSession() {
 }
 
 function openModal(obj) {
-    console.log("click");
+
 
     $("#logout_session_modal").modal('show',obj);
 }
