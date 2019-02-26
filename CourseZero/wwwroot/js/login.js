@@ -28,7 +28,6 @@ function Form_Login_show_ForgotPW() {
     document.getElementById('Form_Login_ForgotPW_Form').style.display = 'block';
     document.getElementById('Form_Login_Reissue_Form').style.display = 'none';
 }
-
 function Form_Login_show_Reissue() {
     document.getElementById('Form_Login_Login_Form').style.display = 'none';
     document.getElementById('Form_Login_Signup_Form').style.display = 'none';
@@ -36,7 +35,6 @@ function Form_Login_show_Reissue() {
     document.getElementById('Form_Login_Reissue_Form').style.display = 'block';
 
 }
-
 function Form_Login_Valid_Username(username, block)
 {
 	if (username.length < 5 || username.length > 20)
@@ -88,6 +86,7 @@ function Form_Login_Valid_Email(email, block)
 	Form_Login_changeValidTxt(block, 1);
 	return true;
 }
+
 function Form_Login_Valid_Password(pword, block)
 {
 	if (pword.length < 5 || pword.length > 20)
@@ -117,7 +116,7 @@ $(document).ready(function () {
                 "using_email": false,
                 "password": null,
                 "recaptcha_hash": "a"
-            }
+            } 
             temp = $("#Form_Login_account").val();
             if (temp.indexOf("@") !== -1) {
 				if (!Form_Login_Valid_Email($("#Form_Login_account").val(), null))
@@ -159,10 +158,13 @@ $(document).ready(function () {
                     g_auth_token = obj["auth_token"];
                     g_username = obj["username"];
                    
-                    
                     g_login = true;
-                    if ($("#Form_Login_Remember_PW").is(":checked"))
-					    localStorage.saved_auth_token = obj["auth_token"];
+                    sessionStorage.saved_auth_token = obj["auth_token"];
+                    if ($("#Form_Login_Remember_PW").is(":checked")) {
+                        localStorage.saved_auth_token = obj["auth_token"];
+                       
+                    }
+
                     $("#Layout_loginbtn").hide();
                     $("#Layout_avatarbtn").show();
                     Paging_loadMain();
@@ -217,7 +219,8 @@ $(document).ready(function () {
                 Form_Login_changeValidTxt(confirm_block, 1);
             else
 				Form_Login_changeValidTxt(confirm_block, 0, "Password does not match");
-    })
+        })
+
 
 		$("#Form_Login_signupbtn").click(function () {
 			var temp = $("#Form_Login_Register_PW").val(), temp2 = $("#Register_ConfirmPW").val();
