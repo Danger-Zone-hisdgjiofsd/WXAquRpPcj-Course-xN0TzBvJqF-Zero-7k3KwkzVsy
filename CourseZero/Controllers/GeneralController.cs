@@ -86,7 +86,7 @@ namespace CourseZero.Controllers
             [Required]
             [StringLength(128, MinimumLength = 128)]
             public string auth_token { get; set; }
-            [Range(1, int.MaxValue)]
+            [Range(0, int.MaxValue)] //default value is 0
             public int userid { get; set; }
         }
         public class GetUserInfo_Response
