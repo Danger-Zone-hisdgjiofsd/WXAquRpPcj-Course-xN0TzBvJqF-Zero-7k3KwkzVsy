@@ -35,6 +35,9 @@ namespace CourseZero.Controllers
         /// related_courseid,
         /// file,
         /// [file has to be less than 100MB]
+        /// 
+        /// (If the file name is with length less than 10, server will use the uploaded file name instead.)
+        /// (non scannable(".wav", ".mp3", ".3gp", ".mp4", ".avi", ".mkv") file must has file_description with length larger than or equal to 10)
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -71,9 +74,13 @@ namespace CourseZero.Controllers
                     string type = fileName.Substring(dot_index);
                     if (!File_Process_Tool.File_Allowed(type))
                         return new UploadFile_Response(3);
-                    if (file_name == "")
+                    if (File_Process_Tool.File_Non_Scannable(type) && file_description.Length < 10)
+                        return new UploadFile_Response(5);
+                    if (file_name == "" || file_name.Length < 10)
+                    {
                         file_name = fileSection.FileName;
-                    file_name = file_name.Substring(0, dot_index);
+                        file_name = file_name.Substring(0, dot_index);
+                    }
                     uploadHist.Uploader_UserID = userID;
                     uploadHist.Upload_Time = DateTime.Now;
                     uploadHist.Processed = false;
@@ -98,9 +105,9 @@ namespace CourseZero.Controllers
                         auth_found = true;
                     }
                     if (formSection.Name == "file_name")
-                        file_name = value;
+                        file_name = value.Trim();
                     if (formSection.Name == "file_description")
-                        file_description = value;
+                        file_description = value.Trim();
                     if (formSection.Name == "related_courseid")
                     {
                         courseID = int.TryParse(value, out courseID) ? courseID : -1;
@@ -120,7 +127,7 @@ namespace CourseZero.Controllers
         public class UploadFile_Response
         {
             /// <summary>
-            /// 0 is success, 1 is fail due to auth error, 2 is fail due to lack of parameters, 3 is fail due to invalid file type, 4 is faul due to invalid parameters
+            /// 0 is success, 1 is fail due to auth error, 2 is fail due to lack of parameters, 3 is fail due to invalid file type, 4 is faul due to invalid parameters, 5 file is non scannable(".wav", ".mp3", ".3gp", ".mp4", ".avi", ".mkv") but the user does not provide File_Description with length >= 10
             /// </summary>
             public int status_code { get; set; }
             /// <summary>
