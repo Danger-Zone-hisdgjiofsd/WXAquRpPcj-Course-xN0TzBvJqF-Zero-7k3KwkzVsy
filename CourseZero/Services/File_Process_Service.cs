@@ -78,7 +78,7 @@ namespace CourseZero.Services
 
                     UploadHist To_Process = Process_Queue.Dequeue();
                     Current_ProcessId = To_Process.ID;
-                    Console.WriteLine("FILE_PROCESS_SERVICE:  ROCESSING " + Current_ProcessId);
+                    Console.WriteLine("FILE_PROCESS_SERVICE: PROCESSING " + Current_ProcessId);
                     Task_FileProcessing = Task.Factory.StartNew(() =>
                         {
                             Processing_Thread = Thread.CurrentThread;
