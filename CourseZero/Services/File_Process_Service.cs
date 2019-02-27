@@ -20,14 +20,28 @@ namespace CourseZero.Services
     {
         const double MAX_PROCESS_MIN = 3;
         public static Queue<UploadHist> Process_Queue = new Queue<UploadHist>();
+        public static Dictionary<int, (UploadHist uploadhist, int queue)> Queue_Position = new Dictionary<int, (UploadHist uploadhist, int queue)>();
         readonly IServiceScopeFactory serviceScopeFactory;
         Task<FileProcess_Status> Task_FileProcessing = null;
         Thread Processing_Thread = null;
         DateTime Process_StartTime;
-        int Current_ProcessId = -1;
+        public static UploadHist Current_ProcessObj;
         public File_Process_Service(IServiceScopeFactory serviceScopeFactory)
         {
             this.serviceScopeFactory = serviceScopeFactory;
+        }
+        public static void Enqueue(UploadHist item)
+        {
+            Process_Queue.Enqueue(item);
+            Queue_Position.Add(item.ID, (item, Process_Queue.Count));
+        }
+        private void Queue_Position_Minus_One()
+        {
+            foreach (var item in Queue_Position)
+            {
+                var obj = Queue_Position[item.Key];
+                Queue_Position[item.Key] = (obj.uploadhist, obj.queue - 1);
+            }
         }
         private async Task Add_Incompleted_Job_FromDB()
         {
@@ -39,7 +53,7 @@ namespace CourseZero.Services
                 foreach (var job in incompleted_jobs)
                 {
                     count++;
-                    Process_Queue.Enqueue(job);
+                    Enqueue(job);
                 }
             }
             Console.WriteLine("FILE_PROCESS_SERVICE: ADDED " + count);
@@ -53,18 +67,18 @@ namespace CourseZero.Services
                 {
                     if (Task_FileProcessing.IsCompleted || Task_FileProcessing.IsCanceled || Task_FileProcessing.IsFaulted)
                     {
-                        Console.WriteLine("FILE_PROCESS_SERVICE: COMPLETED - " + Current_ProcessId + " " + Task_FileProcessing.Result);
+                        Console.WriteLine("FILE_PROCESS_SERVICE: COMPLETED - " + Current_ProcessObj.ID + " " + Task_FileProcessing.Result);
                         Task_FileProcessing = null;
                     }
                     else if (DateTime.Compare(DateTime.Now, Process_StartTime.AddMinutes(MAX_PROCESS_MIN)) > 0)
                     {
-                        Console.WriteLine("FILE_PROCESS_SERVICE: " + Current_ProcessId + " " + "TIME OUT!");
+                        Console.WriteLine("FILE_PROCESS_SERVICE: " + Current_ProcessObj.ID + " " + "TIME OUT!");
                         Processing_Thread.Abort();
                         Task_FileProcessing = null;
                         using (var scope = serviceScopeFactory.CreateScope())
                         {
                             var uploadHistContext = scope.ServiceProvider.GetService<UploadHistContext>();
-                            var hist = await uploadHistContext.UploadHistories.FirstOrDefaultAsync(x => x.ID == Current_ProcessId);
+                            var hist = await uploadHistContext.UploadHistories.FirstOrDefaultAsync(x => x.ID == Current_ProcessObj.ID);
                             hist.Processed = true;
                             hist.Processed_Success = false;
                             hist.Procesed_ErrorMsg = (int)FileProcess_Status.TimeOut;
@@ -75,10 +89,11 @@ namespace CourseZero.Services
                 }
                 else if (Process_Queue.Count > 0 && Task_FileProcessing == null)
                 {
-
+                    Queue_Position_Minus_One();
                     UploadHist To_Process = Process_Queue.Dequeue();
-                    Current_ProcessId = To_Process.ID;
-                    Console.WriteLine("FILE_PROCESS_SERVICE: PROCESSING " + Current_ProcessId);
+                    Queue_Position.Remove(To_Process.ID);
+                    Current_ProcessObj = To_Process;
+                    Console.WriteLine("FILE_PROCESS_SERVICE: PROCESSING " + Current_ProcessObj.ID);
                     Task_FileProcessing = Task.Factory.StartNew(() =>
                         {
                             Processing_Thread = Thread.CurrentThread;
