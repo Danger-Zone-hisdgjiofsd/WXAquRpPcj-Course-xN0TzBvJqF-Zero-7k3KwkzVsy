@@ -98,7 +98,7 @@ function Auto_Login() {
         postJSON("/api/General/GetUserInfo", (msg_to_send), function (obj) {
             if (obj["status_code"] == 0) //success 
             {
-                g_auth_token = localStorage.getItem("saved_auth_token");
+                g_auth_token = msg_to_send.auth_token;
                 g_username = obj["username"];
                 g_login = true;
                 document.getElementById("layout_Username").innerHTML = g_username;
