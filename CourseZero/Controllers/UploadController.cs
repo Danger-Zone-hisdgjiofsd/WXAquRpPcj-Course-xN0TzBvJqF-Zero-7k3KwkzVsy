@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CourseZero.Filters;
 using CourseZero.Models;
 using CourseZero.Services;
 using CourseZero.Tools;
@@ -27,6 +29,77 @@ namespace CourseZero.Controllers
             this.authTokenContext = authTokenContext;
             this.uploadHistContext = uploadHistContext;
         }
+        /// <summary>
+        /// Get the file process status by upload hist (file) id.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult<GetFileProcessStatus_Response>> GetFileProcessStatus([FromBody]GetFileProcessStatus_Request request)
+        {
+            var response = new GetFileProcessStatus_Response();
+            int userid = -1;
+            userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            if (userid == -1)
+            {
+                response.status_code = 1;
+                return response;
+            }
+            if (File_Process_Service.Current_ProcessObj != null)
+            {
+                if (File_Process_Service.Current_ProcessObj.ID == request.upload_hist_ID)
+                {
+                    if (userid != File_Process_Service.Current_ProcessObj.Uploader_UserID)
+                    {
+                        response.status_code = 3;
+                        return response;
+                    }
+                    response.processed = false;
+                    response.status_code = 0;
+                    response.queue_pos = 0;
+                    return response;
+                }
+            }
+            UploadHist upload_history_obj;
+            if (File_Process_Service.Queue_Position.ContainsKey(request.upload_hist_ID))
+            {
+                upload_history_obj = File_Process_Service.Queue_Position[request.upload_hist_ID].uploadhist;
+                if (userid != upload_history_obj.Uploader_UserID)
+                {
+                    response.status_code = 3;
+                    return response;
+                }
+                response.processed = false;
+                response.status_code = 0;
+                response.queue_total = File_Process_Service.Queue_Position.Count;
+                response.queue_pos = File_Process_Service.Queue_Position[request.upload_hist_ID].queue;
+                return response;
+            }
+            upload_history_obj = await uploadHistContext.Get_UploadHist_By_Hist_ID(request.upload_hist_ID);
+            if (upload_history_obj == null)
+            {
+                response.status_code = 2;
+                return response;
+            }
+            if (userid != upload_history_obj.Uploader_UserID)
+            {
+                response.status_code = 3;
+                return response;
+            }
+            if (!upload_history_obj.Processed)
+            {
+                response.status_code = 4;
+                return response;
+            }
+            response.processed = true;
+            response.uploadHist = upload_history_obj;
+            return response;
+        }
+
+
         /// <summary>
         /// Keys are (first one MUST be auth_token):
         /// auth_token,
@@ -118,7 +191,7 @@ namespace CourseZero.Controllers
             }
             if (file_found && auth_found && courseID != -1)
             {
-                File_Process_Service.Process_Queue.Enqueue(uploadHist);
+                File_Process_Service.Enqueue(uploadHist);
                 return new UploadFile_Response(0, uploadHist.ID);
             }
             return new UploadFile_Response(2);
@@ -139,6 +212,39 @@ namespace CourseZero.Controllers
                 this.status_code = status_code;
                 this.upload_id = upload_id;
             }
+        }
+        public class GetFileProcessStatus_Request
+        {
+            [Required]
+            [StringLength(128, MinimumLength = 128)]
+            public string auth_token { get; set; }
+            [Required]
+            [Range(1, int.MaxValue)]
+            public int upload_hist_ID { get; set; }
+        }
+        public class GetFileProcessStatus_Response
+        {
+            /// <summary>
+            /// 0 is success, 1 is auth fail, 2 is invalid upload_hist_ID, 3 is not the owner of upload_hist_ID, 4 is not processed but not in the process queue (should not exist in real case if no one disturb the server)
+            /// </summary>
+            public int status_code { get; set; }
+            /// <summary>
+            /// true if the file has been processed.
+            /// </summary>
+            public bool processed { get; set; }
+            /// <summary>
+            /// If the file is processed, Object UploadHist will be returned.
+            /// </summary>
+            public UploadHist uploadHist { get; set; }
+            /// <summary>
+            /// If file is not processed, this will be the queue position. 0 means currently processing. 1, 2, 3, 4 ... mean current queue position (maybe useful in designing the progress bar)
+            /// </summary>
+            public int queue_pos { get; set; }
+            /// <summary>
+            /// If file is not processed, this will be the total number of file waiting in the queue. If queue_pos is 0, this will be 0.  (maybe useful in designing the progress bar)
+            /// </summary>
+            public int queue_total { get; set; }
+
         }
     }
 }
