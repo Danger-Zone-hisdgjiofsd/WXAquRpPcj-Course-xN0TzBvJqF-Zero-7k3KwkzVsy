@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using CourseZero.Filters;
@@ -40,30 +41,58 @@ namespace CourseZero.Controllers
                 ContentType = "application/json"
             };
         }
+        /// <summary>
+        /// Get the username of an user by an userid, if not specifiy the userid, it will return the username which belongs to the auth token user.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("[action]")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public async Task<ActionResult<GetUserInfo_Response>> GetUserInfo([FromBody]AuthToken_Request authToken_Request)
+        public async Task<ActionResult<GetUserInfo_Response>> GetUserInfo([FromBody]GetUserInfo_Request request)
         {
             int userID = -1;
-            userID = await authTokenContext.Get_User_ID_By_Token(authToken_Request.auth_token);
+            userID = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
             var response = new GetUserInfo_Response();
             if (userID == -1)
             {
                 response.status_code = 1;
                 return response;
             }
-            response.status_code = 0;
-            var User = await userContext.Get_User_By_User_ID(userID);
-            response.username = User.username;
+            User user;
+            if (request.userid == 0)
+            {
+                response.status_code = 0;
+                user = await userContext.Get_User_By_User_ID(userID);
+                response.username = user.username;
+            }
+            else
+            {
+                user = await userContext.Get_User_By_User_ID(request.userid);
+                if (user == null)
+                    response.status_code = 2;
+                else
+                {
+                    response.username = user.username;
+                    response.status_code = 0;
+                }
+            }
             return response;
 
+        }
+        public class GetUserInfo_Request
+        {
+            [Required]
+            [StringLength(128, MinimumLength = 128)]
+            public string auth_token { get; set; }
+            [Range(1, int.MaxValue)]
+            public int userid { get; set; }
         }
         public class GetUserInfo_Response
         {
             /// <summary>
-            /// 1 is fail, 0 is success
+            /// 2 is user not found, 1 is auth fail, 0 is success
             /// </summary>
             public int status_code { get; set; }
             public string username { get; set; }
