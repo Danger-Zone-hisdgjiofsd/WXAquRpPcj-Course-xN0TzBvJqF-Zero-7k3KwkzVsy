@@ -29,6 +29,11 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<Login_Response>> Post([FromBody]Login_Request request)
         {
             var response = new Login_Response();
+            if (request.email == null && request.username == null)
+            {
+                response.status_code = 1;
+                return response;
+            }
             var valid_check = request.all_fields_are_valid();
             if (!valid_check.valid)
             {
