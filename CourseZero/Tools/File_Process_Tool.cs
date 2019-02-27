@@ -14,6 +14,7 @@ namespace CourseZero.Tools
     public class File_Process_Tool
     {
         static string[] AllowedFiles_Types = { ".txt", ".doc", ".docx", ".ppt", ".pptx", ".pdf", ".wav", ".mp3", ".3gp", ".mp4", ".avi", ".mkv" };
+        static string[] NonScannableFiles_Types = {  ".wav", ".mp3", ".3gp", ".mp4", ".avi", ".mkv" };
         public enum FileProcess_Status
         {
             Success,
@@ -214,6 +215,13 @@ namespace CourseZero.Tools
         public static bool File_Allowed(string typename)
         {
             foreach (var s in AllowedFiles_Types)
+                if (s == typename)
+                    return true;
+            return false;
+        }
+        public static bool File_Non_Scannable(string typename)
+        {
+            foreach (var s in NonScannableFiles_Types)
                 if (s == typename)
                     return true;
             return false;
