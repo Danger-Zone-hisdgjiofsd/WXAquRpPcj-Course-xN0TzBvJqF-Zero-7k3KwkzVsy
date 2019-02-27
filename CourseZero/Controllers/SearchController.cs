@@ -30,6 +30,75 @@ namespace CourseZero.Controllers
         [Produces("application/json")]
         [Route("[action]")]
         [ServiceFilter(typeof(AuthRequired))]
+        public async Task<ActionResult<Search_Response>> SearchByUserID([FromBody]SearchByUserID_Request request)
+        {
+            var response = new Search_Response();
+            var response_result = new List<File_Shown_to_User>();
+            StringBuilder where_condition = new StringBuilder();
+            where_condition.Append("WHERE ");
+            SqlParameter userid_parameter = new SqlParameter("UserIDValue", "");
+            SqlParameter filetype_parameter = new SqlParameter("FileTypeValue", "");
+            SqlParameter shouldbefore_parameter = new SqlParameter("ShouldBeforeValue", "");
+            SqlParameter shouldafter_parameter = new SqlParameter("ShouldAfterValue", "");
+            where_condition.Append("[Uploader_UserID] = @UserIDValue");
+            userid_parameter.Value = request.userid;
+            Console.WriteLine(userid_parameter.Value);
+            if (request.specific_filetype != null)
+            {
+                if (request.specific_filetype.Count == 0)
+                    return new Search_Response(4);
+                request.specific_filetype = request.specific_filetype.Distinct().ToList();
+                foreach (var type in request.specific_filetype)
+                {
+                    if (!File_Process_Tool.File_Allowed(type))
+                        return new Search_Response(4);
+                }
+                where_condition.Append(" AND ");
+                where_condition.Append("[File_Typename] IN (select value from openjson(@FileTypeValue))");
+                filetype_parameter.Value = JsonConvert.SerializeObject(request.specific_filetype);
+            }
+            if (request.should_before != default(DateTime))
+            {
+                if (Invalid_Datetime(request.should_before))
+                    return new Search_Response(5);
+                where_condition.Append("[Upload_Time] <= @ShouldBeforeValue");
+                shouldbefore_parameter.Value = request.should_before;
+            }
+            if (request.should_after != default(DateTime))
+            {
+                if (Invalid_Datetime(request.should_after))
+                    return new Search_Response(5);
+                where_condition.Append("[Upload_Time] >= @ShouldAfterValue");
+                shouldafter_parameter.Value = request.should_after;
+            }
+            string orderby_str = "";
+            if (request.order_by == 0)
+            {
+                if (request.order == 0)
+                    orderby_str = " ORDER BY [Upload_Time] DESC";
+                else
+                    orderby_str = " ORDER BY [Upload_Time] ASC";
+            }
+            else
+            {
+                if (request.order == 0)
+                    orderby_str = " ORDER BY [Likes] DESC";
+                else
+                    orderby_str = " ORDER BY [Likes] ASC";
+            }
+            request.next_20 *= 20;
+            IQueryable<UploadedFile> database_result = uploadedFileContext.UploadedFiles.FromSql("SELECT * FROM [CourseZero].[dbo].[UploadedFiles] " + where_condition.ToString() + orderby_str + " OFFSET @next_20 ROWS FETCH NEXT 20 ROWS ONLY;",
+                 new SqlParameter("next_20", request.next_20), userid_parameter, filetype_parameter, shouldbefore_parameter, shouldafter_parameter);
+            foreach (var result in database_result)
+                Add_Result_To_Response(result, response_result);
+            response.result = response_result;
+            return response;
+        }
+        [HttpPost]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [Route("[action]")]
+        [ServiceFilter(typeof(AuthRequired))]
         public async Task<ActionResult<Search_Response>> SearchByCourseID([FromBody]SearchByCourseID_Request request)
         {
             var response = new Search_Response();
@@ -223,6 +292,47 @@ namespace CourseZero.Controllers
             }
             public int status_code { get; set; }
             public List<File_Shown_to_User> result { get; set; }
+        }
+        public class SearchByUserID_Request
+        {
+            [Required]
+            [StringLength(128, MinimumLength = 128)]
+            public string auth_token { get; set; }
+            /// <summary>
+            /// <para>The user id that the files from</para>
+            /// </summary>
+            [Required]
+            [Range(1, int.MaxValue)]
+            public int userid { get; set; }
+            /// <summary>
+            /// 0 = by upload time, 1 = by likes
+            /// </summary>
+            [Required]
+            public int order_by { get; set; }
+            /// <summary>
+            /// 0 = decreasing order, 1 = increasing order
+            /// </summary>
+            [Required]
+            public int order { get; set; }
+            public List<string> specific_filetype { get; set; }
+            /// <summary>
+            /// <para>uploaded time should before or equal this value</para>
+            /// <para> status_code = 5 if invalid (not between 1/1/1753 12:00:00 - 12/31/9999 11:59:59) </para>
+            /// </summary>
+            public DateTime should_before { get; set; }
+            /// <summary>
+            /// <para>uploaded time should after or equal this value</para>
+            /// <para> status_code = 5 if invalid (not between 1/1/1753 12:00:00 - 12/31/9999 11:59:59) </para>
+            /// </summary>
+            public DateTime should_after { get; set; }
+            /// <summary>
+            /// first 20 queries = 0, next 20 queries = 1, next next 20 queries = 2, etc.
+            /// </summary>
+            [Required]
+            [Range(0, int.MaxValue)]
+
+            public int next_20 { get; set; }
+
         }
         public class SearchByCourseID_Request
         {
