@@ -109,7 +109,7 @@ namespace CourseZero.Controllers
         /// file,
         /// [file has to be less than 100MB]
         /// 
-        /// (If the file name is with length less than 10, server will use the uploaded file name instead.)
+        /// (If the file name is with length 0, server will use the uploaded file name instead.)
         /// (non scannable(".wav", ".mp3", ".3gp", ".mp4", ".avi", ".mkv") file must has file_description with length larger than or equal to 10)
         /// </summary>
         /// <returns></returns>
@@ -149,7 +149,7 @@ namespace CourseZero.Controllers
                         return new UploadFile_Response(3);
                     if (File_Process_Tool.File_Non_Scannable(type) && file_description.Length < 10)
                         return new UploadFile_Response(5);
-                    if (file_name == "" || file_name.Length < 10)
+                    if (file_name.Length == 0)
                     {
                         file_name = fileSection.FileName;
                         file_name = file_name.Substring(0, dot_index);
