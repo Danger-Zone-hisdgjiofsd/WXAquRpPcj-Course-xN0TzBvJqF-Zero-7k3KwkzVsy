@@ -27,11 +27,13 @@ namespace CourseZero.Models
         /// <summary>
         /// File title
         /// </summary>
+        [MaxLength(256)]
         public string File_Name { get; set; }
         /// <summary>
         /// File extension (.docx, .pdf ...)
         /// </summary>
         public string File_typename { get; set; }
+        [MaxLength(10240)]
         public string File_Description { get; set; }
         public int Related_courseID { get; set; }
         public int Uploader_UserID { get; set; }
