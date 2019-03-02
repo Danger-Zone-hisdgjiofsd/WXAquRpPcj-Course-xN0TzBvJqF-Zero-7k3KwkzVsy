@@ -147,11 +147,13 @@ namespace CourseZero.Controllers
             /// Length has to be > 0
             /// </summary>
             [Required]
+            [StringLength(256, MinimumLength = 1)]
             public string file_Name { get; set; }
             /// <summary>
             /// For non scannable file, length has to be >= 10, otherwise >= 0.
             /// </summary>
             [Required]
+            [StringLength(10240)]
             public string file_Description { get; set; }
             [Required]
             public int related_courseID { get; set; }
