@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CourseZero.Migrations.UploadHist
+namespace CourseZero.Migrations.ProfileComments
 {
-    [DbContext(typeof(UploadHistContext))]
-    partial class UploadHistContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ProfileCommentsContext))]
+    partial class ProfileCommentsContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -19,37 +19,26 @@ namespace CourseZero.Migrations.UploadHist
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CourseZero.Models.UploadHist", b =>
+            modelBuilder.Entity("CourseZero.Models.ProfileComment", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("File_Description")
-                        .HasMaxLength(10240);
+                    b.Property<string>("Text")
+                        .HasMaxLength(2048);
 
-                    b.Property<string>("File_Name")
-                        .HasMaxLength(256);
+                    b.Property<DateTime>("posted_dateTime");
 
-                    b.Property<string>("File_typename");
+                    b.Property<int>("receiver_UserID");
 
-                    b.Property<int>("Procesed_ErrorMsg");
-
-                    b.Property<bool>("Processed");
-
-                    b.Property<int>("Processed_FileID");
-
-                    b.Property<bool>("Processed_Success");
-
-                    b.Property<int>("Related_courseID");
-
-                    b.Property<DateTime>("Upload_Time");
-
-                    b.Property<int>("Uploader_UserID");
+                    b.Property<int>("sender_UserID");
 
                     b.HasKey("ID");
 
-                    b.ToTable("UploadHistories");
+                    b.HasIndex("receiver_UserID");
+
+                    b.ToTable("ProfileComments");
                 });
 #pragma warning restore 612, 618
         }
