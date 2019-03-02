@@ -22,7 +22,7 @@ namespace CourseZero.Controllers
             this.subscriptionContext = subscriptionContext;
         }
         /// <summary>
-        /// Subscribe to a course if it is not subscribed currently. Unubscribe to a course if it is subscribed currently.
+        /// Subscribe to a course if it is not subscribed currently. Unubscribe to a course if it is subscribed currently. Max limit per user is 200.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -38,6 +38,9 @@ namespace CourseZero.Controllers
             userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
                 return new SubscribeOrUndo_Response(1);
+            int count = await subscriptionContext.Subscriptions.CountAsync(x => x.UserID == userid);
+            if (count == 200)
+                return new SubscribeOrUndo_Response(5);
             var result = await subscriptionContext.Subscriptions.FirstOrDefaultAsync(x => x.UserID == userid && x.CourseID == request.courseid);
             if (result == null)
             {
@@ -83,7 +86,7 @@ namespace CourseZero.Controllers
                 status_code = code;
             }
             /// <summary>
-            /// 1 is auth fail, 2 is subscribed, 3 is unsubscribed, 4 invalid courseid
+            /// 1 is auth fail, 2 is subscribed, 3 is unsubscribed, 4 invalid courseid, 5 is fail due to hitting the limit 200
             /// </summary>
             public int status_code { get; set; }
         }
