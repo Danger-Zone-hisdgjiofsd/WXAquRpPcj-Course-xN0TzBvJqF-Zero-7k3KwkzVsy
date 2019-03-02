@@ -103,8 +103,8 @@ namespace CourseZero.Controllers
         /// <summary>
         /// Keys are (first one MUST be auth_token):
         /// auth_token,
-        /// file_name,
-        /// file_description,
+        /// file_name [len not longer than 256],
+        /// file_description [len not longer than 10240],
         /// related_courseid,
         /// file,
         /// [file has to be less than 100MB]
@@ -177,9 +177,9 @@ namespace CourseZero.Controllers
                             return new UploadFile_Response(1);
                         auth_found = true;
                     }
-                    if (formSection.Name == "file_name")
+                    if (formSection.Name == "file_name" && value.Length <= 256)
                         file_name = value.Trim();
-                    if (formSection.Name == "file_description")
+                    if (formSection.Name == "file_description" && value.Length <= 10240)
                         file_description = value.Trim();
                     if (formSection.Name == "related_courseid")
                     {
