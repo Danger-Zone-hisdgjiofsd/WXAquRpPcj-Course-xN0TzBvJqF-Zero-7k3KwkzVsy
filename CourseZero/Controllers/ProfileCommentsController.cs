@@ -36,7 +36,7 @@ namespace CourseZero.Controllers
             if (userid == -1)
                 return new GetProfileComments_Response(1);
             var response = new GetProfileComments_Response(0);
-            response.profileComments = await allDbContext.ProfileComments.Where(x => x.receiver_UserID == userid).OrderByDescending(x => x.ID).Skip(request.next_20 * 20).Take(20).Join(
+            response.profileComments = await allDbContext.ProfileComments.Where(x => x.receiver_UserID == request.userid).OrderByDescending(x => x.ID).Skip(request.next_20 * 20).Take(20).Join(
                 allDbContext.Users, x => x.sender_UserID, y => y.ID, (x, y)=> new ProfileComment_ShownToUser
                 {
                     ID = x.ID,
@@ -96,7 +96,7 @@ namespace CourseZero.Controllers
             userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
                 return new DeleteProfileComment_Response(1);
-            var comment = await allDbContext.GetCommentByID(request.comment_id);
+            var comment = await allDbContext.GetProfileCommentByID(request.comment_id);
             if (comment == null)
                 return new DeleteProfileComment_Response(2);
             if (comment.sender_UserID != userid)
