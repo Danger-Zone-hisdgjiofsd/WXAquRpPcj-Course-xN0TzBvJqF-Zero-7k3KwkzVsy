@@ -19,10 +19,10 @@ namespace CourseZero.Controllers
     public class AvatarController : Controller
     {
         static string[] AllowedFiles_Types = { ".png", ".jpg", ".jpeg", ".gif" };
-        readonly AuthTokenContext authTokenContext;
-        public AvatarController(AuthTokenContext authTokenContext)
+        readonly AllDbContext allDbContext;
+        public AvatarController(AllDbContext allDbContext)
         {
-            this.authTokenContext = authTokenContext;
+            this.allDbContext = allDbContext;
         }
         /// <summary>
         /// Keys are (first one MUST be auth_token):
@@ -66,7 +66,7 @@ namespace CourseZero.Controllers
                     var value = await formSection.GetValueAsync();
                     if (formSection.Name == "auth_token" && !auth_found && value.Length == 128)
                     {
-                        userID = await authTokenContext.Get_User_ID_By_Token(value);
+                        userID = await allDbContext.Get_User_ID_By_Token(value);
                         if (userID == -1)
                             return Unauthorized();
                         auth_found = true;

@@ -16,12 +16,10 @@ namespace CourseZero.Controllers
     public class ChangePasswordController : Controller
     {
         // GET: /<controller>/
-        readonly UserContext userContext;
-        readonly AuthTokenContext authTokenContext;
-        public ChangePasswordController(UserContext userContext, AuthTokenContext authTokenContext)
+        readonly AllDbContext allDbContext;
+        public ChangePasswordController(AllDbContext allDbContext)
         {
-            this.userContext = userContext;
-            this.authTokenContext = authTokenContext;
+            this.allDbContext = allDbContext;
         }
         [HttpPost]
         [Consumes("application/json")]
@@ -43,13 +41,13 @@ namespace CourseZero.Controllers
                 response.display_message = password_verify_result.error_str;
                 return response;
             }
-            AuthToken token = await authTokenContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == request.auth_token);
+            AuthToken token = await allDbContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == request.auth_token);
             if (token == null)
             {
                 response.status_code = 1;
                 return response;
             }
-            User user = await userContext.Get_User_By_User_ID(token.userID);
+            User user = await allDbContext.Get_User_By_User_ID(token.userID);
             string hashed_password = Hashing_Tool.Hash_Password(request.old_password, user.password_salt);
             if (hashed_password != user.password_hash)
             {
@@ -60,10 +58,9 @@ namespace CourseZero.Controllers
             var hashing_pw_result = Hashing_Tool.Hash_Password_by_Random_Salt(request.new_password);
             user.password_hash = hashing_pw_result.hashed_pw;
             user.password_salt = hashing_pw_result.salt;
-            var sessions = authTokenContext.AuthTokens.Where(x => x.userID == token.userID);
-            authTokenContext.AuthTokens.RemoveRange(sessions);
-            await userContext.SaveChangesAsync();
-            await authTokenContext.SaveChangesAsync();
+            var sessions = allDbContext.AuthTokens.Where(x => x.userID == token.userID);
+            allDbContext.AuthTokens.RemoveRange(sessions);
+            await allDbContext.SaveChangesAsync();
             response.status_code = 0;
             response.display_message = "Your password has been changed. Please login again.";
             return response; 

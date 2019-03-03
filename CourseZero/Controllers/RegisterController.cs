@@ -17,10 +17,10 @@ namespace CourseZero.Controllers
 
     public class RegisterController : Controller
     {
-        readonly UserContext userContext;
-        public RegisterController(UserContext userContext)
+        readonly AllDbContext allDbContext;
+        public RegisterController(AllDbContext allDbContext)
         {
-            this.userContext = userContext;
+            this.allDbContext = allDbContext;
         }
         [HttpPost]
         [Consumes("application/json")]
@@ -35,13 +35,13 @@ namespace CourseZero.Controllers
                 response.display_message = valid_check.error_str;
                 return response;
             }
-            if (await userContext.Users.FirstOrDefaultAsync(x => x.username == request.username) != null)
+            if (await allDbContext.Users.FirstOrDefaultAsync(x => x.username == request.username) != null)
             {
                 response.status_code = 1;
                 response.display_message = "This username is already in use";
                 return response;
             }
-            if (await userContext.Users.FirstOrDefaultAsync(x => x.email == request.email) != null)
+            if (await allDbContext.Users.FirstOrDefaultAsync(x => x.email == request.email) != null)
             {
                 response.status_code = 1;
                 response.display_message = "This email is already in use";
@@ -64,8 +64,8 @@ namespace CourseZero.Controllers
             }
             user.email_verifying_hash = hash;
             user.email_verification_issue_datetime = DateTime.Now;
-            await userContext.AddAsync(user);
-            await userContext.SaveChangesAsync();
+            await allDbContext.Users.AddAsync(user);
+            await allDbContext.SaveChangesAsync();
             response.display_message = "An verification email is sent to " + request.email + ", please verify your account within 2 hours";
             response.status_code = 0;
             return response;
@@ -82,7 +82,7 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<Reissue_Email_Response>> Reissue_Email([FromBody]Reissue_Email_Request request)
         {
             var response = new Reissue_Email_Response();
-            User user = await userContext.Get_User_By_Email(request.email);
+            User user = await allDbContext.Get_User_By_Email(request.email);
             if (user == null)
             {
                 response.status_code = 1;
@@ -111,7 +111,7 @@ namespace CourseZero.Controllers
             }
             user.email_verifying_hash = hash;
             user.email_verification_issue_datetime = DateTime.Now;
-            await userContext.SaveChangesAsync();
+            await allDbContext.SaveChangesAsync();
             response.display_message = "An verification email is sent to " + request.email + ", please verify your account within 2 hours";
             response.status_code = 0;
             return response;
@@ -124,11 +124,11 @@ namespace CourseZero.Controllers
             hash = HttpUtility.UrlDecode(hash).Replace(' ', '+');
             if (username.Length > 20 || hash.Length != 128)
                 return "This verification link is not valid!";
-            User user = await userContext.Users.FirstOrDefaultAsync(x => x.username == username);
+            User user = await allDbContext.Users.FirstOrDefaultAsync(x => x.username == username);
             if (user == null || user.email_verified || user.email_verifying_hash != hash || DateTime.Compare(user.email_verification_issue_datetime.AddHours(2), DateTime.Now) < 0)
                 return "This verification link is not valid or no longer valid!";
             user.email_verified = true;
-            await userContext.SaveChangesAsync();
+            await allDbContext.SaveChangesAsync();
             return "Email verified!";
         }
 

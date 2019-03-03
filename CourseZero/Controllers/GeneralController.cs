@@ -15,12 +15,10 @@ namespace CourseZero.Controllers
     [Route("api/[controller]")]
     public class GeneralController : Controller
     {
-        readonly UserContext userContext;
-        readonly AuthTokenContext authTokenContext;
-        public GeneralController(UserContext userContext, AuthTokenContext authTokenContext)
+        readonly AllDbContext allDbContext;
+        public GeneralController(AllDbContext allDbContext)
         {
-            this.userContext = userContext;
-            this.authTokenContext = authTokenContext;
+            this.allDbContext = allDbContext;
         }
         // GET: /<controller>/
         /// <summary>
@@ -53,7 +51,7 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<GetUserInfo_Response>> GetUserInfo([FromBody]GetUserInfo_Request request)
         {
             int userID = -1;
-            userID = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            userID = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             var response = new GetUserInfo_Response();
             if (userID == -1)
             {
@@ -64,12 +62,12 @@ namespace CourseZero.Controllers
             if (request.userid == 0)
             {
                 response.status_code = 0;
-                user = await userContext.Get_User_By_User_ID(userID);
+                user = await allDbContext.Get_User_By_User_ID(userID);
                 response.username = user.username;
             }
             else
             {
-                user = await userContext.Get_User_By_User_ID(request.userid);
+                user = await allDbContext.Get_User_By_User_ID(request.userid);
                 if (user == null)
                     response.status_code = 2;
                 else

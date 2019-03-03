@@ -37,10 +37,11 @@ namespace CourseZero.Services
         }
         private void Queue_Position_Minus_One()
         {
-            foreach (var item in Queue_Position)
+            var list_of_key = Queue_Position.Keys.ToList();
+            foreach (var item in list_of_key)
             {
-                var obj = Queue_Position[item.Key];
-                Queue_Position[item.Key] = (obj.uploadhist, obj.queue - 1);
+                var obj = Queue_Position[item];
+                Queue_Position[item] = (obj.uploadhist, obj.queue - 1);
             }
         }
         private async Task Add_Incompleted_Job_FromDB()
@@ -48,8 +49,8 @@ namespace CourseZero.Services
             int count = 0;
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                var uploadHistContext = scope.ServiceProvider.GetService<UploadHistContext>();
-                var incompleted_jobs = uploadHistContext.UploadHistories.Where(x => !x.Processed);
+                var allDbContext = scope.ServiceProvider.GetService<AllDbContext>();
+                var incompleted_jobs = allDbContext.UploadHistories.Where(x => !x.Processed);
                 foreach (var job in incompleted_jobs)
                 {
                     count++;
@@ -77,7 +78,7 @@ namespace CourseZero.Services
                         Task_FileProcessing = null;
                         using (var scope = serviceScopeFactory.CreateScope())
                         {
-                            var uploadHistContext = scope.ServiceProvider.GetService<UploadHistContext>();
+                            var uploadHistContext = scope.ServiceProvider.GetService<AllDbContext>();
                             var hist = await uploadHistContext.UploadHistories.FirstOrDefaultAsync(x => x.ID == Current_ProcessObj.ID);
                             hist.Processed = true;
                             hist.Processed_Success = false;
@@ -113,7 +114,7 @@ namespace CourseZero.Services
             {
                 using (var scope = serviceScopeFactory.CreateScope())
                 {
-                    var uploadHistContext = scope.ServiceProvider.GetService<UploadHistContext>();
+                    var uploadHistContext = scope.ServiceProvider.GetService<AllDbContext>();
                     var hist = uploadHistContext.UploadHistories.FirstOrDefault(x => x.ID == ItemtoProcess.ID);
                     hist.Processed = true;
                     hist.Processed_Success = false;
@@ -128,7 +129,7 @@ namespace CourseZero.Services
             {
                 using (var scope = serviceScopeFactory.CreateScope())
                 {
-                    var uploadHistContext = scope.ServiceProvider.GetService<UploadHistContext>();
+                    var uploadHistContext = scope.ServiceProvider.GetService<AllDbContext>();
                     var hist = uploadHistContext.UploadHistories.FirstOrDefault(x => x.ID == ItemtoProcess.ID);
                     hist.Processed = true;
                     hist.Processed_Success = false;
@@ -144,9 +145,8 @@ namespace CourseZero.Services
             int FileID = -1;
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                var uploadHistContext = scope.ServiceProvider.GetService<UploadHistContext>();
-                var uploadedFileContext = scope.ServiceProvider.GetService<UploadedFileContext>();
-                var hist = uploadHistContext.UploadHistories.FirstOrDefault(x => x.ID == ItemtoProcess.ID);
+                var allDbContext = scope.ServiceProvider.GetService<AllDbContext>();
+                var hist = allDbContext.UploadHistories.FirstOrDefault(x => x.ID == ItemtoProcess.ID);
                 var Course = CUSIS_Fetch_Service.GetCourse_By_CourseID(hist.Related_courseID);
                 StringBuilder stringBuider = new StringBuilder();
                 stringBuider.Append(Course.Prefix + " ");
@@ -174,15 +174,14 @@ namespace CourseZero.Services
                 }
                 else
                     uploadedFile.Stored_Internally = false;
-                uploadedFileContext.Add(uploadedFile);
-                uploadedFileContext.SaveChanges();
+                allDbContext.UploadedFiles.Add(uploadedFile);
+                allDbContext.SaveChanges();
                 FileID = uploadedFile.ID;
                 hist.Processed = true;
                 hist.Processed_Success = true;
                 hist.Processed_FileID = uploadedFile.ID;
-                uploadHistContext.SaveChanges();
-                uploadHistContext.Dispose();
-                uploadedFileContext.Dispose();
+                allDbContext.SaveChanges();
+                allDbContext.Dispose();
             }
             processed_result.thumbnail.Save(AppDomain.CurrentDomain.BaseDirectory + "/UploadsThumbnail/" + FileID + ".png", GetEncoder(ImageFormat.Jpeg), myEncoderParameters);
             Try_Close_AllHandles();

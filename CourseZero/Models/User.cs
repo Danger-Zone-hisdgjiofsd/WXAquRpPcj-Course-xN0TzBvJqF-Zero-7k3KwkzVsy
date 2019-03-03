@@ -8,28 +8,7 @@ using System.Threading.Tasks;
 
 namespace CourseZero.Models
 {
-    public class UserContext : DbContext
-    {
-        public UserContext(DbContextOptions<UserContext> options) : base(options)
-        {
-        }
 
-        public DbSet<User> Users { get; set; }
-
-        public async Task<User> Get_User_By_User_ID(int id)
-        {
-            return await Users.FirstOrDefaultAsync(x => x.ID == id);
-        }
-        public async Task<User> Get_User_By_Email(string email)
-        {
-            return await Users.FirstOrDefaultAsync(x => x.email == email);
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>()
-                .HasIndex(c => new { c.username, c.email }).IsUnique(true);
-        }
-    }
     public class User
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

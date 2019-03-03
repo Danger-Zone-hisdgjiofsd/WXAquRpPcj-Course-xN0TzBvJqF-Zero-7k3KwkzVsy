@@ -15,12 +15,10 @@ namespace CourseZero.Controllers
     [Route("api/[controller]")]
     public class SessionController : Controller
     {
-        readonly UserContext userContext;
-        readonly AuthTokenContext authTokenContext;
-        public SessionController(UserContext userContext, AuthTokenContext authTokenContext)
+        readonly AllDbContext allDbContext;
+        public SessionController(AllDbContext allDbContext)
         {
-            this.userContext = userContext;
-            this.authTokenContext = authTokenContext;
+            this.allDbContext = allDbContext;
         }
         [HttpPost]
         [Consumes("application/json")]
@@ -29,14 +27,14 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<Logout_Response>> Logout([FromBody]Logout_Request request)
         {
             var Response = new Logout_Response();
-            AuthToken token = await authTokenContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == request.auth_token);
+            AuthToken token = await allDbContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == request.auth_token);
             if (token == null)
             {
                 Response.status_code = 1;
                 return Response;
             }
-            authTokenContext.AuthTokens.Remove(token);
-            await authTokenContext.SaveChangesAsync();
+            allDbContext.AuthTokens.Remove(token);
+            await allDbContext.SaveChangesAsync();
             Response.status_code = 0;
             return Response;
         }
@@ -47,14 +45,14 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<Get_All_Sessions_Response>> Get_All_Sessions([FromBody]Get_All_Sessions_Request request)
         {
             var Response = new Get_All_Sessions_Response();
-            AuthToken current_token = await authTokenContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == request.auth_token);
+            AuthToken current_token = await allDbContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == request.auth_token);
             if (current_token == null)
             {
                 Response.status_code = 1;
                 return Response;
             }
             Response.status_code = 0;
-            var list_of_auth_tokens = authTokenContext.AuthTokens.Where(x => x.userID == current_token.userID);
+            var list_of_auth_tokens = allDbContext.AuthTokens.Where(x => x.userID == current_token.userID);
             Response.sessions = new List<AuthToken>();
             Response.sessions.AddRange(list_of_auth_tokens);
             return Response;
@@ -66,20 +64,20 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<Logout_Specific_Session_Response>> Logout_Specific_Session([FromBody] Logout_Specific_Session_Request request)
         {
             var Response = new Logout_Specific_Session_Response();
-            AuthToken current_token = await authTokenContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == request.auth_token);
+            AuthToken current_token = await allDbContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == request.auth_token);
             if (current_token == null)
             {
                 Response.status_code = 1;
                 return Response;
             }
-            AuthToken token_to_be_removed = await authTokenContext.AuthTokens.FirstOrDefaultAsync(x => x.userID == current_token.userID && x.Token == request.token_to_be_removed);
+            AuthToken token_to_be_removed = await allDbContext.AuthTokens.FirstOrDefaultAsync(x => x.userID == current_token.userID && x.Token == request.token_to_be_removed);
             if (token_to_be_removed == null)
             {
                 Response.status_code = 2;
                 return Response;
             }
-            authTokenContext.AuthTokens.Remove(token_to_be_removed);
-            await authTokenContext.SaveChangesAsync();
+            allDbContext.AuthTokens.Remove(token_to_be_removed);
+            await allDbContext.SaveChangesAsync();
             Response.status_code = 0;
             return Response;
         }

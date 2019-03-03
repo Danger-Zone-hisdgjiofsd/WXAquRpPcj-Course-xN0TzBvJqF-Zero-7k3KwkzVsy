@@ -8,23 +8,6 @@ using System.Threading.Tasks;
 
 namespace CourseZero.Models
 {
-    public class UploadedFileContext : DbContext
-    {
-        public UploadedFileContext(DbContextOptions<UploadedFileContext> options) : base(options)
-        {
-
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<UploadedFile>().HasIndex(c => new { c.Upload_Time});
-            modelBuilder.Entity<UploadedFile>().HasIndex(c => new { c.Likes });
-        }
-        public async Task<UploadedFile> Get_File_By_FileID(int fileid)
-        {
-            return await UploadedFiles.FirstOrDefaultAsync(x => x.ID == fileid);
-        }
-        public DbSet<UploadedFile> UploadedFiles { get; set; }
-    }
     public class UploadedFile
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -53,6 +36,7 @@ namespace CourseZero.Models
         public string File_Description { get; set; }
         public int Related_courseID { get; set; }
         public int Uploader_UserID { get; set; }
+        public string Uploader_Username { get; set; }
         public DateTime Upload_Time { get; set; }
         public int Likes { get; set; }
         public int DisLikes { get; set; }

@@ -15,12 +15,10 @@ namespace CourseZero.Controllers
     [Route("api/[controller]")]
     public class ForgotPasswordController : Controller
     {
-        readonly UserContext userContext;
-        readonly AuthTokenContext authTokenContext;
-        public ForgotPasswordController(UserContext userContext, AuthTokenContext authTokenContext)
+        readonly AllDbContext allDbContext;
+        public ForgotPasswordController(AllDbContext allDbContext)
         {
-            this.userContext = userContext;
-            this.authTokenContext = authTokenContext;
+            this.allDbContext = allDbContext;
         }
 
         [HttpPost]
@@ -30,7 +28,7 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<ForgotPassword_Change_Response>> Request_Change([FromBody]ForgotPassword_Change_Request request)
         {
             var response = new ForgotPassword_Change_Response();
-            User user = await userContext.Get_User_By_Email(request.email);
+            User user = await allDbContext.Get_User_By_Email(request.email);
             if (user == null)
             {
                 response.status_code = 1;
@@ -60,7 +58,7 @@ namespace CourseZero.Controllers
             user.password_change_new_password = new_password;
             user.password_change_hash = hash;
             user.password_change_request_datatime = DateTime.Now;
-            await userContext.SaveChangesAsync();
+            await allDbContext.SaveChangesAsync();
             response.status_code = 0;
             response.display_message = "A new password is sent to your email. Please activate your new password within 30 minutes.";
             return response;
@@ -72,7 +70,7 @@ namespace CourseZero.Controllers
             hash = HttpUtility.UrlDecode(hash).Replace(' ', '+');
             if (hash.Length != 128)
                 return "This activation link is not valid!";
-            User user = await userContext.Get_User_By_User_ID(id);
+            User user = await allDbContext.Get_User_By_User_ID(id);
             if (user == null || user.password_change_hash != hash || DateTime.Compare(user.password_change_request_datatime.AddMinutes(30), DateTime.Now) < 0)
                 return "This activation link is not valid or no longer valid!";
             var hashing_pw_result = Hashing_Tool.Hash_Password_by_Random_Salt(user.password_change_new_password);
@@ -80,10 +78,9 @@ namespace CourseZero.Controllers
             user.password_salt = hashing_pw_result.salt;
             user.password_change_hash = "";
             user.password_change_new_password = "";
-            var sessions =  authTokenContext.AuthTokens.Where(x => x.userID == id);
-            authTokenContext.AuthTokens.RemoveRange(sessions);
-            await userContext.SaveChangesAsync();
-            await authTokenContext.SaveChangesAsync();
+            var sessions =  allDbContext.AuthTokens.Where(x => x.userID == id);
+            allDbContext.AuthTokens.RemoveRange(sessions);
+            await allDbContext.SaveChangesAsync();
             return "Your new password has been activated.";
         }
 

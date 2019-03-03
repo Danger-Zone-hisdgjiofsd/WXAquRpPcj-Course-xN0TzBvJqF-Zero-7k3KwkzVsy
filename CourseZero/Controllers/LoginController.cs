@@ -16,12 +16,10 @@ namespace CourseZero.Controllers
     [Route("api/[controller]")]
     public class LoginController : Controller
     {
-        readonly UserContext userContext;
-        readonly AuthTokenContext authTokenContext;
-        public LoginController(UserContext userContext, AuthTokenContext authTokenContext)
+        readonly AllDbContext allDbContext;
+        public LoginController(AllDbContext allDbContext)
         {
-            this.userContext = userContext;
-            this.authTokenContext = authTokenContext;
+            this.allDbContext = allDbContext;
         }
         [HttpPost]
         [Consumes("application/json")]
@@ -43,9 +41,9 @@ namespace CourseZero.Controllers
             }
             User user = null;
             if (request.using_email)
-                user = await userContext.Users.FirstOrDefaultAsync(x => x.email == request.email);
+                user = await allDbContext.Users.FirstOrDefaultAsync(x => x.email == request.email);
             else
-                user = await userContext.Users.FirstOrDefaultAsync(x => x.username == request.username);
+                user = await allDbContext.Users.FirstOrDefaultAsync(x => x.username == request.username);
             if (user == null)
             {
                 response.status_code = 1;
@@ -70,14 +68,14 @@ namespace CourseZero.Controllers
             while (true)
             {
                 token = Hashing_Tool.Random_String(128).ToLower();
-                if (await authTokenContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == token) != null)
+                if (await allDbContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == token) != null)
                     continue;
                 break;
             }
             AuthToken auth_Token_Obj;
-            var existing_tokens = authTokenContext.AuthTokens.Where(x => x.userID == user.ID).OrderByDescending(x => x.Last_access_Time);
+            var existing_tokens = allDbContext.AuthTokens.Where(x => x.userID == user.ID).OrderByDescending(x => x.Last_access_Time);
             if (existing_tokens.Count() == 20) // Max token per user is 20
-                authTokenContext.AuthTokens.Remove(existing_tokens.Last());
+                allDbContext.AuthTokens.Remove(existing_tokens.Last());
 
             auth_Token_Obj = new AuthToken();
 
@@ -87,8 +85,8 @@ namespace CourseZero.Controllers
             if (Request.Headers.ContainsKey("User-Agent"))
                 useragent_str = Request.Headers["User-Agent"].ToString();
             await RequestSource_Tool.Update_AuthToken_Browse_Record(auth_Token_Obj, useragent_str, Request.HttpContext.Connection.RemoteIpAddress.ToString());
-            await authTokenContext.AddAsync(auth_Token_Obj);
-            await authTokenContext.SaveChangesAsync();
+            await allDbContext.AddAsync(auth_Token_Obj);
+            await allDbContext.SaveChangesAsync();
 
             response.username = user.username;
             response.auth_token = token;

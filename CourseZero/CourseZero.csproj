@@ -9,13 +9,10 @@
     <NoWarn>1701;1702;1591;</NoWarn>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Migrations\AuthToken\20190215154638_Update8.cs" />
-    <Compile Remove="Migrations\AuthToken\20190215154638_Update8.Designer.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.8.14" />
@@ -40,7 +37,7 @@
       <HintPath>References\DeviceDetector.NET.dll</HintPath>
     </Reference>
     <Reference Include="office">
-      <HintPath>..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\office\15.0.0.0__71e9bce111e9429c\office.dll</HintPath>
+      <HintPath>References\office.dll</HintPath>
       <Private>true</Private>
     </Reference>
     <Reference Include="YamlDotNet">

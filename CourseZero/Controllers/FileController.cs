@@ -15,12 +15,10 @@ namespace CourseZero.Controllers
     [Route("api/[controller]")]
     public class FileController : Controller
     {
-        readonly UploadedFileContext uploadedFileContext;
-        readonly AuthTokenContext authTokenContext;
-        public FileController(UploadedFileContext uploadedFileContext, AuthTokenContext authTokenContext)
+        readonly AllDbContext allDbContext;
+        public FileController(AllDbContext allDbContext)
         {
-            this.uploadedFileContext = uploadedFileContext;
-            this.authTokenContext = authTokenContext;
+            this.allDbContext = allDbContext;
         }
         /// <summary>
         /// Edit an uploaded file info
@@ -36,12 +34,12 @@ namespace CourseZero.Controllers
             request.file_Name = request.file_Name.Trim();
             request.file_Description = request.file_Description.Trim();
             int userid = -1;
-            userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
                 return new EditFileInfo_Response(1);
             if (CUSIS_Fetch_Service.CourseID_range.lower > request.related_courseID || request.related_courseID > CUSIS_Fetch_Service.CourseID_range.upper || request.file_Name.Length == 0)
                 return new EditFileInfo_Response(3);
-            var file = await uploadedFileContext.Get_File_By_FileID(request.file_ID);
+            var file = await allDbContext.Get_File_By_FileID(request.file_ID);
             if (file == null)
                 return new EditFileInfo_Response(2);
             if (file.Uploader_UserID != userid)
@@ -60,7 +58,7 @@ namespace CourseZero.Controllers
             stringBuider.Append(request.file_Description + " ");
             stringBuider.Append(request.file_Name + " ");
             file.Words_for_Search = stringBuider.ToString();
-            await uploadedFileContext.SaveChangesAsync();
+            await allDbContext.SaveChangesAsync();
             return new EditFileInfo_Response(0);
         }
         /// <summary>
@@ -75,10 +73,10 @@ namespace CourseZero.Controllers
         public async Task<DeleteFile_Response> DeleteFile([FromBody]DeleteFile_Request request)
         {
             int userid = -1;
-            userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
                 return new DeleteFile_Response(1);
-            var file = await uploadedFileContext.Get_File_By_FileID(request.file_ID);
+            var file = await allDbContext.Get_File_By_FileID(request.file_ID);
             if (file == null)
                 return new DeleteFile_Response(2);
             if (file.Uploader_UserID != userid)
@@ -86,8 +84,8 @@ namespace CourseZero.Controllers
             if (!file.Stored_Internally)
                 System.IO.File.Delete(AppDomain.CurrentDomain.BaseDirectory + "/Uploads/" + file.ID + file.File_Typename);
             System.IO.File.Delete(AppDomain.CurrentDomain.BaseDirectory + "/UploadsThumbnail/" + file.ID + ".png");
-            uploadedFileContext.UploadedFiles.Remove(file);
-            await uploadedFileContext.SaveChangesAsync();
+            allDbContext.UploadedFiles.Remove(file);
+            await allDbContext.SaveChangesAsync();
             return new DeleteFile_Response(0);
         }
         [HttpPost]
@@ -96,7 +94,7 @@ namespace CourseZero.Controllers
         [ServiceFilter(typeof(AuthRequired))]
         public async Task<IActionResult> GetFileByFileid([FromBody]GetFileByFileid_Reuqest request)
         {
-            UploadedFile requested_file = await uploadedFileContext.Get_File_By_FileID(request.file_ID);
+            UploadedFile requested_file = await allDbContext.Get_File_By_FileID(request.file_ID);
             if (requested_file == null)
                 return new NotFoundResult();
             if (requested_file.Stored_Internally)

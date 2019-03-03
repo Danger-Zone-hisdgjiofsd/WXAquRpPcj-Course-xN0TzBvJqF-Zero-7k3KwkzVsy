@@ -21,13 +21,11 @@ namespace CourseZero.Controllers
     [Route("api/[controller]")]
     public class UploadController : Controller
     {
-        
-        readonly AuthTokenContext authTokenContext;
-        readonly UploadHistContext uploadHistContext;
-        public UploadController(AuthTokenContext authTokenContext, UploadHistContext uploadHistContext)
+
+        readonly AllDbContext allDbContext;
+        public UploadController(AllDbContext allDbContext)
         {
-            this.authTokenContext = authTokenContext;
-            this.uploadHistContext = uploadHistContext;
+            this.allDbContext = allDbContext;
         }
         /// <summary>
         /// Get the file process status by upload hist (file) id.
@@ -42,7 +40,7 @@ namespace CourseZero.Controllers
         {
             var response = new GetFileProcessStatus_Response();
             int userid = -1;
-            userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
             {
                 response.status_code = 1;
@@ -78,7 +76,7 @@ namespace CourseZero.Controllers
                 response.queue_pos = File_Process_Service.Queue_Position[request.upload_hist_ID].queue;
                 return response;
             }
-            upload_history_obj = await uploadHistContext.Get_UploadHist_By_Hist_ID(request.upload_hist_ID);
+            upload_history_obj = await allDbContext.Get_UploadHist_By_Hist_ID(request.upload_hist_ID);
             if (upload_history_obj == null)
             {
                 response.status_code = 2;
@@ -161,8 +159,8 @@ namespace CourseZero.Controllers
                     uploadHist.File_typename = type;
                     uploadHist.Related_courseID = courseID;
                     uploadHist.File_Description = file_description;
-                    await uploadHistContext.AddAsync(uploadHist);
-                    await uploadHistContext.SaveChangesAsync();
+                    await allDbContext.UploadHistories.AddAsync(uploadHist);
+                    await allDbContext.SaveChangesAsync();
                     using (var stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "/UploadsQueue/" + uploadHist.ID + type, FileMode.CreateNew))
                         await fileSection.FileStream.CopyToAsync(stream);
                 }
@@ -172,7 +170,7 @@ namespace CourseZero.Controllers
                     var value = await formSection.GetValueAsync();
                     if (formSection.Name == "auth_token" && !auth_found && value.Length == 128)
                     {
-                        userID = await authTokenContext.Get_User_ID_By_Token(value);
+                        userID = await allDbContext.Get_User_ID_By_Token(value);
                         if (userID == -1)
                             return new UploadFile_Response(1);
                         auth_found = true;

@@ -15,14 +15,10 @@ namespace CourseZero.Controllers
     public class ProfileCommentsController : Controller
     {
 
-        readonly AuthTokenContext authTokenContext;
-        readonly ProfileCommentsContext profileCommentsContext;
-        readonly UserContext userContext;
-        public ProfileCommentsController(AuthTokenContext authTokenContext, ProfileCommentsContext profileCommentsContext, UserContext userContext)
+        readonly AllDbContext allDbContext;
+        public ProfileCommentsController(AllDbContext allDbContext)
         {
-            this.authTokenContext = authTokenContext;
-            this.profileCommentsContext = profileCommentsContext;
-            this.userContext = userContext;
+            this.allDbContext = allDbContext;
         }
         /// <summary>
         /// Get the profile comments of a user, decreasing ordered by posted time.
@@ -36,11 +32,19 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<GetProfileComments_Response>> GetProfileComments([FromBody]GetProfileComments_Request request)
         {
             int userid = -1;
-            userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
                 return new GetProfileComments_Response(1);
             var response = new GetProfileComments_Response(0);
-            response.profileComments = await profileCommentsContext.GetComments(request.userid, request.next_20);
+            response.profileComments = await allDbContext.ProfileComments.Where(x => x.receiver_UserID == userid).OrderByDescending(x => x.ID).Skip(request.next_20 * 20).Take(20).Join(
+                allDbContext.Users, x => x.sender_UserID, y => y.ID, (x, y)=> new ProfileComment_ShownToUser
+                {
+                    ID = x.ID,
+                    Text = x.Text,
+                    posted_dateTime = x.posted_dateTime,
+                    sender_UserID = x.sender_UserID,
+                    sender_Username = y.username
+                }).ToListAsync();
             return response;
 
         }
@@ -59,10 +63,10 @@ namespace CourseZero.Controllers
             if (request.text.Length < 2)
                 return new PostProfileComment_Response(3);
             int sender_userid = -1;
-            sender_userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            sender_userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (sender_userid == -1)
                 return new PostProfileComment_Response(1);
-            bool target_exist = await userContext.Users.AnyAsync(x => x.ID == request.targeted_userid);
+            bool target_exist = await allDbContext.Users.AnyAsync(x => x.ID == request.targeted_userid);
             if (!target_exist)
                 return new PostProfileComment_Response(2);
             var comment = new ProfileComment
@@ -72,8 +76,8 @@ namespace CourseZero.Controllers
                 receiver_UserID = request.targeted_userid,
                 Text = request.text
             };
-            await profileCommentsContext.ProfileComments.AddAsync(comment);
-            await profileCommentsContext.SaveChangesAsync();
+            await allDbContext.ProfileComments.AddAsync(comment);
+            await allDbContext.SaveChangesAsync();
             return new PostProfileComment_Response(0);
 
         }
@@ -89,16 +93,16 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<DeleteProfileComment_Response>> DeleteProfileComment([FromBody]DeleteProfileComment_Request request)
         {
             int userid = -1;
-            userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
                 return new DeleteProfileComment_Response(1);
-            var comment = await profileCommentsContext.GetCommentByID(request.comment_id);
+            var comment = await allDbContext.GetCommentByID(request.comment_id);
             if (comment == null)
                 return new DeleteProfileComment_Response(2);
             if (comment.sender_UserID != userid)
                 return new DeleteProfileComment_Response(2);
-            profileCommentsContext.ProfileComments.Remove(comment);
-            await profileCommentsContext.SaveChangesAsync();
+            allDbContext.ProfileComments.Remove(comment);
+            await allDbContext.SaveChangesAsync();
             return new DeleteProfileComment_Response(0);
         }
         public class DeleteProfileComment_Request
@@ -168,7 +172,7 @@ namespace CourseZero.Controllers
             /// 0 is success, 1 is auth fail
             /// </summary>
             public int status_code { get; set; }
-            public List<ProfileComment> profileComments { get; set; }
+            public List<ProfileComment_ShownToUser> profileComments { get; set; }
         }
     }
 }

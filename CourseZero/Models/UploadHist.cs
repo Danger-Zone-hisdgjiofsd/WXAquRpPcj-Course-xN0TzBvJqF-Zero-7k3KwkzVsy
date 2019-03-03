@@ -8,18 +8,6 @@ using System.Threading.Tasks;
 
 namespace CourseZero.Models
 {
-    public class UploadHistContext : DbContext
-    {
-        public UploadHistContext(DbContextOptions<UploadHistContext> options) : base(options)
-        {
-
-        }
-        public DbSet<UploadHist> UploadHistories { get; set; }
-        public async Task<UploadHist> Get_UploadHist_By_Hist_ID(int id)
-        {
-            return await UploadHistories.FirstOrDefaultAsync(x => x.ID == id);
-        }
-    }
     public class UploadHist
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

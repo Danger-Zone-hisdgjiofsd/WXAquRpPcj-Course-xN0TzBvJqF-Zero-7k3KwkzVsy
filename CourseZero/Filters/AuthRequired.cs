@@ -16,16 +16,16 @@ namespace CourseZero.Filters
 {
     public class AuthRequired : ActionFilterAttribute
     {
-        readonly AuthTokenContext authTokenContext;
-        public AuthRequired(AuthTokenContext authTokenContext)
+        readonly AllDbContext allDbContext;
+        public AuthRequired(AllDbContext allDbContext)
         {
-            this.authTokenContext = authTokenContext;
+            this.allDbContext = allDbContext;
         }
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var jObject = JObject.FromObject(context.ActionArguments.First().Value );
             string auth_token = jObject["auth_token"].ToObject<string>();
-            AuthToken current_token = await authTokenContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == auth_token);
+            AuthToken current_token = await allDbContext.AuthTokens.FirstOrDefaultAsync(x => x.Token == auth_token);
             if (current_token == null)
             {
                 context.Result = new JsonResult(new { status_code = 1 });

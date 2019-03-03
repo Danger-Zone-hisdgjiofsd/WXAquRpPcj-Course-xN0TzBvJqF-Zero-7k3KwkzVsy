@@ -14,12 +14,10 @@ namespace CourseZero.Controllers
     [Route("api/[controller]")]
     public class WatchLaterController : Controller
     {
-        readonly AuthTokenContext authTokenContext;
-        readonly WatchLaterContext watchLaterContext;
-        public WatchLaterController(AuthTokenContext authTokenContext, WatchLaterContext waterLaterContext)
+        readonly AllDbContext allDbContext;
+        public WatchLaterController(AllDbContext allDbContext)
         {
-            this.authTokenContext = authTokenContext;
-            this.watchLaterContext = waterLaterContext;
+            this.allDbContext = allDbContext;
         }
         /// <summary>
         /// Add to a file to watch later list if it is not added currently. Remove a file if it is added currently. Max limit per user is 200.
@@ -33,24 +31,24 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<AddWatchLaterOrUndo_Response>> AddWatchLaterOrUndo([FromBody]AddWatchLaterOrUndo_Request request)
         {
             int userid = -1;
-            userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
                 return new AddWatchLaterOrUndo_Response(1);
-            int count = await watchLaterContext.watchLaters.CountAsync(x => x.UserID == userid);
+            int count = await allDbContext.watchLaters.CountAsync(x => x.UserID == userid);
             if (count == 200)
                 return new AddWatchLaterOrUndo_Response(4);
-            var result = await watchLaterContext.watchLaters.FirstOrDefaultAsync(x => x.UserID == userid && x.FileID == request.fileid);
+            var result = await allDbContext.watchLaters.FirstOrDefaultAsync(x => x.UserID == userid && x.FileID == request.fileid);
             if (result == null)
             {
                 result = new WatchLater();
                 result.FileID = request.fileid;
                 result.UserID = userid;
-                await watchLaterContext.watchLaters.AddAsync(result);
-                await watchLaterContext.SaveChangesAsync();
+                await allDbContext.watchLaters.AddAsync(result);
+                await allDbContext.SaveChangesAsync();
                 return new AddWatchLaterOrUndo_Response(2);
             }
-            watchLaterContext.watchLaters.Remove(result);
-            await watchLaterContext.SaveChangesAsync();
+            allDbContext.watchLaters.Remove(result);
+            await allDbContext.SaveChangesAsync();
             return new AddWatchLaterOrUndo_Response(3);
         }
         /// <summary>
@@ -65,10 +63,10 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<GetUserWatchLater_Response>> GetUserWatchLater([FromBody]GetUserWatchLater_Request request)
         {
             int userid = -1;
-            userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
                 return new UnauthorizedResult();
-            var results = await watchLaterContext.GetAllWatchLater(userid, request.next_20);
+            var results = await allDbContext.GetAllWatchLater(userid, request.next_20);
             var response = new GetUserWatchLater_Response();
             response.FileID = results;
             return response;

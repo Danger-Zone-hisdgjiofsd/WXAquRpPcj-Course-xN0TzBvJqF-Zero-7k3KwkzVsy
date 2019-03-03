@@ -44,35 +44,7 @@ namespace CourseZero
                 x.Filters.Add(typeof(ValidatorActionFilter));
             });
             services.AddScoped<AuthRequired>();
-            services.AddDbContext<UserContext>(options =>
-            {
-                options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddDbContext<AuthTokenContext>(options =>
-            {
-                options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddDbContext<UploadHistContext>(options =>
-            {
-                options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddDbContext<CourseContext>(options =>
-            {
-                options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddDbContext<UploadedFileContext>(options =>
-            {
-                options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddDbContext<SubscriptionContext>(options =>
-            {
-                options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddDbContext<WatchLaterContext>(options =>
-            {
-                options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddDbContext<ProfileCommentsContext>(options =>
+            services.AddDbContext<AllDbContext>(options =>
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
