@@ -20,9 +20,12 @@ namespace CourseZero.Models
         public DbSet<UploadHist> UploadHistories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<WatchLater> watchLaters { get; set; }
-
+        public DbSet<FileComment> FileComments { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Rating>().HasIndex(c => new { c.userID, c.fileID }).IsUnique(true);
+            modelBuilder.Entity<FileComment>().HasIndex(c => new { c.file_ID });
             modelBuilder.Entity<ProfileComment>().HasIndex(c => new { c.receiver_UserID });
             modelBuilder.Entity<Subscription>().HasIndex(c => new { c.UserID });
             modelBuilder.Entity<Subscription>().HasKey(c => new { c.UserID, c.CourseID });
@@ -64,14 +67,21 @@ namespace CourseZero.Models
                 return -1;
             return token_to_id_result.userID;
         }
-
         public async Task<List<ProfileComment>> GetComments(int userid, int next_20)
         {
             return await ProfileComments.Where(x => x.receiver_UserID == userid).OrderByDescending(x => x.ID).Skip(next_20 * 20).Take(20).ToListAsync();
         }
-        public async Task<ProfileComment> GetCommentByID(int commentid)
+        public async Task<ProfileComment> GetProfileCommentByID(int commentid)
         {
             return await ProfileComments.FirstOrDefaultAsync(x => x.ID == commentid);
+        }
+        public async Task<FileComment> GetFileCommentByID(int commentid)
+        {
+            return await FileComments.FirstOrDefaultAsync(x => x.ID == commentid);
+        }
+        public async Task<Rating> GetRatingByFIDAndUID(int userid, int fileid)
+        {
+            return await Ratings.FirstOrDefaultAsync(x => x.userID == userid && x.fileID == fileid);
         }
     }
 }
