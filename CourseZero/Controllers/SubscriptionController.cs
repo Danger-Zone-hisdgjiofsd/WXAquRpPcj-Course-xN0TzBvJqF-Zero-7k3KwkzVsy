@@ -14,12 +14,10 @@ namespace CourseZero.Controllers
     [Route("api/[controller]")]
     public class SubscriptionController : Controller
     {
-        readonly AuthTokenContext authTokenContext;
-        readonly SubscriptionContext subscriptionContext;
-        public SubscriptionController(AuthTokenContext authTokenContext, SubscriptionContext subscriptionContext)
+        readonly AllDbContext allDbContext;
+        public SubscriptionController(AllDbContext allDbContext)
         {
-            this.authTokenContext = authTokenContext;
-            this.subscriptionContext = subscriptionContext;
+            this.allDbContext = allDbContext;
         }
         /// <summary>
         /// Subscribe to a course if it is not subscribed currently. Unubscribe to a course if it is subscribed currently. Max limit per user is 200.
@@ -35,24 +33,24 @@ namespace CourseZero.Controllers
             if (CUSIS_Fetch_Service.CourseID_range.lower > request.courseid || CUSIS_Fetch_Service.CourseID_range.upper < request.courseid)
                 return new SubscribeOrUndo_Response(4);
             int userid = -1;
-            userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
                 return new SubscribeOrUndo_Response(1);
-            int count = await subscriptionContext.Subscriptions.CountAsync(x => x.UserID == userid);
+            int count = await allDbContext.Subscriptions.CountAsync(x => x.UserID == userid);
             if (count == 200)
                 return new SubscribeOrUndo_Response(5);
-            var result = await subscriptionContext.Subscriptions.FirstOrDefaultAsync(x => x.UserID == userid && x.CourseID == request.courseid);
+            var result = await allDbContext.Subscriptions.FirstOrDefaultAsync(x => x.UserID == userid && x.CourseID == request.courseid);
             if (result == null)
             {
                 result = new Subscription();
                 result.CourseID = request.courseid;
                 result.UserID = userid;
-                await subscriptionContext.Subscriptions.AddAsync(result);
-                await subscriptionContext.SaveChangesAsync();
+                await allDbContext.Subscriptions.AddAsync(result);
+                await allDbContext.SaveChangesAsync();
                 return new SubscribeOrUndo_Response(2);
             }
-            subscriptionContext.Subscriptions.Remove(result);
-            await subscriptionContext.SaveChangesAsync();
+            allDbContext.Subscriptions.Remove(result);
+            await allDbContext.SaveChangesAsync();
             return new SubscribeOrUndo_Response(3);
         }
         [HttpPost]
@@ -62,10 +60,10 @@ namespace CourseZero.Controllers
         public async Task<ActionResult<GetUserAllSubscription_Response>> GetUserAllSubscription([FromBody]GetUserAllSubscription_Request request)
         {
             int userid = -1;
-            userid = await authTokenContext.Get_User_ID_By_Token(request.auth_token);
+            userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
                 return new UnauthorizedResult();
-            var results = await subscriptionContext.GetAllSubscriptions(userid);
+            var results = await allDbContext.GetAllSubscriptions(userid);
             var response = new GetUserAllSubscription_Response();
             response.CourseIDs = results;
             return response;

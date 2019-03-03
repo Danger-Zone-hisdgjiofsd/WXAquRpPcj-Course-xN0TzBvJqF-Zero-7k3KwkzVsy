@@ -20,10 +20,10 @@ namespace CourseZero.Controllers
     [ApiController]
     public class SearchController : Controller
     {
-        readonly UploadedFileContext uploadedFileContext;
-        public SearchController(UploadedFileContext uploadedFileContext)
+        readonly AllDbContext allDbContext;
+        public SearchController(AllDbContext allDbContext)
         {
-            this.uploadedFileContext = uploadedFileContext;
+            this.allDbContext = allDbContext;
         }
         [HttpPost]
         [Consumes("application/json")]
@@ -87,11 +87,22 @@ namespace CourseZero.Controllers
                     orderby_str = " ORDER BY [Likes] ASC";
             }
             request.next_20 *= 20;
-            IQueryable<UploadedFile> database_result = uploadedFileContext.UploadedFiles.FromSql("SELECT * FROM [CourseZero].[dbo].[UploadedFiles] " + where_condition.ToString() + orderby_str + " OFFSET @next_20 ROWS FETCH NEXT 20 ROWS ONLY;",
-                 new SqlParameter("next_20", request.next_20), userid_parameter, filetype_parameter, shouldbefore_parameter, shouldafter_parameter);
-            foreach (var result in database_result)
-                Add_Result_To_Response(result, response_result);
-            response.result = response_result;
+            var database_result = await allDbContext.UploadedFiles.FromSql("SELECT * FROM [CourseZero].[dbo].[UploadedFiles] " + where_condition.ToString() + orderby_str + " OFFSET @next_20 ROWS FETCH NEXT 20 ROWS ONLY",
+                 new SqlParameter("next_20", request.next_20), userid_parameter, filetype_parameter, shouldbefore_parameter, shouldafter_parameter).Join(
+                allDbContext.Users, x => x.Uploader_UserID, y => y.ID, (x, y) => new File_Shown_to_User
+                {
+                    DisLikes = x.DisLikes,
+                    Likes = x.Likes,
+                    File_Description = x.File_Description,
+                    File_ID = x.ID,
+                    File_Name = x.File_Name,
+                    File_Typename = x.File_Typename,
+                    Related_courseID = x.Related_courseID,
+                    Uploader_UserID = x.Uploader_UserID,
+                    Upload_Time = x.Upload_Time,
+                    Uploader_Username = y.username
+                }).ToListAsync();
+            response.result = database_result;
             return response;
         }
         [HttpPost]
@@ -161,11 +172,22 @@ namespace CourseZero.Controllers
                     orderby_str = " ORDER BY [Likes] ASC";
             }
             request.next_20 *= 20;
-            IQueryable<UploadedFile> database_result = uploadedFileContext.UploadedFiles.FromSql("SELECT * FROM [CourseZero].[dbo].[UploadedFiles] " +  where_condition.ToString()  + orderby_str + " OFFSET @next_20 ROWS FETCH NEXT 20 ROWS ONLY;",
-                 new SqlParameter("next_20", request.next_20), courseid_parameter, filetype_parameter, shouldbefore_parameter, shouldafter_parameter);
-            foreach (var result in database_result)
-                Add_Result_To_Response(result, response_result);
-            response.result = response_result;
+            var database_result = await allDbContext.UploadedFiles.FromSql("SELECT * FROM [CourseZero].[dbo].[UploadedFiles] " +  where_condition.ToString()  + orderby_str + " OFFSET @next_20 ROWS FETCH NEXT 20 ROWS ONLY",
+                 new SqlParameter("next_20", request.next_20), courseid_parameter, filetype_parameter, shouldbefore_parameter, shouldafter_parameter).Join(
+                allDbContext.Users, x => x.Uploader_UserID, y => y.ID, (x, y) => new File_Shown_to_User
+                {
+                    DisLikes = x.DisLikes,
+                    Likes = x.Likes,
+                    File_Description = x.File_Description,
+                    File_ID = x.ID,
+                    File_Name = x.File_Name,
+                    File_Typename = x.File_Typename,
+                    Related_courseID = x.Related_courseID,
+                    Uploader_UserID = x.Uploader_UserID,
+                    Upload_Time = x.Upload_Time,
+                    Uploader_Username = y.username
+                }).ToListAsync();
+            response.result = database_result;
             return response;
         }
         /// <summary>
@@ -242,11 +264,22 @@ namespace CourseZero.Controllers
                 shouldafter_parameter.Value = request.should_after;
             }
             request.next_20 *= 20;
-            IQueryable<UploadedFile> database_result = uploadedFileContext.UploadedFiles.FromSql("SELECT ftt.[RANK], v.* FROM FREETEXTTABLE ([CourseZero].[dbo].[UploadedFiles], ([Binary], [Words_for_Search]), @search_query) ftt INNER JOIN [CourseZero].[dbo].[UploadedFiles] v ON v.ID = ftt.[KEY] " + ((where_count > 0) ? where_condition.ToString() : "") + " ORDER BY ftt.[RANK] DESC OFFSET @next_20 ROWS FETCH NEXT 20 ROWS ONLY;",
-                new SqlParameter("search_query", request.search_query), new SqlParameter("next_20", request.next_20), courseid_parameter, filetype_parameter, shouldbefore_parameter, shouldafter_parameter);
-            foreach (var result in database_result)
-                Add_Result_To_Response(result, response_result);
-            response.result = response_result;
+            var database_result = await allDbContext.UploadedFiles.FromSql("SELECT ftt.[RANK], v.* FROM FREETEXTTABLE ([CourseZero].[dbo].[UploadedFiles], ([Binary], [Words_for_Search]), @search_query) ftt INNER JOIN [CourseZero].[dbo].[UploadedFiles] v ON v.ID = ftt.[KEY] " + ((where_count > 0) ? where_condition.ToString() : "") + " ORDER BY ftt.[RANK] DESC OFFSET @next_20 ROWS FETCH NEXT 20 ROWS ONLY",
+                new SqlParameter("search_query", request.search_query), new SqlParameter("next_20", request.next_20), courseid_parameter, filetype_parameter, shouldbefore_parameter, shouldafter_parameter).Join(
+                allDbContext.Users, x => x.Uploader_UserID, y => y.ID, (x, y) => new File_Shown_to_User
+                {
+                    DisLikes = x.DisLikes,
+                    Likes = x.Likes,
+                    File_Description = x.File_Description,
+                    File_ID = x.ID,
+                    File_Name = x.File_Name,
+                    File_Typename = x.File_Typename,
+                    Related_courseID = x.Related_courseID,
+                    Uploader_UserID = x.Uploader_UserID,
+                    Upload_Time = x.Upload_Time,
+                    Uploader_Username = y.username
+                }).ToListAsync();
+            response.result = database_result;
             return response;
 
         }
@@ -264,22 +297,6 @@ namespace CourseZero.Controllers
             return (DateTime.Compare(dateTime, (DateTime)System.Data.SqlTypes.SqlDateTime.MinValue) < 0 || DateTime.Compare(dateTime, (DateTime)System.Data.SqlTypes.SqlDateTime.MaxValue) > 0);
         }
 
-        private void Add_Result_To_Response(UploadedFile result, List<File_Shown_to_User> list)
-        {
-            File_Shown_to_User file_Shown_To_User = new File_Shown_to_User
-            {
-                DisLikes = result.DisLikes,
-                Likes = result.Likes,
-                File_Description = result.File_Description,
-                File_ID = result.ID,
-                File_Name = result.File_Name,
-                File_Typename = result.File_Typename,
-                Related_courseID = result.Related_courseID,
-                Uploader_UserID = result.Uploader_UserID,
-                Upload_Time = result.Upload_Time
-            };
-            list.Add(file_Shown_To_User);
-        }
         public class Search_Response
         {
             public Search_Response()
