@@ -63,7 +63,7 @@ namespace CourseZero.Services
             Courses_FromID.Clear();
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                var CourseContext = scope.ServiceProvider.GetService<CourseContext>();
+                var CourseContext = scope.ServiceProvider.GetService<AllDbContext>();
                 foreach (var course in CourseContext.Courses)
                 {
                     Courses.Add(course.Prefix+course.Course_Code, course);
@@ -95,7 +95,7 @@ namespace CourseZero.Services
                 {
                     var course_list = await cusis_Tool.Scan_CoursePage();
                     List<Course> courses_to_add = new List<Course>();
-                    var courseContext = scope.ServiceProvider.GetService<CourseContext>();
+                    var courseContext = scope.ServiceProvider.GetService<AllDbContext>();
                     foreach (var scanned_course in course_list)
                     {
                         string key = scanned_course.Prefix + scanned_course.Course_Code;
@@ -118,7 +118,7 @@ namespace CourseZero.Services
                 CourseID_range = (int.MaxValue, int.MinValue);
                 using (var scope = serviceScopeFactory.CreateScope())
                 {
-                    var CourseContext = scope.ServiceProvider.GetService<CourseContext>();
+                    var CourseContext = scope.ServiceProvider.GetService<AllDbContext>();
                     foreach (var course in CourseContext.Courses)
                     {
                         Courses.Add(course.Prefix + course.Course_Code, course);
