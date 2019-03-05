@@ -22,6 +22,8 @@ namespace CourseZero.Models
         public DbSet<WatchLater> watchLaters { get; set; }
         public DbSet<FileComment> FileComments { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        public DbSet<Report> Reports { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Rating>().HasIndex(c => new { c.userID, c.fileID }).IsUnique(true);
@@ -33,6 +35,7 @@ namespace CourseZero.Models
             modelBuilder.Entity<UploadedFile>().HasIndex(c => new { c.Likes });
             modelBuilder.Entity<User>().HasIndex(c => new { c.username }).IsUnique(true);
             modelBuilder.Entity<User>().HasIndex(c => new { c.email }).IsUnique(true);
+            modelBuilder.Entity<Report>().HasIndex(c => new { c.Report_Type });
         }
 
         public async Task<List<int>> GetAllWatchLater(int userid, int next_20)
