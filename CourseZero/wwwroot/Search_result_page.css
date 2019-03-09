@@ -1,0 +1,15 @@
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.avatar{
+    height: 250px;
+    width: 450px;
+}
+
+#profile_Change_PW_col.col-2:hover {
+    background-color: lightskyblue;
+    cursor: pointer;
+
+}

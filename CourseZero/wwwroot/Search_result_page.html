@@ -1,0 +1,25 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <title>Search_result_page</title>
+    <link rel="stylesheet" href="Search_result_page.css">
+    <script src="./js/search.js"></script>
+    <script src="./js/Search_result_page.js"></script>
+</head> 
+<script type="text/javascript">
+	$(document).ready(function(){
+		for (var i = 0; i < 20; i++) {
+			$("#one").append('<div class="container-fluid "><div class="row border-bottom border-dark" ><div class="col-3 align-self-center file_thumbnail"><img src="./material/preview.png"></div><div class="col-6 align-self-center"><h3>.Course code'+i+'</h3></div><div class="col-3 align-self-center avatar"><img class="rounded-circle" src="./material/blank-profile-picture.png"></div></div></div>');
+		}
+	})
+</script>
+<div id = "one">
+	
+</div>
+</html>
+
+
+
+
