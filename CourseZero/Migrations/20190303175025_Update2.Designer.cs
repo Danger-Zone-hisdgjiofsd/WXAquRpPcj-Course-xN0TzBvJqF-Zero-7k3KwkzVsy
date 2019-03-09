@@ -4,14 +4,16 @@ using CourseZero.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CourseZero.Migrations
 {
     [DbContext(typeof(AllDbContext))]
-    partial class AllDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190303175025_Update2")]
+    partial class Update2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,32 +124,6 @@ namespace CourseZero.Migrations
                         .IsUnique();
 
                     b.ToTable("Ratings");
-                });
-
-            modelBuilder.Entity("CourseZero.Models.Report", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("RelatedID");
-
-                    b.Property<DateTime>("ReportTime");
-
-                    b.Property<int>("Report_Type");
-
-                    b.Property<bool>("Resovled");
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(10240);
-
-                    b.Property<int>("UserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("Report_Type");
-
-                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("CourseZero.Models.Subscription", b =>

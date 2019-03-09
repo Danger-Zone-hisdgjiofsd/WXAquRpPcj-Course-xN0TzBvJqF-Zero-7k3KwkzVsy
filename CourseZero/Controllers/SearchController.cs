@@ -307,6 +307,9 @@ namespace CourseZero.Controllers
             {
                 this.status_code = status_code;
             }
+            /// <summary>
+            /// 0 is success, 1 is auth fail, 2 is invalid query, 3 is invalid course id, 4 is invalid file type, 5 is invalid datetime
+            /// </summary>
             public int status_code { get; set; }
             public List<File_Shown_to_User> result { get; set; }
         }

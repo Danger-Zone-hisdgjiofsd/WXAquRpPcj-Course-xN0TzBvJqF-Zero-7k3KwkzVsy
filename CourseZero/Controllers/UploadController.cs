@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,6 +28,25 @@ namespace CourseZero.Controllers
         {
             this.allDbContext = allDbContext;
         }
+        /// <summary>
+        /// Get a list of upload history, decreasing ordered by upload time.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult<GetUserUploadHist_Response>> GetUserUploadHist([FromBody]GetUserUploadHist_Request request)
+        {
+            int userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
+            if (userid == -1)
+                return new GetUserUploadHist_Response(1);
+            var response = new GetUserUploadHist_Response(0);
+            response.results = await allDbContext.UploadHistories.Where(x => x.Uploader_UserID == userid).OrderByDescending(x => x.ID).Skip(20 * request.next_20).Take(20).ToListAsync();
+            return response;
+        }
+
         /// <summary>
         /// Get the file process status by upload hist (file) id.
         /// </summary>
@@ -243,6 +263,30 @@ namespace CourseZero.Controllers
             /// </summary>
             public int queue_total { get; set; }
 
+        }
+        public class GetUserUploadHist_Request
+        {
+            [Required]
+            [StringLength(128, MinimumLength = 128)]
+            public string auth_token { get; set; }
+            /// <summary>
+            /// first 20 queries is 0, the next 20 is 1, the next next 20 is 2, etc.
+            /// </summary>
+            [Required]
+            [Range(0, int.MaxValue)]
+            public int next_20 { get; set; }
+        }
+        public class GetUserUploadHist_Response
+        {
+            public GetUserUploadHist_Response(int code)
+            {
+                status_code = code;
+            }
+            /// <summary>
+            /// 0 is success, 1 is auth fail
+            /// </summary>
+            public int status_code { get; set; }
+            public List<UploadHist> results { get; set; }
         }
     }
 }

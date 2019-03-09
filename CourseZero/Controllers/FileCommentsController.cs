@@ -12,16 +12,16 @@ namespace CourseZero.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileCommentsController : Controller
+    public class FileCommentsController : Controller
     {
 
         readonly AllDbContext allDbContext;
-        public ProfileCommentsController(AllDbContext allDbContext)
+        public FileCommentsController(AllDbContext allDbContext)
         {
             this.allDbContext = allDbContext;
         }
         /// <summary>
-        /// Get the profile comments of a user, decreasing ordered by posted time.
+        /// Get the file comments of a specific file, decreasing ordered by posted time.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -29,15 +29,13 @@ namespace CourseZero.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [Route("[action]")]
-        public async Task<ActionResult<GetProfileComments_Response>> GetProfileComments([FromBody]GetProfileComments_Request request)
+        public async Task<ActionResult<GetFileComments_Response>> GetFileComments([FromBody]GetFileComments_Request request)
         {
-            int userid = -1;
-            userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
-            if (userid == -1)
-                return new GetProfileComments_Response(1);
-            var response = new GetProfileComments_Response(0);
-            response.profileComments = await allDbContext.ProfileComments.Where(x => x.receiver_UserID == request.userid).OrderByDescending(x => x.ID).Skip(request.next_20 * 20).Take(20).Join(
-                allDbContext.Users, x => x.sender_UserID, y => y.ID, (x, y)=> new ProfileComment_ShownToUser
+            if (await allDbContext.Get_User_ID_By_Token(request.auth_token) == -1)
+                return new GetFileComments_Response(1);
+            var response = new GetFileComments_Response(0);
+            response.FileComments = await allDbContext.FileComments.Where(x => x.file_ID == request.fileid).OrderByDescending(x => x.ID).Skip(request.next_20 * 20).Take(20).Join(
+                allDbContext.Users, x => x.sender_UserID, y => y.ID, (x, y)=> new FileComment_ShownToUser
                 {
                     ID = x.ID,
                     Text = x.Text,
@@ -49,7 +47,7 @@ namespace CourseZero.Controllers
 
         }
         /// <summary>
-        /// Post a profile comment to a specific user
+        /// Post a file comment
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -57,32 +55,32 @@ namespace CourseZero.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [Route("[action]")]
-        public async Task<ActionResult<PostProfileComment_Response>> PostProfileComment([FromBody]PostProfileComment_Request request)
+        public async Task<ActionResult<PostFileComment_Response>> PostFileComment([FromBody]PostFileComment_Request request)
         {
             request.text = request.text.Trim();
             if (request.text.Length < 2)
-                return new PostProfileComment_Response(3);
+                return new PostFileComment_Response(3);
             int sender_userid = -1;
             sender_userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (sender_userid == -1)
-                return new PostProfileComment_Response(1);
-            bool target_exist = await allDbContext.Users.AnyAsync(x => x.ID == request.targeted_userid);
+                return new PostFileComment_Response(1);
+            bool target_exist = await allDbContext.UploadedFiles.AnyAsync(x => x.ID == request.targeted_fileid);
             if (!target_exist)
-                return new PostProfileComment_Response(2);
-            var comment = new ProfileComment
+                return new PostFileComment_Response(2);
+            var comment = new FileComment
             {
                 posted_dateTime = DateTime.Now,
                 sender_UserID = sender_userid,
-                receiver_UserID = request.targeted_userid,
+                file_ID = request.targeted_fileid,
                 Text = request.text
             };
-            await allDbContext.ProfileComments.AddAsync(comment);
+            await allDbContext.FileComments.AddAsync(comment);
             await allDbContext.SaveChangesAsync();
-            return new PostProfileComment_Response(0);
+            return new PostFileComment_Response(0);
 
         }
         /// <summary>
-        /// Delete a profile comment by profilecommentID.
+        /// Delete a comment by filecommentID.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -90,22 +88,22 @@ namespace CourseZero.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [Route("[action]")]
-        public async Task<ActionResult<DeleteProfileComment_Response>> DeleteProfileComment([FromBody]DeleteProfileComment_Request request)
+        public async Task<ActionResult<DeleteFileComment_Response>> DeleteFileComment([FromBody]DeleteFileComment_Request request)
         {
             int userid = -1;
             userid = await allDbContext.Get_User_ID_By_Token(request.auth_token);
             if (userid == -1)
-                return new DeleteProfileComment_Response(1);
-            var comment = await allDbContext.GetProfileCommentByID(request.comment_id);
+                return new DeleteFileComment_Response(1);
+            var comment = await allDbContext.GetFileCommentByID(request.comment_id);
             if (comment == null)
-                return new DeleteProfileComment_Response(2);
+                return new DeleteFileComment_Response(2);
             if (comment.sender_UserID != userid)
-                return new DeleteProfileComment_Response(2);
-            allDbContext.ProfileComments.Remove(comment);
+                return new DeleteFileComment_Response(2);
+            allDbContext.FileComments.Remove(comment);
             await allDbContext.SaveChangesAsync();
-            return new DeleteProfileComment_Response(0);
+            return new DeleteFileComment_Response(0);
         }
-        public class DeleteProfileComment_Request
+        public class DeleteFileComment_Request
         {
             [Required]
             [StringLength(128, MinimumLength = 128)]
@@ -113,9 +111,9 @@ namespace CourseZero.Controllers
             [Required]
             public int comment_id { get; set; }
         }
-        public class DeleteProfileComment_Response
+        public class DeleteFileComment_Response
         {
-            public DeleteProfileComment_Response(int code)
+            public DeleteFileComment_Response(int code)
             {
                 status_code = code;
             }
@@ -124,21 +122,21 @@ namespace CourseZero.Controllers
             /// </summary>
             public int status_code { get; set; }
         }
-        public class PostProfileComment_Request
+        public class PostFileComment_Request
         {
             [Required]
             [StringLength(128, MinimumLength = 128)]
             public string auth_token { get; set; }
             [Required]
             [Range(0, int.MaxValue)]
-            public int targeted_userid { get; set; }
+            public int targeted_fileid { get; set; }
             [Required]
             [StringLength(2048, MinimumLength = 2)]
             public string text { get; set; }
         }
-        public class PostProfileComment_Response
+        public class PostFileComment_Response
         {
-            public PostProfileComment_Response(int code)
+            public PostFileComment_Response(int code)
             {
                 status_code = code;
             }
@@ -147,14 +145,14 @@ namespace CourseZero.Controllers
             /// </summary>
             public int status_code { get; set; }
         }
-        public class GetProfileComments_Request
+        public class GetFileComments_Request
         {
             [Required]
             [StringLength(128, MinimumLength = 128)]
             public string auth_token { get; set; }
             [Required]
             [Range(0, int.MaxValue)]
-            public int userid { get; set; }
+            public int fileid { get; set; }
             /// <summary>
             /// first 20 queries = 0, next 20 queries = 1, next next 20 queries = 2, etc.
             /// </summary>
@@ -162,9 +160,9 @@ namespace CourseZero.Controllers
             [Range(0, int.MaxValue)]
             public int next_20 { get; set; }
         }
-        public class GetProfileComments_Response
+        public class GetFileComments_Response
         {
-            public GetProfileComments_Response(int code)
+            public GetFileComments_Response(int code)
             {
                 status_code = code;
             }
@@ -172,7 +170,7 @@ namespace CourseZero.Controllers
             /// 0 is success, 1 is auth fail
             /// </summary>
             public int status_code { get; set; }
-            public List<ProfileComment_ShownToUser> profileComments { get; set; }
+            public List<FileComment_ShownToUser> FileComments { get; set; }
         }
     }
 }

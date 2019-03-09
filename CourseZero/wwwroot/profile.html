@@ -23,13 +23,17 @@
                     </div>
 
                     <div class="row pt-4 pb-4 border-bottom border-dark">
-                        <div class="col-6 align-self-center avatar">
-                            <img src="./material/blank-profile-picture.png">
+                        <div class="col-3 align-self-center container" id="avatarContainer">
+                            <img src="./material/blank-profile-picture.png" alt="Avatar" class="image" style="width:100%">
+                            <div class="middle">
+                                <div class="text"><i class="fas fa-camera"></i></div>
+                            </div>
                         </div>
                         <div class="col-6 align-self-center">
                             <h3>.User Name.</h3>
                         </div>
                     </div>
+
                     <div class="row pt-2 ">
                         <div class="col-2">
                             Name:
@@ -56,9 +60,8 @@
                         <div class="col-4 ">
                             .Phone no. (Moblie)
                         </div>
-
-
                     </div>
+
                     <div class="col-2" id="profile_Change_PW_col" onclick="showPWcol()">
                         <i class="fas fa-key">Change Password</i>
                     </div>
@@ -83,7 +86,8 @@
                             <p id="Profile_ChangePW_DisplayMsg" style="font-size:120%"></p>
                         </form>
                     </div>
-                    <div class="row pt-4 ">
+
+                    <div class="row pt-4 pl-3">
                         <button type="button" class="btn btn-secondary" id="profile_sm_btn">Open Session Manager</button>
                     </div>
 
@@ -91,8 +95,15 @@
 
                     </div>
 
+                    <div class="pt-3 ">
+                        <textarea class="form-control" id="testing_textbox" placeholder="Comment..."></textarea>
+                        <button type="button" class="btn btn-primary mt-2 float-right" style="right:0">Submit</button>
+                    </div>
+
                 </div>
+            </div>
+        </div>
     </div>
-   <script src="./js/profile_settings.js"></script>
+    <script src="./js/profile_settings.js"></script>
 </body>
 </html>
