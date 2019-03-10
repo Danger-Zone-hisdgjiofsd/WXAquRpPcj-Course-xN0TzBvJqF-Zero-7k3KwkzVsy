@@ -35,6 +35,13 @@ function Paging_ShowSpinner(show)
 	}
 }
 
+function Paging_Uploadbtn() {
+    $("#uploadbtn").click(function (event) {
+        event.preventDefault();
+        Paging_load("./upload.html");
+    });
+}
+
 function Paging_Listitemload_Notuse() { 
     $(".dropdown-menu li").click(function (event) {
         event.preventDefault();
@@ -42,7 +49,18 @@ function Paging_Listitemload_Notuse() {
     });
 }
 
-function Paging_Listitemload() { //For testing    
+function Paging_uploadeditingpageswitch() {
+    $("#gotomyupload").click(function (event) {
+        event.preventDefault();
+        Paging_load("./myupload.html");
+    });
+    $("#gotouploadhistory").click(function (event) {
+        event.preventDefault();
+        Paging_load("./uploadhistory.html");
+    });
+}
+
+function Paging_Listitemload() {  
     $("#dropdownnameNicon").click(function (event) {
         event.preventDefault();
         Paging_load("./profile.html");
@@ -102,6 +120,7 @@ function Auto_Login() {
                 g_username = obj["username"];
                 g_login = true;
                 document.getElementById("layout_Username").innerHTML = g_username;
+                document.getElementById("profile_username").innerHTML = g_username;
                 $("#Layout_loginbtn").hide();
                 $("#Layout_avatarbtn").show();
                 document.dispatchEvent(search_available);
@@ -114,6 +133,8 @@ $(document).ready(function () {
     Auto_Login();
     Paging_loadMain();
     Paging_Listitemload();
+    Paging_Uploadbtn();
+    Paging_uploadeditingpageswitch();
 	$("#Layout_loginbtn").click(Paging_loadLogin);
 	$("#Layout_homebtn").click(Paging_loadMain);
     $("#navbar_logo").click(Paging_loadMain);
