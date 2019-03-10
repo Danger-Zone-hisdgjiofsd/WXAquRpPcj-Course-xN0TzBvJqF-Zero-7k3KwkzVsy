@@ -37,14 +37,26 @@ function add_option_to_prefix() {
     document.getElementById("coursecode-prefix").innerHTML = text;
 }
 
+function addtags() {
+    $('#addTag_in_advancedsearch').click(function (event) {
+        event.preventDefault();
+        var sel = document.getElementById("coursecode-prefix");
+        var cprefix = sel.options[sel.selectedIndex].text;
+        var cnum = document.getElementById("coursecode-id").value;
+        //console.log(cprefix + cnum);
+        $('#coursecodetags').tagsinput('add', cprefix + cnum);
+    });
+}
+
 $(document).ready(function (e) {
+    addtags();
+
     $('.datepicker').datepicker({
         daysOfWeekHighlighted: "0",
         autoclose: true,
         todayHighlight: true,
     });
 
-    
 
     document.addEventListener('Search', function (e) {
         get_CourseCode_prefix();
