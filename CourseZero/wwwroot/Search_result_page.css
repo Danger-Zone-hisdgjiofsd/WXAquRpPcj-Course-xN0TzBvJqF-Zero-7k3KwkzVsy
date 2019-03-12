@@ -4,12 +4,16 @@ img {
 }
 
 .avatar{
-    height: 250px;
-    width: 450px;
+    height: 200px;
+    width: 200px;
 }
 
 #profile_Change_PW_col.col-2:hover {
     background-color: lightskyblue;
     cursor: pointer;
 
+}
+
+.that_result:hover {
+    background-color: lightskyblue;
 }

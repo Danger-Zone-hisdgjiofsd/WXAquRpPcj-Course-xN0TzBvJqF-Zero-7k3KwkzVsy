@@ -2,22 +2,42 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <title>Search_result_page</title>
     <link rel="stylesheet" href="Search_result_page.css">
     <script src="./js/search.js"></script>
     <script src="./js/Search_result_page.js"></script>
+    <script src="./js/global_vars.js"></script>
+
 </head> 
 <script type="text/javascript">
-	$(document).ready(function(){
-		for (var i = 0; i < 20; i++) {
-			$("#one").append('<div class="container-fluid "><div class="row border-bottom border-dark" ><div class="col-3 align-self-center file_thumbnail"><img src="./material/preview.png"></div><div class="col-6 align-self-center"><h3>.Course code'+i+'</h3></div><div class="col-3 align-self-center avatar"><img class="rounded-circle" src="./material/blank-profile-picture.png"></div></div></div>');
-		}
+    $(document).ready(function () {
+        //get_thumbnail(10);
+        
+        aaaaa();
+
 	})
 </script>
-<div id = "one">
-	
+<div id=" Search_result_sort">
+    <div class="container-fluid ">
+        <div class="row" style="background-color: #e3f2fd;">
+                <div class="align-self-center col-3">
+                Sorted by:
+                </div>
+                <div class="align-self-right col-3 btn-group ">
+                    <button type="button" class="btn btn-primary">Time</button>
+                    <button type="button" class="btn btn-primary">Likes</button>
+                </div>
+                <div class="align-self-right col-3 btn-group ">
+                    <button type="button" class="btn btn-primary">ascending</button>
+                    <button type="button" class="btn btn-primary">descending</button>
+                </div>
+        </div>
+    </div>
 </div>
+<div id="zero"></div>
+<div id="one"></div>
+<img id="test">
 </html>
 
 
